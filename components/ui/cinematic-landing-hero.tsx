@@ -433,7 +433,7 @@ export function CinematicHero({
       <div
         id={id}
         className={cn(
-          "relative w-full min-h-screen py-24 px-4 sm:px-6 flex flex-col items-center justify-start font-sans antialiased",
+          "relative w-full min-h-screen pt-36 pb-24 px-4 sm:px-6 flex flex-col items-center justify-start font-sans antialiased",
           theme === "light" ? "bg-[#f4f5f7] light-theme text-[#121316]" : "bg-[#03050d] dark-theme text-white",
           className
         )}
@@ -449,9 +449,9 @@ export function CinematicHero({
         </div>
 
         {/* 1. INTRO HEADER */}
-        <div className="relative z-10 w-full max-w-xl text-center mb-12 flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-xl text-center mb-16 flex flex-col items-center">
           {/* eyebrow */}
-          <div className="c-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 border border-indigo-500/10 bg-indigo-500/5 backdrop-blur-md">
+          <div className="c-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 border border-indigo-500/10 bg-indigo-500/5 backdrop-blur-md">
             <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
               <span className="c-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-indigo-400" />
@@ -462,17 +462,17 @@ export function CinematicHero({
           </div>
 
           {/* headline */}
-          <h1 className="text-3d-matte text-3xl sm:text-4xl font-black tracking-[-0.03em] leading-[1.15] mb-4">
+          <h1 className="text-3d-matte text-3xl sm:text-4xl font-black tracking-[-0.03em] leading-[1.25] mb-6">
             {tagline1} <span className="text-silver-matte">{tagline2}</span>
           </h1>
 
           {/* subtitle */}
-          <p className="text-white/45 text-xs sm:text-sm max-w-sm leading-relaxed font-light mb-6">
+          <p className="text-white/45 text-xs sm:text-sm max-w-sm leading-relaxed font-light mb-8">
             Real-time tracking for commuters · ₹3,500/month for bus owners
           </p>
 
           {/* stats pills */}
-          <div className="flex flex-wrap justify-center gap-2 max-w-md w-full">
+          <div className="flex flex-wrap justify-center gap-3 max-w-md w-full">
             {[
               { v: String(metricValue), l: metricLabel },
               { v: "Kollam-TVM", l: "First corridor" },
@@ -488,7 +488,7 @@ export function CinematicHero({
         </div>
 
         {/* 2. THE CENTRAL INTERACTIVE PREVIEW CARD */}
-        <div className="relative z-10 w-full max-w-md c-card rounded-[24px] p-5 sm:p-6 mb-12 flex flex-col gap-6">
+        <div className="relative z-10 w-full max-w-md c-card rounded-[24px] p-5 sm:p-6 mb-20 flex flex-col gap-6">
           <div className="c-spotlight" aria-hidden />
 
           {/* Watermark brand name */}
