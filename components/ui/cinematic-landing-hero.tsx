@@ -449,7 +449,7 @@ export function CinematicHero({
         </div>
 
         {/* 1. INTRO HEADER */}
-        <div className="relative z-10 w-full max-w-xl text-center mb-16 flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-xl text-center mb-28 flex flex-col items-center">
           {/* eyebrow */}
           <div className="c-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 border border-indigo-500/10 bg-indigo-500/5 backdrop-blur-md">
             <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
