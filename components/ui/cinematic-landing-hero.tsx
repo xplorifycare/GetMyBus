@@ -599,15 +599,6 @@ export function CinematicHero({
                   </div>
                 ))}
               </div>
-
-              {/* CTA button inside card */}
-              <a
-                href="#partner"
-                onClick={() => playClickSound()}
-                className="inline-flex w-full items-center justify-center bg-gradient-to-r from-[#0A84FF] to-[#0070e3] text-white h-11 font-semibold text-[13px] rounded-lg shadow-lg active:scale-[0.98] transition-transform"
-              >
-                Join the Waitlist
-              </a>
             </div>
           </div>
         </div>
