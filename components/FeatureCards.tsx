@@ -39,8 +39,52 @@ function RollingNumber({ value, suffix = "" }: { value: string; suffix?: string 
   return <span ref={ref}>{formatNumber(current)}{suffix}</span>;
 }
 
+const S_CARDS = `
+  .bento-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(10, 14, 30, 0.45) 0%, rgba(5, 7, 16, 0.65) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  
+  .bento-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.01) 40%, rgba(255, 255, 255, 0.01) 60%, rgba(255, 255, 255, 0.04) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+  
+  .bento-card:hover::before {
+    opacity: 1;
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02) 30%, var(--card-glow, rgba(10, 132, 255, 0.35)) 75%, rgba(255, 255, 255, 0.06) 100%);
+  }
+
+  .light-theme .bento-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.82) 0%, rgba(242, 245, 252, 0.92) 100%) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  }
+  .light-theme .bento-card::before {
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.01) 50%, rgba(0, 0, 0, 0.03) 100%);
+    opacity: 0.65;
+  }
+  .light-theme .bento-card:hover::before {
+    opacity: 0.95;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.02) 40%, var(--card-glow, rgba(10, 132, 255, 0.2)) 80%);
+  }
+`;
+
 // ── 3D Tilt Card with cursor-tracking spotlight ─────────────────────────────────────────
-function TiltCard({ children, className, onMouseEnter }: { children: React.ReactNode; className: string; onMouseEnter?: () => void }) {
+function TiltCard({ children, className, style, onMouseEnter }: { children: React.ReactNode; className: string; style?: React.CSSProperties; onMouseEnter?: () => void }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(true);
@@ -85,6 +129,7 @@ function TiltCard({ children, className, onMouseEnter }: { children: React.React
       style={{
         transform: isMobile ? "none" : `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
         transformStyle: isMobile ? "flat" : "preserve-3d",
+        ...style,
       }}
       className={`${className} relative overflow-hidden transition-all duration-200 ease-out`}
     >
@@ -174,7 +219,10 @@ export function FeatureCards({ theme = "dark" }: { theme?: "dark" | "light" }) {
   }, []);
 
   return (
-    <section id="features" className="relative w-full themed-bg py-24 px-6 md:px-12 overflow-hidden border-t themed-divider">
+    <section id="features" className={`relative w-full themed-bg py-24 px-6 md:px-12 overflow-hidden border-t themed-divider ${
+      theme === "light" ? "light-theme" : "dark-theme"
+    }`}>
+      <style dangerouslySetInnerHTML={{ __html: S_CARDS }} />
       {/* Ambient orbs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#0A84FF]/[0.02] rounded-full blur-[120px] pointer-events-none animate-mesh-blob-3" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#34D399]/[0.02] rounded-full blur-[100px] pointer-events-none animate-mesh-blob-4" />
@@ -207,7 +255,12 @@ export function FeatureCards({ theme = "dark" }: { theme?: "dark" | "light" }) {
         >
           {/* CARD 1: GPS Live Map (Spans 2 cols) */}
           <motion.div variants={fadeUp} className="md:col-span-2">
-            <TiltCard className="group relative themed-card border rounded-[24px] p-8 h-full min-h-[300px] flex flex-col md:flex-row justify-between gap-6 overflow-hidden transition-all duration-300">
+            <TiltCard 
+              style={{ "--card-glow": "rgba(10, 132, 255, 0.45)" } as React.CSSProperties}
+              className="group relative bento-card rounded-[24px] p-8 h-full min-h-[300px] flex flex-col md:flex-row justify-between gap-6 overflow-hidden transition-all duration-300"
+            >
+              {/* Ambient background corner glow */}
+              <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-gradient-to-br from-[#0A84FF]/10 to-transparent blur-[50px] opacity-20 pointer-events-none group-hover:opacity-35 transition-opacity duration-300 z-0" />
               
               {/* Text side */}
               <div className="flex flex-col justify-between flex-1 relative z-10">
@@ -293,7 +346,12 @@ export function FeatureCards({ theme = "dark" }: { theme?: "dark" | "light" }) {
 
           {/* CARD 2: Onboard Screens (Single col) */}
           <motion.div variants={fadeUp}>
-            <TiltCard className="group relative themed-card border rounded-[24px] p-7 h-full min-h-[300px] flex flex-col justify-between overflow-hidden transition-all duration-300">
+            <TiltCard 
+              style={{ "--card-glow": "rgba(52, 211, 153, 0.4)" } as React.CSSProperties}
+              className="group relative bento-card rounded-[24px] p-7 h-full min-h-[300px] flex flex-col justify-between overflow-hidden transition-all duration-300"
+            >
+              {/* Ambient background corner glow */}
+              <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-gradient-to-br from-[#34D399]/10 to-transparent blur-[50px] opacity-20 pointer-events-none group-hover:opacity-35 transition-opacity duration-300 z-0" />
               
               <div style={{ transform: "translateZ(30px)" }}
                 className="mb-4 w-12 h-12 flex items-center justify-center rounded-[14px] bg-[#34D399]/10 border border-[#34D399]/20 transition-all duration-300">
@@ -350,8 +408,11 @@ export function FeatureCards({ theme = "dark" }: { theme?: "dark" | "light" }) {
                 setEtmHovered(true);
                 playHoverSound(0.01);
               }}
-              className="group relative themed-card border rounded-[24px] p-7 h-full min-h-[300px] flex flex-col justify-between overflow-hidden transition-all duration-300"
+              style={{ "--card-glow": "rgba(245, 158, 11, 0.4)" } as React.CSSProperties}
+              className="group relative bento-card rounded-[24px] p-7 h-full min-h-[300px] flex flex-col justify-between overflow-hidden transition-all duration-300"
             >
+              {/* Ambient background corner glow */}
+              <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-gradient-to-br from-[#F59E0B]/10 to-transparent blur-[50px] opacity-20 pointer-events-none group-hover:opacity-35 transition-opacity duration-300 z-0" />
               <div style={{ transform: "translateZ(30px)" }}
                 className="mb-4 w-12 h-12 flex items-center justify-center rounded-[14px] bg-[#F59E0B]/10 border border-[#F59E0B]/20 transition-all duration-300">
                 <svg className="w-6 h-6 text-[#F59E0B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
@@ -411,7 +472,12 @@ export function FeatureCards({ theme = "dark" }: { theme?: "dark" | "light" }) {
 
           {/* CARD 4: Operator SaaS Dashboard (Spans 2 cols with bar chart) */}
           <motion.div variants={fadeUp} className="md:col-span-2">
-            <TiltCard className="group relative themed-card border rounded-[24px] p-8 h-full min-h-[300px] flex flex-col md:flex-row justify-between gap-6 overflow-hidden transition-all duration-300">
+            <TiltCard 
+              style={{ "--card-glow": "rgba(167, 139, 250, 0.4)" } as React.CSSProperties}
+              className="group relative bento-card rounded-[24px] p-8 h-full min-h-[300px] flex flex-col md:flex-row justify-between gap-6 overflow-hidden transition-all duration-300"
+            >
+              {/* Ambient background corner glow */}
+              <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-gradient-to-br from-[#A78BFA]/10 to-transparent blur-[50px] opacity-20 pointer-events-none group-hover:opacity-35 transition-opacity duration-300 z-0" />
               
               {/* Text side */}
               <div className="flex flex-col justify-between flex-1 relative z-10">
