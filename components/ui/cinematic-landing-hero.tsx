@@ -305,9 +305,21 @@ export function CinematicHero({
   const cardRef      = useRef<HTMLDivElement>(null);
   const phoneRef     = useRef<HTMLDivElement>(null);
   const raf          = useRef(0);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   /* GSAP Combined Intro & Mouse Spotlight Animations */
   useEffect(() => {
+    if (window.innerWidth < 1024) return;
+
     const onMove = (e: MouseEvent) => {
       if (window.scrollY > window.innerHeight * 2) return;
       cancelAnimationFrame(raf.current);
@@ -414,6 +426,209 @@ export function CinematicHero({
       ctx?.revert(); 
     };
   }, [metricValue]);
+
+  if (isMobile) {
+    return (
+      <div
+        id={id}
+        className={cn(
+          "relative w-full min-h-screen py-24 px-4 sm:px-6 flex flex-col items-center justify-start font-sans antialiased",
+          theme === "light" ? "bg-[#f4f5f7] light-theme text-[#121316]" : "bg-[#03050d] dark-theme text-white",
+          className
+        )}
+        style={style}
+      >
+        <style dangerouslySetInnerHTML={{ __html: S }} />
+        <div className="c-noise" aria-hidden />
+
+        {/* Aurora glow background */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden>
+          <div className="absolute top-[10%] left-[10%] w-[80vw] h-[80vw] rounded-full"
+            style={{ background: "radial-gradient(ellipse,rgba(99,102,241,0.15) 0%,transparent 70%)", filter: "blur(60px)" }} />
+        </div>
+
+        {/* 1. INTRO HEADER */}
+        <div className="relative z-10 w-full max-w-xl text-center mb-12 flex flex-col items-center">
+          {/* eyebrow */}
+          <div className="c-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 border border-indigo-500/10 bg-indigo-500/5 backdrop-blur-md">
+            <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
+              <span className="c-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-indigo-400" />
+            </span>
+            <span className="text-[10px] text-indigo-300 tracking-[0.1em] uppercase font-bold">
+              Coming Soon · Kollam–TVM Corridor
+            </span>
+          </div>
+
+          {/* headline */}
+          <h1 className="text-3d-matte text-3xl sm:text-4xl font-black tracking-[-0.03em] leading-[1.15] mb-4">
+            {tagline1} <span className="text-silver-matte">{tagline2}</span>
+          </h1>
+
+          {/* subtitle */}
+          <p className="text-white/45 text-xs sm:text-sm max-w-sm leading-relaxed font-light mb-6">
+            Real-time tracking for commuters · ₹3,500/month for bus owners
+          </p>
+
+          {/* stats pills */}
+          <div className="flex flex-wrap justify-center gap-2 max-w-md w-full">
+            {[
+              { v: String(metricValue), l: metricLabel },
+              { v: "Kollam-TVM", l: "First corridor" },
+              { v: "4 s", l: "GPS refresh" },
+              { v: "₹0", l: "Self-funded" },
+            ].map(s => (
+              <div key={s.l} className="c-pill px-3 py-1.5 rounded-full flex items-center gap-2 border border-indigo-500/10 bg-indigo-500/5 backdrop-blur-md">
+                <span className="text-[11px] font-bold text-indigo-300">{s.v}</span>
+                <span className="text-[9px] text-white/35 font-medium whitespace-nowrap">{s.l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 2. THE CENTRAL INTERACTIVE PREVIEW CARD */}
+        <div className="relative z-10 w-full max-w-md c-card rounded-[24px] p-5 sm:p-6 mb-12 flex flex-col gap-6">
+          <div className="c-spotlight" aria-hidden />
+
+          {/* Watermark brand name */}
+          <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none overflow-hidden opacity-30" aria-hidden>
+            <span className="font-black tracking-[-0.06em] select-none text-[5rem] text-white/5">
+              {brandName}.
+            </span>
+          </div>
+
+          {/* Content Wrapper */}
+          <div className="relative z-10 flex flex-col gap-6">
+            {/* Phone screen on top for mobile visually */}
+            <div className="flex justify-center">
+              <div className="c-phone rounded-[2.5rem] relative scale-[0.95] sm:scale-100 flex-shrink-0">
+                {/* Dynamic Island */}
+                <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[90px] h-[24px] bg-black rounded-full z-40 flex items-center justify-end px-3">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="c-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  </span>
+                </div>
+
+                {/* Map screen */}
+                <div className="absolute inset-[6px] rounded-[2.2rem] overflow-hidden text-white bg-[#070913]">
+                  {/* Map SVG */}
+                  <svg className="absolute inset-0 w-full h-full opacity-60" viewBox="0 0 260 520" fill="none">
+                    <path d="M0 60h260M0 120h260M0 180h260M0 240h260M0 300h260M0 360h260M0 420h260M0 480h260" stroke="rgba(255,255,255,0.015)" strokeWidth="1" />
+                    <path d="M-10 100 C 60 120, 40 180, 80 210 C 120 230, 90 280, 140 320 Z" fill="#0c1d3a" opacity="0.45" />
+                    <path d="M 120 520 C 120 400, 70 300, 150 200 C 230 100, 140 40, 140 0" stroke="rgba(255,255,255,0.06)" strokeWidth="7" />
+                    <path d="M 120 520 C 120 400, 70 300, 150 200 C 230 100, 140 40, 140 0" stroke="#16223F" strokeWidth="5" />
+                    <path d="M 120 520 C 120 400, 70 300, 150 200 C 230 100, 140 40, 140 0" stroke="#0A84FF" strokeWidth="3" strokeDasharray="8 6" className="c-route" />
+                    <circle cx="150" cy="200" r="3.5" fill="#0A84FF" stroke="#070913" strokeWidth="1" />
+                  </svg>
+                  
+                  {/* Floating User Location Pin */}
+                  <div className="absolute top-[200px] left-[150px] -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                    <span className="relative flex h-8 w-8">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0A84FF] opacity-40" />
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#0A84FF] border-2 border-white" />
+                    </span>
+                  </div>
+
+                  {/* Floating Bus Marker */}
+                  <div className="absolute top-[290px] left-[88px] -translate-x-1/2 -translate-y-1/2">
+                    <span className="relative flex h-8 w-8 items-center justify-center">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34D399] opacity-35" />
+                      <div className="relative w-5 h-5 rounded-full bg-[#34D399] border border-white flex items-center justify-center">
+                        <svg className="w-3 h-3 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <rect x="4" y="3" width="16" height="13" rx="2" />
+                          <circle cx="8" cy="20" r="1.5" />
+                          <circle cx="16" cy="20" r="1.5" />
+                        </svg>
+                      </div>
+                    </span>
+                  </div>
+
+                  {/* App UI */}
+                  <div className="relative w-full h-full pt-10 px-3 pb-4 flex flex-col justify-between z-10 pointer-events-none">
+                    <div className="w-full h-8 rounded-full border border-white/[0.08] bg-[#070913]/90 backdrop-blur-md px-3 flex items-center justify-between shadow-lg">
+                      <span className="text-[8px] font-semibold text-white/95">Kollam – TVM Corridor</span>
+                      <span className="text-[7px] text-[#34D399] font-bold uppercase tracking-wider">{metricValue} LIVE</span>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between bg-emerald-500/15 border border-emerald-500/20 backdrop-blur-md rounded-full px-3 py-1 text-emerald-400">
+                        <span className="text-[8px] font-semibold uppercase">Bus Arriving</span>
+                        <span className="text-[8px] font-bold">2 Mins Away</span>
+                      </div>
+
+                      <div className="c-widget rounded-xl p-2.5 text-left shadow-2xl relative overflow-hidden bg-[#070913]/90">
+                        <h4 className="text-[9px] font-bold text-white leading-tight">KL-15-A-4020</h4>
+                        <span className="text-[7px] text-white/40 font-medium uppercase">Fast Express</span>
+                        <div className="flex justify-between items-center text-[8px] text-white/70 mt-1 mb-1">
+                          <span>Vytila Hub</span>
+                          <span className="text-white font-semibold">350m away</span>
+                        </div>
+                        <div className="w-full h-0.5 bg-white/[0.06] rounded-full overflow-hidden">
+                          <div className="h-full bg-[#0A84FF] w-[85%]" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Description & Stats below */}
+            <div className="text-center">
+              <h3 className="text-white font-bold text-[20px] mb-3 leading-tight">
+                {cardHeading}
+              </h3>
+              <p className="text-white/60 text-[13px] leading-relaxed mb-6 font-normal">
+                {cardDescription}
+              </p>
+
+              {/* 2x2 Stat Cards */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {[
+                  { lbl: "GPS Refresh", val: "4s", desc: "Live interval" },
+                  { lbl: "Cashless Ready", val: "UPI", desc: "ETM & QR ticketing" },
+                  { lbl: "Pilot Buses", val: String(metricValue), desc: "Kollam-TVM" },
+                  { lbl: "Districts Roadmap", val: "14", desc: "Systematic path" }
+                ].map(s => (
+                  <div key={s.lbl} className="p-3 rounded-xl border border-white/[0.08] bg-white/[0.02] text-left">
+                    <div className="text-[14px] font-bold text-white mb-0.5">{s.val}</div>
+                    <div className="text-[10px] font-semibold text-white/80 leading-tight mb-0.5">{s.lbl}</div>
+                    <div className="text-[9px] text-white/40">{s.desc}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA button inside card */}
+              <a
+                href="#partner"
+                onClick={() => playClickSound()}
+                className="inline-flex w-full items-center justify-center bg-gradient-to-r from-[#0A84FF] to-[#0070e3] text-white h-11 font-semibold text-[13px] rounded-lg shadow-lg active:scale-[0.98] transition-transform"
+              >
+                Join the Waitlist
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. SUB CTA BOTTOM BAR */}
+        <div className="relative z-10 w-full max-w-md text-center flex flex-col items-center">
+          <div className="c-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 border border-indigo-500/10">
+            <span className="text-[10px] text-indigo-300 uppercase tracking-widest font-semibold">Early Access · Live Portal</span>
+          </div>
+          <h2 className="text-3xl font-black tracking-tight leading-none mb-3 gt-indigo">{ctaHeading}</h2>
+          <p className="text-white/45 text-xs mb-6 max-w-xs">{ctaDescription}</p>
+          <a
+            href="#partner"
+            onClick={() => playClickSound()}
+            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0A84FF] to-[#0070e3] text-white px-8 h-12 font-semibold text-[13px] rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-transform"
+          >
+            Join the Waitlist
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
