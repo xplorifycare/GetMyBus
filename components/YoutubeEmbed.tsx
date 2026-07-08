@@ -102,19 +102,13 @@ export default function YoutubeEmbed({ theme = "dark" }: { theme?: "dark" | "lig
               </div>
             </button>
           ) : (
-            <div className="absolute inset-0 w-full h-full">
-              <iframe
-                src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&color=white&controls=0&disablekb=1&fs=0&iv_load_policy=3`}
-                title="GetMyBus platform walkthrough"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full border-0"
-              />
-              {/* Mask top title bar & controls YouTube injects */}
-              <div className="absolute top-0 left-0 right-0 h-[72px] bg-gradient-to-b from-black/80 to-transparent pointer-events-none z-10" />
-              {/* Mask bottom bar */}
-              <div className="absolute bottom-0 left-0 right-0 h-[52px] bg-gradient-to-t from-black/80 to-transparent pointer-events-none z-10" />
-            </div>
+            <iframe
+              src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&color=white`}
+              title="GetMyBus platform walkthrough"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full border-0"
+            />
           )}
         </motion.div>
 
