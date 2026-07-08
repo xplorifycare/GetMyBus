@@ -9,8 +9,8 @@ export default function YoutubeEmbed({ theme = "dark" }: { theme?: "dark" | "lig
   const [clicked, setClicked] = useState(false);
   const isLight = theme === "light";
 
-  // YouTube video ID from https://youtu.be/RP4X7_YKyYM
-  const VIDEO_ID = "RP4X7_YKyYM";
+  // YouTube video ID from https://youtu.be/9a0Q9qH97h8
+  const VIDEO_ID = "9a0Q9qH97h8";
   const thumbUrl = `https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`;
 
   return (
