@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Testimonials({ theme = "dark" }: { theme?: "dark" | "light" }) {
   const isLight = theme === "light";
   return (
-    <section className="relative w-full themed-bg py-20 px-6 md:px-12 select-none border-t themed-divider overflow-hidden text-center">
+    <section className={`relative w-full py-20 px-6 md:px-12 select-none border-t themed-divider overflow-hidden text-center ${
+      isLight ? "bg-white" : "bg-[#060810]"
+    }`}>
       {/* Ambient backgrounds */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#0A84FF]/[0.02] rounded-full blur-[100px] pointer-events-none" />
 
