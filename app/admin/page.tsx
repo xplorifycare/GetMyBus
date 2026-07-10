@@ -5,7 +5,6 @@ import Navbar, { Lang } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { playClickSound, playSuccessChime } from "@/components/SoundEffects";
-// @ts-ignore
 import Calculator from "@/components/Calculator";
 
 interface Inquiry {
