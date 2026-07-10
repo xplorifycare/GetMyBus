@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const password = searchParams.get("password");
 
-    const adminPassword = process.env.ADMIN_PASSWORD || "admin123"; // Fallback during local development
+    const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
 
     if (password !== adminPassword) {
       return NextResponse.json(
@@ -19,51 +19,88 @@ export async function GET(request: Request) {
     }
 
     let inquiries = [];
+    let isSupabaseLoaded = false;
 
     // ==========================================
-    // READ FROM VERCEL KV (REDIS) OR LOCAL FILE
+    // READ FROM SUPABASE (POSTGREST HTTP API)
     // ==========================================
-    const kvUrl = process.env.KV_REST_API_URL;
-    const kvToken = process.env.KV_REST_API_TOKEN;
+    const supabaseUrl = process.env.STORAGE_URL || process.env.SUPABASE_URL;
+    const supabaseAnonKey = process.env.STORAGE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+    const supabaseServiceKey = process.env.STORAGE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (kvUrl && kvToken) {
+    if (supabaseUrl && supabaseAnonKey) {
       try {
-        const response = await fetch(kvUrl, {
-          method: "POST",
+        const response = await fetch(`${supabaseUrl}/rest/v1/inquiries?select=*&order=timestamp.desc`, {
+          method: "GET",
           headers: {
-            Authorization: `Bearer ${kvToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(["LRANGE", "inquiries", "0", "-1"]),
+            "apikey": supabaseAnonKey,
+            "Authorization": `Bearer ${supabaseServiceKey || supabaseAnonKey}`,
+            "Content-Type": "application/json"
+          }
         });
 
         if (response.ok) {
-          const data = await response.json();
-          // Vercel KV REST response format for command is in result key: { result: [...] }
-          const rawList = data.result || [];
-          inquiries = rawList.map((item: string) => {
-            try {
-              return JSON.parse(item);
-            } catch {
-              return item;
-            }
-          });
-          console.log("💾 Read inquiries successfully from Vercel KV Redis");
+          inquiries = await response.json();
+          console.log("💾 Read inquiries successfully from Supabase!");
+          isSupabaseLoaded = true;
         } else {
-          console.error("Vercel KV read failed status:", response.status);
+          const errText = await response.text();
+          console.error("Supabase REST load failed status:", response.status, errText);
         }
-      } catch (kvError) {
-        console.error("Vercel KV read error:", kvError);
+      } catch (sbError) {
+        console.error("Supabase REST load error:", sbError);
       }
-    } else {
-      // Local fallback during dev
+    }
+
+    // ==========================================
+    // FALLBACK 1: READ FROM VERCEL KV (REDIS)
+    // ==========================================
+    if (!isSupabaseLoaded) {
+      const kvUrl = process.env.KV_REST_API_URL;
+      const kvToken = process.env.KV_REST_API_TOKEN;
+
+      if (kvUrl && kvToken) {
+        try {
+          const response = await fetch(kvUrl, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${kvToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(["LRANGE", "inquiries", "0", "-1"]),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const rawList = data.result || [];
+            inquiries = rawList.map((item: string) => {
+              try {
+                return JSON.parse(item);
+              } catch {
+                return item;
+              }
+            });
+            console.log("💾 Read inquiries successfully from Vercel KV Redis");
+            isSupabaseLoaded = true; // Flag true to skip local fallback
+          } else {
+            console.error("Vercel KV read failed status:", response.status);
+          }
+        } catch (kvError) {
+          console.error("Vercel KV read error:", kvError);
+        }
+      }
+    }
+
+    // ==========================================
+    // FALLBACK 2: READ FROM LOCAL FILE
+    // ==========================================
+    if (!isSupabaseLoaded) {
       try {
         const dbPath = path.join(process.cwd(), "inquiries.json");
         if (fs.existsSync(dbPath)) {
           const fileContent = fs.readFileSync(dbPath, "utf8");
           inquiries = JSON.parse(fileContent || "[]");
-          // Sort newest first since LPUSH prepends them in Redis
-          inquiries.reverse();
+          inquiries.reverse(); // Newest first
         }
       } catch (fsError) {
         console.error("Local database read error:", fsError);

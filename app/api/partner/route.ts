@@ -35,51 +35,87 @@ export async function POST(request: Request) {
     };
 
     // ==========================================
-    // CHANNEL 1: SAVE TO VERCEL KV (REDIS) OR LOCAL FILE
+    // CHANNEL 1: SAVE TO SUPABASE (POSTGREST HTTP API)
     // ==========================================
-    const kvUrl = process.env.KV_REST_API_URL;
-    const kvToken = process.env.KV_REST_API_TOKEN;
+    const supabaseUrl = process.env.STORAGE_URL || process.env.SUPABASE_URL;
+    const supabaseAnonKey = process.env.STORAGE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+    const supabaseServiceKey = process.env.STORAGE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (kvUrl && kvToken) {
+    let isSupabaseSaved = false;
+
+    if (supabaseUrl && supabaseAnonKey) {
       try {
-        const response = await fetch(kvUrl, {
+        const response = await fetch(`${supabaseUrl}/rest/v1/inquiries`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${kvToken}`,
+            "apikey": supabaseAnonKey,
+            "Authorization": `Bearer ${supabaseServiceKey || supabaseAnonKey}`,
             "Content-Type": "application/json",
+            "Prefer": "return=minimal"
           },
-          body: JSON.stringify(["LPUSH", "inquiries", JSON.stringify(newInquiry)]),
+          body: JSON.stringify(newInquiry)
         });
 
         if (response.ok) {
-          console.log("💾 Inquiry saved persistently to Vercel KV Redis");
+          console.log("💾 Inquiry saved persistently to Supabase!");
+          isSupabaseSaved = true;
         } else {
-          console.error("Vercel KV save failed status:", response.status);
+          const errText = await response.text();
+          console.error("Supabase REST save failed status:", response.status, errText);
         }
-      } catch (kvError) {
-        console.error("Vercel KV save error:", kvError);
-      }
-    } else {
-      // Local fallback (works during dev)
-      try {
-        const dbPath = path.join(process.cwd(), "inquiries.json");
-        let inquiries = [];
-
-        if (fs.existsSync(dbPath)) {
-          const fileContent = fs.readFileSync(dbPath, "utf8");
-          inquiries = JSON.parse(fileContent || "[]");
-        }
-
-        inquiries.push(newInquiry);
-        fs.writeFileSync(dbPath, JSON.stringify(inquiries, null, 2), "utf8");
-        console.log("📁 Inquiry saved locally to inquiries.json");
-      } catch (fsError) {
-        console.error("Local database save error:", fsError);
+      } catch (sbError) {
+        console.error("Supabase REST save error:", sbError);
       }
     }
 
     // ==========================================
-    // CHANNEL 2: TELEGRAM BOT NOTIFICATION
+    // CHANNEL 2: VERCEL KV (REDIS) OR LOCAL FILE FALLBACK
+    // ==========================================
+    if (!isSupabaseSaved) {
+      const kvUrl = process.env.KV_REST_API_URL;
+      const kvToken = process.env.KV_REST_API_TOKEN;
+
+      if (kvUrl && kvToken) {
+        try {
+          const response = await fetch(kvUrl, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${kvToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(["LPUSH", "inquiries", JSON.stringify(newInquiry)]),
+          });
+
+          if (response.ok) {
+            console.log("💾 Inquiry saved persistently to Vercel KV Redis");
+          } else {
+            console.error("Vercel KV save failed status:", response.status);
+          }
+        } catch (kvError) {
+          console.error("Vercel KV save error:", kvError);
+        }
+      } else {
+        // Local fallback (works during dev)
+        try {
+          const dbPath = path.join(process.cwd(), "inquiries.json");
+          let inquiries = [];
+
+          if (fs.existsSync(dbPath)) {
+            const fileContent = fs.readFileSync(dbPath, "utf8");
+            inquiries = JSON.parse(fileContent || "[]");
+          }
+
+          inquiries.push(newInquiry);
+          fs.writeFileSync(dbPath, JSON.stringify(inquiries, null, 2), "utf8");
+          console.log("📁 Inquiry saved locally to inquiries.json");
+        } catch (fsError) {
+          console.error("Local database save error:", fsError);
+        }
+      }
+    }
+
+    // ==========================================
+    // CHANNEL 3: TELEGRAM BOT NOTIFICATION
     // ==========================================
     const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
     const telegramChatId = process.env.TELEGRAM_CHAT_ID;
@@ -108,7 +144,7 @@ export async function POST(request: Request) {
     }
 
     // ==========================================
-    // CHANNEL 3: SLACK WEBHOOK NOTIFICATION
+    // CHANNEL 4: SLACK WEBHOOK NOTIFICATION
     // ==========================================
     const slackUrl = process.env.SLACK_WEBHOOK_URL;
     if (slackUrl) {
@@ -127,7 +163,7 @@ export async function POST(request: Request) {
     }
 
     // ==========================================
-    // CHANNEL 4: DISCORD WEBHOOK NOTIFICATION
+    // CHANNEL 5: DISCORD WEBHOOK NOTIFICATION
     // ==========================================
     const discordUrl = process.env.DISCORD_WEBHOOK_URL;
     if (discordUrl) {
@@ -161,7 +197,7 @@ export async function POST(request: Request) {
     }
 
     // ==========================================
-    // CHANNEL 5: EMAIL DELIVERY VIA WEB3FORMS
+    // CHANNEL 6: EMAIL DELIVERY VIA WEB3FORMS
     // ==========================================
     const web3formsKey = process.env.WEB3FORMS_ACCESS_KEY;
     if (web3formsKey) {
