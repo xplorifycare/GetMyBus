@@ -664,11 +664,9 @@ export function CinematicHero({
         </div>
 
         {/* headline */}
-        <h1 className="ht1 text-3d-matte text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[1.05] pb-1 mb-1">
-          {tagline1}
-        </h1>
-        <h1 className="ht2 text-silver-matte text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[1.05] pb-1 mb-6">
-          {tagline2}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[1.05] pb-1 mb-6">
+          <span className="ht1 text-3d-matte block mb-1">{tagline1}</span>
+          <span className="ht2 text-silver-matte block">{tagline2}</span>
         </h1>
 
         {/* sub */}

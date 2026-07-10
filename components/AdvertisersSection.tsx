@@ -127,9 +127,9 @@ export default function AdvertisersSection({
             For Brands & Advertisers
           </p>
           <h2 className="text-[clamp(30px,4.5vw,56px)] font-normal themed-text tracking-tight leading-[1.08] mb-5">
-            300 captive passengers.
+            Route-Targeted In-Bus Advertising
             <br />
-            <span className="text-shimmer">One corridor at a time.</span>
+            <span className="text-shimmer">for Kerala Brands</span>
           </h2>
           <p className="text-[16px] themed-text-muted leading-relaxed">
             Kerala&apos;s private bus network carries over{" "}
@@ -246,7 +246,7 @@ export default function AdvertisersSection({
                 onClick={onBookClick}
                 className="h-12 px-8 rounded-2xl bg-[#0A84FF] text-white font-medium text-[14px] tracking-tight hover:bg-[#0070e3] active:scale-[0.98] transition-all duration-200 shadow-[0_4px_24px_rgba(10,132,255,0.3)] flex-shrink-0"
               >
-                Book Ad Slots →
+                Reserve Early Access →
               </button>
             </div>
           </motion.div>

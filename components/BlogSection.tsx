@@ -1,57 +1,10 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { playClickSound, playHoverSound } from "@/components/SoundEffects";
-
-interface BlogItem {
-  author: string;
-  headline: string;
-  snippet: string;
-  date: string;
-  readTime: string;
-  tag: string;
-  color: string;
-}
-
-const blogArticles: BlogItem[] = [
-  {
-    author: "Transit Tech",
-    headline: "Digitising Private Fleet: The Architecture Behind Live GPS Tracking",
-    snippet: "How we deploy low-latency GPS telemetry and smart ETM handhelds to provide real-time bus tracking and cashless UPI payments across Kerala's highways.",
-    date: "July 04, 2026",
-    readTime: "5 min read",
-    tag: "Engineering",
-    color: "#0A84FF",
-  },
-  {
-    author: "Fleet Operations",
-    headline: "Unlocking Passive Revenue: How Onboard Screens Pay Bus Owners ₹3,500/Month",
-    snippet: "A deep dive into our transit ad-tech model. Learn how private bus operators are countering fuel inflation using automated digital signage without subsidies.",
-    date: "June 30, 2026",
-    readTime: "4 min read",
-    tag: "Monetisation",
-    color: "#34D399",
-  },
-  {
-    author: "Ad-Tech Division",
-    headline: "Hyper-Local Reach: Why Transit Screen Ads Outperform Static Billboards",
-    snippet: "How brands are using route-targeted, geofenced advertising on GetMyBus onboard displays to connect with passengers along the busy Kollam–Trivandrum corridor.",
-    date: "June 25, 2026",
-    readTime: "6 min read",
-    tag: "Marketing",
-    color: "#A78BFA",
-  },
-  {
-    author: "Community Team",
-    headline: "Commuter Safety & Convenience: Cashless Ticketing in Kerala",
-    snippet: "From boarding delays to secure transactions, see how tap-to-go smart cards and UPI QR integration are making public transit safer and more accessible.",
-    date: "June 18, 2026",
-    readTime: "3 min read",
-    tag: "Product News",
-    color: "#FFB300",
-  },
-];
+import { blogArticles } from "@/lib/blogData";
 
 export default function BlogSection({ theme = "dark" }: { theme?: "dark" | "light" }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -150,8 +103,8 @@ export default function BlogSection({ theme = "dark" }: { theme?: "dark" | "ligh
               <div className="flex items-center justify-between pt-2 border-t border-white/[0.04] mt-auto">
                 <span className="text-[11px] text-white/30">{article.date}</span>
                 
-                <a
-                  href="#partner"
+                <Link
+                  href={`/blog/${article.slug}`}
                   onClick={() => playClickSound()}
                   className="text-[12px] font-medium text-[#0A84FF] hover:text-[#0070e3] flex items-center gap-1 transition-colors group/link"
                 >
@@ -162,7 +115,7 @@ export default function BlogSection({ theme = "dark" }: { theme?: "dark" | "ligh
                   >
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </motion.div>
           ))}
@@ -170,25 +123,26 @@ export default function BlogSection({ theme = "dark" }: { theme?: "dark" | "ligh
 
         {/* Blog CTA */}
         <div className="flex justify-center">
-          <motion.a
-            href="#partner"
-            onClick={() => playClickSound()}
-            onMouseEnter={() => playHoverSound(0.01)}
-            initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className={`inline-flex items-center gap-2 text-[13px] font-medium px-6 py-3 rounded-full border transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] ${
-              isLight
-                ? "border-slate-300 hover:border-slate-400 text-slate-700 hover:bg-slate-50"
-                : "border-white/[0.1] hover:border-white/[0.18] text-white/70 hover:bg-white/[0.04]"
-            }`}
-          >
-            <svg className="w-4 h-4 text-[#0A84FF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-            </svg>
-            Visit Our Blog Portal
-          </motion.a>
+          <Link href="/blog" passHref legacyBehavior>
+            <motion.a
+              onClick={() => playClickSound()}
+              onMouseEnter={() => playHoverSound(0.01)}
+              initial={{ opacity: 0, y: 15 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className={`inline-flex items-center gap-2 text-[13px] font-medium px-6 py-3 rounded-full border transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] ${
+                isLight
+                  ? "border-slate-300 hover:border-slate-400 text-slate-700 hover:bg-slate-50"
+                  : "border-white/[0.1] hover:border-white/[0.18] text-white/70 hover:bg-white/[0.04]"
+              }`}
+            >
+              <svg className="w-4 h-4 text-[#0A84FF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              Visit Our Blog Portal
+            </motion.a>
+          </Link>
         </div>
 
       </div>

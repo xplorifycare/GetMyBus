@@ -111,7 +111,7 @@ export default function Navbar({
         >
           <Image
             src={theme === "dark" ? "/logo_white.png" : "/logo.png"}
-            alt="GetMyBus"
+            alt="GetMyBus - Kerala's Private Bus Live GPS Tracking & Ad Network Logo"
             width={140}
             height={40}
             priority

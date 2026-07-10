@@ -21,7 +21,16 @@ export default function CityMarquee() {
   const doubled = [...items, ...items];
 
   return (
-    <section id="cities" className="w-full themed-bg py-6 border-y themed-divider overflow-hidden select-none">
+    <section id="cities" className="w-full themed-bg py-8 border-y themed-divider overflow-hidden select-none">
+      <div className="max-w-7xl mx-auto px-6 mb-6 text-center">
+        <span className="text-[10px] font-semibold text-[#0A84FF] tracking-[0.15em] uppercase mb-1.5 block">
+          Market Capacity
+        </span>
+        <h3 className="text-[13px] font-light themed-text-muted">
+          Kerala&apos;s private bus fleet — the market we&apos;re digitising
+        </h3>
+      </div>
+
       <div className="animate-marquee">
         {doubled.map((item, idx) => (
           <div

@@ -23,7 +23,7 @@ export default function OwnersSection({
         </svg>
       ),
       title: "Extra Passive Income",
-      desc: "Earn ₹2,500–₹3,500 every month passively from brands advertising on your in-bus smart screens — guaranteed monthly payout.",
+      desc: "Earn ₹2,500–₹3,500 every month passively from brands advertising on your in-bus smart screens — monthly revenue share.",
       color: "#34D399",
     },
     {

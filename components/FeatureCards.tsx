@@ -241,7 +241,7 @@ export function FeatureCards({ theme = "dark" }: { theme?: "dark" | "light" }) {
             Platform Capabilities
           </p>
           <h2 className="text-[clamp(28px,4vw,52px)] font-normal themed-text tracking-tight leading-[1.1]">
-            The complete transit network platform
+            Live GPS Bus Tracking for Kerala Commuters
           </h2>
         </motion.div>
 
