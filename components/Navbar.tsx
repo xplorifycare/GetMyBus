@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { playClickSound, playHoverSound, playSuccessChime } from "@/components/SoundEffects";
 
@@ -18,6 +20,9 @@ export default function Navbar({
   theme: "dark" | "light"; 
   setTheme: (t: "dark" | "light") => void; 
 }) {
+  const pathname = usePathname();
+  const isBlogPage = pathname ? pathname.startsWith("/blog") : false;
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
@@ -74,10 +79,11 @@ export default function Navbar({
   }, []);
 
   const navLinks = [
-    { label: "Track Bus", href: "#commuters" },
-    { label: "Bus Owners", href: "#owners" },
-    { label: "Advertise", href: "#advertisers" },
-    { label: "Contact", href: "#partner" },
+    { label: "Track Bus", href: isBlogPage ? "/#commuters" : "#commuters" },
+    { label: "Bus Owners", href: isBlogPage ? "/#owners" : "#owners" },
+    { label: "Advertise", href: isBlogPage ? "/#advertisers" : "#advertisers" },
+    { label: "Contact", href: isBlogPage ? "/#partner" : "#partner" },
+    { label: "Blog", href: "/blog" },
   ];
 
   return (
@@ -100,14 +106,17 @@ export default function Navbar({
           style={{ width: `${scrollProgress * 100}%` }}
         />
 
-        {/* Left Logo */}
-        <button
-          className="flex items-center select-none cursor-pointer focus:outline-none"
-          onClick={() => {
+        <Link
+          href="/"
+          onClick={(e) => {
             playClickSound();
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            if (!isBlogPage) {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
           }}
-          aria-label="GetMyBus — back to top"
+          className="flex items-center select-none cursor-pointer focus:outline-none"
+          aria-label="GetMyBus — back to homepage"
         >
           <Image
             src={theme === "dark" ? "/logo_white.png" : "/logo.png"}
@@ -117,12 +126,12 @@ export default function Navbar({
             priority
             className="object-contain h-[36px] w-auto transition-all duration-300"
           />
-        </button>
+        </Link>
 
         {/* Center Nav Links — Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
               href={link.href}
               onClick={() => playClickSound()}
@@ -132,7 +141,7 @@ export default function Navbar({
               }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -247,18 +256,18 @@ export default function Navbar({
           </div>
 
 
-          <a
+          <Link
             ref={btnRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={() => playClickSound()}
             onMouseEnter={() => playHoverSound(0.01)}
             style={{ transform: `translate3d(${coords.x}px, ${coords.y}px, 0)` }}
-            href="#partner"
+            href={isBlogPage ? "/#partner" : "#partner"}
             className="hidden md:inline-flex items-center justify-center bg-[#0A84FF] text-white px-4 h-9 font-medium text-[13px] rounded-[8px] transition-all duration-200 ease-out active:scale-[0.96] hover:bg-[#0070e3] hover:shadow-[0_4px_12px_rgba(10,132,255,0.25)] active:shadow-none select-none"
           >
             Join Waitlist
-          </a>
+          </Link>
 
           {/* Hamburger — Mobile */}
           <button
@@ -305,7 +314,7 @@ export default function Navbar({
             }`}
           >
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => {
@@ -320,7 +329,7 @@ export default function Navbar({
                 }`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
 
             {/* Mobile Language Toggle — Allows mobile view users to translate pages */}
@@ -362,8 +371,8 @@ export default function Navbar({
               </div>
             </div>
 
-            <a
-              href="#download"
+            <Link
+              href={isBlogPage ? "/#download" : "#download"}
               onClick={() => {
                 playClickSound();
                 setMenuOpen(false);
@@ -372,7 +381,7 @@ export default function Navbar({
               className="mt-4 flex items-center justify-center bg-[#0A84FF] text-white h-11 font-medium text-[14px] rounded-[10px] transition-all duration-200 active:scale-[0.97] hover:bg-[#0070e3]"
             >
               Download App
-            </a>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

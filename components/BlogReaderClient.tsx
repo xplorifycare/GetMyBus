@@ -80,17 +80,26 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
       <div className="relative z-10 max-w-3xl mx-auto pt-32 pb-24 px-6">
         
         {/* Breadcrumb navigation */}
-        <div className="mb-10 flex items-center gap-2 text-xs">
+        <div className="mb-10 flex items-center gap-2 text-[12px] font-normal leading-none select-none">
+          <Link
+            href="/"
+            onClick={() => playClickSound()}
+            onMouseEnter={() => playHoverSound(0.005)}
+            className={`transition-colors hover:text-[#0A84FF] ${isLight ? "text-slate-500" : "text-white/40"}`}
+          >
+            Home
+          </Link>
+          <span className={isLight ? "text-slate-300" : "text-white/20"}>/</span>
           <Link
             href="/blog"
             onClick={() => playClickSound()}
             onMouseEnter={() => playHoverSound(0.005)}
-            className="text-[#0A84FF] hover:underline"
+            className={`transition-colors hover:text-[#0A84FF] ${isLight ? "text-slate-500" : "text-white/40"}`}
           >
             Blog
           </Link>
-          <span className={isLight ? "text-slate-400" : "text-white/30"}>/</span>
-          <span className={`line-clamp-1 ${isLight ? "text-slate-500" : "text-white/50"}`}>
+          <span className={isLight ? "text-slate-300" : "text-white/20"}>/</span>
+          <span className={`line-clamp-1 font-medium ${isLight ? "text-slate-800" : "text-white/85"}`}>
             {article.headline}
           </span>
         </div>
@@ -158,7 +167,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
               Join waitlist
             </Link>
             <Link
-              href="/blog"
+              href="/"
               onClick={() => playClickSound()}
               className={`inline-flex items-center justify-center px-6 h-10 font-semibold text-[12px] rounded-lg border transition-all ${
                 isLight
@@ -166,7 +175,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
                   : "border-white/[0.1] text-white/70 hover:bg-white/[0.04]"
               }`}
             >
-              Back to Blog
+              Back to Home
             </Link>
           </div>
         </div>
