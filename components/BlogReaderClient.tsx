@@ -11,7 +11,36 @@ import { playClickSound, playHoverSound } from "@/components/SoundEffects";
 export default function BlogReaderClient({ article }: { article: BlogArticle }) {
   const [lang, setLang] = useState<Lang>("EN");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const isLight = theme === "light";  const S_READER = `
+  const isLight = theme === "light";
+  
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied">("idle");
+
+  const handleShare = async () => {
+    const shareData = {
+      title: `${lang === "ML" ? article.headlineMl : article.headline} | GetMyBus Blog`,
+      text: lang === "ML" ? article.snippetMl : article.snippet,
+      url: window.location.href,
+    };
+    
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log("Error sharing:", err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setShareStatus("copied");
+        playClickSound();
+        setTimeout(() => setShareStatus("idle"), 2000);
+      } catch (err) {
+        console.log("Clipboard error:", err);
+      }
+    }
+  };
+
+  const S_READER = `
     .c-noise {
       position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.03;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -128,21 +157,45 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
           </h1>
 
           {/* Author & Date info */}
-          <div className="flex items-center gap-3 py-4 border-y border-white/[0.04] themed-divider-vertical">
-            <div className="w-8 h-8 rounded-full bg-[#0A84FF]/10 border border-[#0A84FF]/25 text-[#0A84FF] font-bold text-[11px] flex items-center justify-center select-none uppercase">
-              GT
+          <div className="flex items-center justify-between py-4 border-y border-white/[0.04] themed-divider-vertical">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#0A84FF]/10 border border-[#0A84FF]/25 text-[#0A84FF] font-bold text-[11px] flex items-center justify-center select-none uppercase">
+                GT
+              </div>
+              <div className="flex flex-col text-left">
+                <span className={`text-[12px] font-semibold ${isLight ? "text-slate-800" : "text-white/80"}`}>
+                  {article.author}
+                </span>
+                <span className={`text-[10px] ${isLight ? "text-slate-400" : "text-white/30"}`}>
+                  {lang === "ML" 
+                    ? `പ്രസിദ്ധീകരിച്ചത്: ${article.dateMl} · GetMyBus` 
+                    : `Published on ${article.date} · GetMyBus Insights`
+                  }
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col text-left">
-              <span className={`text-[12px] font-semibold ${isLight ? "text-slate-800" : "text-white/80"}`}>
-                {article.author}
-              </span>
-              <span className={`text-[10px] ${isLight ? "text-slate-400" : "text-white/30"}`}>
-                {lang === "ML" 
-                  ? `പ്രസിദ്ധീകരിച്ചത്: ${article.dateMl} · GetMyBus` 
-                  : `Published on ${article.date} · GetMyBus Insights`
+
+            {/* Localized Share Button */}
+            <button
+              onClick={handleShare}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-[12px] font-semibold transition-all duration-200 ${
+                isLight 
+                  ? "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100" 
+                  : "border-white/[0.06] bg-white/[0.03] text-white/80 hover:bg-white/[0.08]"
+              }`}
+            >
+              <svg className="w-3.5 h-3.5 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                <polyline points="16 6 12 2 8 6" />
+                <line x1="12" y1="2" x2="12" y2="15" />
+              </svg>
+              <span>
+                {shareStatus === "copied"
+                  ? (lang === "ML" ? "ലിങ്ക് കോപ്പി ചെയ്തു!" : "Link Copied!")
+                  : (lang === "ML" ? "പങ്കുവെക്കുക" : "Share")
                 }
               </span>
-            </div>
+            </button>
           </div>
         </header>
 

@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: [article.author],
       images: [
         {
-          url: "https://www.getmybus.in/logo_white.png",
+          url: `https://www.getmybus.in/blog/${article.slug}/opengraph-image`,
           width: 1200,
           height: 630,
           alt: article.headline,
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: `${article.seoTitle} | GetMyBus Blog`,
       description: article.snippet,
-      images: ["https://www.getmybus.in/logo_white.png"],
+      images: [`https://www.getmybus.in/blog/${article.slug}/opengraph-image`],
     },
   };
 }
@@ -71,7 +71,7 @@ export default function BlogReaderPage({ params }: Props) {
     "@type": "Article",
     "headline": article.headline,
     "description": article.snippet,
-    "image": "https://www.getmybus.in/logo_white.png",
+    "image": `https://www.getmybus.in/blog/${article.slug}/opengraph-image`,
     "datePublished": new Date(article.date).toISOString().split("T")[0],
     "dateModified": new Date(article.date).toISOString().split("T")[0],
     "author": {
