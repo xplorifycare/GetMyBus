@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import HeroWave from "@/components/ui/dynamic-wave-canvas-background";
 
 // ── Animated phone mockup with live bus + ETA ────────────────────────────
@@ -147,42 +148,13 @@ function AnimatedQR({ theme }: { theme: "dark" | "light" }) {
           />
 
           {/* High Fidelity Vector QR Code */}
-          <svg
-            className={`w-full h-full ${isLight ? "text-slate-900" : "text-white"}`}
-            viewBox="0 0 100 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Top-Left Finder */}
-            <rect x="6" y="6" width="22" height="22" rx="4.5" stroke="currentColor" strokeWidth="2.2" fill="none" />
-            <rect x="11.5" y="11.5" width="11" height="11" rx="2" fill="currentColor" />
-
-            {/* Top-Right Finder */}
-            <rect x="72" y="6" width="22" height="22" rx="4.5" stroke="currentColor" strokeWidth="2.2" fill="none" />
-            <rect x="77.5" y="11.5" width="11" height="11" rx="2" fill="currentColor" />
-
-            {/* Bottom-Left Finder */}
-            <rect x="6" y="72" width="22" height="22" rx="4.5" stroke="currentColor" strokeWidth="2.2" fill="none" />
-            <rect x="11.5" y="77.5" width="11" height="11" rx="2" fill="currentColor" />
-
-            {/* Alignment pattern (Bottom-Right) */}
-            <rect x="74" y="74" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
-            <rect x="77.5" y="77.5" width="3" height="3" rx="0.8" fill="currentColor" />
-
-            {/* Realistic Data Modules (Path clusters) */}
-            <path
-              d="M34 6h4v4h-4z M44 6h8v4h-8z M58 6h8v4h-8z M34 14h4v8h-4z M44 14h8v4h-8z M58 14h8v4h-8z M44 22h4v4h-4z M52 22h12v4h-12z M34 30h12v4h-12z M56 30h8v4h-8z M6 36h12v4h-12z M22 36h4v4h-4z M66 36h16v4h-16z M14 44h4v12h-4z M22 44h8v4h-8z M34 44h8v4h-8z M46 44h4v4h-4z M54 44h8v4h-8z M66 44h4v12h-4z M74 44h18v4h-18z M26 52h4v8h-4z M34 52h8v4h-8z M46 52h12v4h-12z M74 52h4v4h-4z M82 52h8v4h-8z M6 60h4v4h-4z M18 60h4v4h-4z M34 60h12v4h-12z M50 60h4v12h-4z M58 60h8v4h-8z M70 60h4v4h-4z M82 60h8v4h-8z M34 68h4v4h-4z M42 68h4v12h-4z M58 68h8v4h-8z M70 68h12v4h-12z M86 68h4v4h-4z M34 76h4v4h-4z M46 76h8v4h-8z M66 76h4v4h-4z M34 84h12v4h-12z M50 84h4v4h-4z M58 84h12v4h-12z M74 84h8v4h-8z M86 84h4v4h-4z M34 92h8v4h-8z M46 92h4v4h-4z M58 92h16v4h-16z M78 92h12v4h-12z"
-              fill="currentColor"
-            />
-
-            {/* Custom Brand Emblem in QR Center (Skeuomorphic badge with mini bus icon) */}
-            <circle cx="50" cy="50" r="11" fill={isLight ? "#ffffff" : "#090b11"} />
-            <circle cx="50" cy="50" r="9" fill="#0A84FF" />
-            {/* Minimalist white bus */}
-            <path d="M46 45.5 h8 v5 a1 1 0 0 1 -1 1 h-6 a1 1 0 0 1 -1 -1 z" fill="white" />
-            <circle cx="48" cy="52.5" r="0.8" fill="white" />
-            <circle cx="52" cy="52.5" r="0.8" fill="white" />
-          </svg>
+          <Image
+            src="/gmb_qr.png"
+            alt="Scan to Join GetMyBus"
+            width={140}
+            height={140}
+            className="w-full h-full object-contain rounded-lg relative z-10"
+          />
         </div>
       </div>
 
