@@ -136,7 +136,7 @@ export default function Navbar({
             onClick={() => playClickSound()}
             onMouseEnter={() => playHoverSound(0.01)}
             className={`text-[13px] font-normal transition-colors duration-200 hover:text-[#0A84FF] ${
-              theme === "light" ? "text-black/70 hover:text-[#0A84FF]" : "text-white/70 hover:text-[#0A84FF]"
+              theme === "light" ? "text-black/80 hover:text-[#0A84FF]" : "text-white/80 hover:text-[#0A84FF]"
             }`}
           >
             {link.label}
@@ -155,8 +155,8 @@ export default function Navbar({
           onMouseEnter={() => playHoverSound(0.01)}
           className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border transition-all duration-200 ${
             isScrolled || theme === "light"
-              ? "border-black/10 bg-black/5 text-black/55 hover:text-black hover:bg-black/10" 
-              : "border-white/10 bg-white/5 text-white/55 hover:text-white hover:bg-white/10"
+              ? "border-black/10 bg-black/5 text-black/75 hover:text-black hover:bg-black/10" 
+              : "border-white/10 bg-white/5 text-white/75 hover:text-white hover:bg-white/10"
           }`}
           title={`Switch to ${theme === "dark" ? "Light" : "Dark"} theme`}
         >
@@ -191,12 +191,12 @@ export default function Navbar({
           onMouseEnter={() => playHoverSound(0.01)}
           className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border transition-all duration-200 ${
             !mounted 
-              ? "border-white/10 bg-white/5 text-white/55" 
+              ? "border-white/10 bg-white/5 text-white/75" 
               : soundOn 
                 ? "border-[#0A84FF]/30 bg-[#0A84FF]/10 text-[#0A84FF]"
                 : isScrolled || theme === "light"
-                  ? "border-black/10 bg-black/5 text-black/55 hover:text-black hover:bg-black/10" 
-                  : "border-white/10 bg-white/5 text-white/55 hover:text-white hover:bg-white/10"
+                  ? "border-black/10 bg-black/5 text-black/75 hover:text-black hover:bg-black/10" 
+                  : "border-white/10 bg-white/5 text-white/75 hover:text-white hover:bg-white/10"
           }`}
           title={!mounted ? "Interactive sounds loading" : soundOn ? "Mute interactive sounds" : "Enable immersive interactive sounds"}
         >
@@ -233,7 +233,7 @@ export default function Navbar({
             onClick={() => { setLang("EN"); playClickSound(); }}
             onMouseEnter={() => playHoverSound(0.01)}
             className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors duration-300 relative z-10 ${
-              lang === "EN" ? "text-white" : isScrolled || theme === "light" ? "text-black/55 hover:text-black/80" : "text-white/60 hover:text-white/80"
+              lang === "EN" ? "text-white" : isScrolled || theme === "light" ? "text-black/75 hover:text-black/80" : "text-white/75 hover:text-white/85"
             }`}
           >
             {lang === "EN" && (
