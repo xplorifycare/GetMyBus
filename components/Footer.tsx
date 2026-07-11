@@ -89,7 +89,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
             {cities.map((city, idx) => (
               <li key={idx}>
                 <a
-                  href={`#city-${city.toLowerCase()}`}
+                  href="/#commuters"
                   className="text-[13px] themed-text-sub hover:text-[#0A84FF] transition-all duration-200 font-normal"
                 >
                   {city}
@@ -105,16 +105,20 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
             Support
           </span>
           <ul className="flex flex-col space-y-2.5">
-            {support.map((item, idx) => (
-              <li key={idx}>
-                <a
-                  href={`#support-${item.replace(/\s+/g, "").toLowerCase()}`}
-                  className="text-[13px] themed-text-sub hover:text-[#0A84FF] transition-all duration-200 font-normal"
-                >
-                  {item}
-                </a>
-              </li>
-            ))}
+            {support.map((item, idx) => {
+              let href = "/#partner";
+              if (item === "FAQs") href = "/#faq";
+              return (
+                <li key={idx}>
+                  <a
+                    href={href}
+                    className="text-[13px] themed-text-sub hover:text-[#0A84FF] transition-all duration-200 font-normal"
+                  >
+                    {item}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -124,16 +128,21 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
             Legal
           </span>
           <ul className="flex flex-col space-y-2.5">
-            {legal.map((item, idx) => (
-              <li key={idx}>
-                <a
-                  href={`#legal-${item.replace(/\s+/g, "").toLowerCase()}`}
-                  className="text-[13px] themed-text-sub hover:text-[#0A84FF] transition-all duration-200 font-normal"
-                >
-                  {item}
-                </a>
-              </li>
-            ))}
+            {legal.map((item, idx) => {
+              let href = "/privacy";
+              if (item === "Terms of Service") href = "/terms";
+              else if (item === "Cookie Policy") href = "/cookies";
+              return (
+                <li key={idx}>
+                  <a
+                    href={href}
+                    className="text-[13px] themed-text-sub hover:text-[#0A84FF] transition-all duration-200 font-normal"
+                  >
+                    {item}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

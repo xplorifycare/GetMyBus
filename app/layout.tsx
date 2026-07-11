@@ -67,7 +67,7 @@ export default function RootLayout({
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "Business Inquiries",
-      "email": "hello@getmybus.in"
+      "email": "admin@getmybus.in"
     },
     "sameAs": [
       "https://www.linkedin.com/company/getmybus",
