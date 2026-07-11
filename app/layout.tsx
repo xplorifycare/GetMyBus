@@ -73,7 +73,8 @@ export default function RootLayout({
     },
     "sameAs": [
       "https://www.linkedin.com/company/getmybus",
-      "https://twitter.com/getmybus"
+      "https://x.com/getmybusindia",
+      "https://www.instagram.com/getmybus.in/"
     ]
   };
 
