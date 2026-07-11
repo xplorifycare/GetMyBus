@@ -60,7 +60,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
             alt="GetMyBus"
             width={140}
             height={40}
-            className="object-contain h-[36px] w-auto"
+            className="object-contain object-left h-[36px] w-auto opacity-70 hover:opacity-100 transition-opacity duration-200"
           />
           <span className="text-[13px] themed-text-muted font-normal leading-relaxed max-w-[220px]">
             Kerala&apos;s unified transit digitisation platform. Smart screens, cashless ticketing, and real-time tracking.
