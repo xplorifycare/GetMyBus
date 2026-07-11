@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar, { Lang } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,11 +15,26 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
   
   const [shareStatus, setShareStatus] = useState<"idle" | "copied">("idle");
 
+  // Read lang from URL query parameter (e.g. ?lang=ML) to support direct shared links in Malayalam
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const queryLang = params.get("lang");
+      if (queryLang === "ML" || queryLang === "EN") {
+        setLang(queryLang as Lang);
+      }
+    }
+  }, []);
+
   const handleShare = async () => {
+    const shareUrl = lang === "ML"
+      ? `${window.location.origin}${window.location.pathname}?lang=ML`
+      : `${window.location.origin}${window.location.pathname}`;
+
     const shareData = {
       title: `${lang === "ML" ? article.headlineMl : article.headline} | GetMyBus Blog`,
       text: lang === "ML" ? article.snippetMl : article.snippet,
-      url: window.location.href,
+      url: shareUrl,
     };
     
     if (navigator.share) {
@@ -30,7 +45,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
       }
     } else {
       try {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(shareUrl);
         setShareStatus("copied");
         playClickSound();
         setTimeout(() => setShareStatus("idle"), 2000);

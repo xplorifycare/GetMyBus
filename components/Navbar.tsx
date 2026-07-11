@@ -226,7 +226,7 @@ export default function Navbar({
           </svg>
         </button>
 
-        {/* EN | ML Language Toggle — ML disabled until built */}
+        {/* EN | ML Language Toggle */}
         <div className={`hidden md:flex items-center rounded-full border p-0.5 relative transition-all duration-300 ${isScrolled || theme === "light" ? "border-black/10 bg-black/5" : "border-white/10 bg-white/5"}`}>
           {/* EN: always active */}
           <button
@@ -334,7 +334,6 @@ export default function Navbar({
                 {link.label}
               </Link>
             ))}
-
             {/* Mobile Language Toggle — Allows mobile view users to translate pages */}
             <div className={`flex items-center justify-between py-3.5 border-b ${
               theme === "light" ? "border-black/[0.05]" : "border-white/[0.06]"
@@ -373,7 +372,6 @@ export default function Navbar({
                 ))}
               </div>
             </div>
-
             <Link
               href={isBlogPage ? "/#download" : "#download"}
               onClick={() => {

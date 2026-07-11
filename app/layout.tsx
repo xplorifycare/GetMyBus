@@ -144,7 +144,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="no-scrollbar">
+    <html lang="en" className="no-scrollbar" suppressHydrationWarning>
       <head>
         {/* Injecting Structured Data JSON-LD */}
         <script
