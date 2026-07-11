@@ -36,7 +36,8 @@ export async function GET(request: Request) {
             "apikey": supabaseAnonKey,
             "Authorization": `Bearer ${supabaseServiceKey || supabaseAnonKey}`,
             "Content-Type": "application/json"
-          }
+          },
+          cache: "no-store"
         });
 
         if (response.ok) {
