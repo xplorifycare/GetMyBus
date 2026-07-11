@@ -50,11 +50,14 @@ export default function AdminPortal() {
     setError("");
 
     try {
-      const response = await fetch(`/api/admin/inquiries?password=${encodeURIComponent(activePassword)}`);
+      const response = await fetch(
+        `/api/admin/inquiries?password=${encodeURIComponent(activePassword)}`,
+        { cache: "no-store" }
+      );
       const data = await response.json();
 
       if (response.ok && data.success) {
-        setInquiries(data.inquiries);
+        setInquiries(data.inquiries || []);
         setIsAuthenticated(true);
         sessionStorage.setItem("gmb_admin_pass", activePassword);
         if (!passToSubmit) playSuccessChime();
@@ -78,14 +81,21 @@ export default function AdminPortal() {
     sessionStorage.removeItem("gmb_admin_pass");
   };
 
-  // Filtered list
+  // Filtered list with null-safety checks
   const filteredInquiries = inquiries.filter((inq) => {
-    const matchesRole = filterRole === "all" || inq.role === filterRole;
+    if (!inq) return false;
+    const role = inq.role || "";
+    const name = inq.name || "";
+    const email = inq.email || "";
+    const phone = inq.phone || "";
+    const message = inq.message || "";
+
+    const matchesRole = filterRole === "all" || role === filterRole;
     const matchesSearch =
-      inq.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      inq.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      inq.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      inq.phone.includes(searchQuery);
+      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      phone.includes(searchQuery);
     return matchesRole && matchesSearch;
   });
 
