@@ -65,7 +65,7 @@ export const blogArticles: BlogArticle[] = [
       <p>ബസുകൾ എവിടെയെത്തിയെന്ന് യാത്രക്കാർക്ക് ഞങ്ങളുടെ മൊബൈൽ ആപ്പ് വഴി ലൈവ് ആയി കാണാം. മാപ്പിലെ ജി.പി.എസ് സിഗ്നലുകളിലെ ചെറിയ വ്യതിയാനങ്ങൾ പോലും പരിഹരിച്ച് കൃത്യമായ വിവരങ്ങളാണ് ആപ്പ് കാണിക്കുന്നത്. കൊല്ലം-തിരുവനന്തപുരം റൂട്ടിൽ യാത്ര ചെയ്യുന്നവർക്ക് ഇനി ബസ് കാത്ത് മണിക്കൂറുകളോളം സ്റ്റാൻഡിൽ നിൽക്കേണ്ടി വരില്ല.</p>
  
       <h2>ബസ് ഉടമകൾക്കുള്ള ഡിജിറ്റൽ മാനേജ്‌മെന്റ്</h2>
-      <p>യാത്രാ വിവരങ്ങൾ ബസ് ഉടമകൾക്ക് എവിടെയിരുന്നും ട്രാക്ക് ചെയ്യാം. സമയക്രമവും കളക്ഷൻ വിവരങ്ങളും മൊബൈൽ വഴി തത്സമയം അറിയാൻ കഴിയും. നിങ്ങളുടെ ബസുകൾ ഡിജിറ്റൈസ് ചെയ്യാനും കൂടുതൽ യാത്രക്കാരെ ആകർഷിക്കാനും താല്പര്യമുണ്ടെങ്കിൽ ഞങ്ങളുടെ <a href="/#owners">ബസ് ഓണേഴ്സ് പോർട്ടൽ</a> സന്ദർശിക്കുക. ആപ്പ് ഡൗൺലോഡ് ചെയ്യാനായി <a href="/">GetMyBus ഹോംപേജ്</a> സന്ദർശിക്കുക.</p>
+      <p>യാത്രാ വിവരങ്ങൾ ബസ് ഉടമകൾക്ക് എവിടെയിരുന്നും ട്രാക്ക് ചെയ്യാം. സമയക്രമവും കളക്ഷൻ വിവരങ്ങളും മൊബൈൽ വഴി തത്സമയം അറിയാൻ കൂടാൻ കഴിയും. നിങ്ങളുടെ ബസുകൾ ഡിജിറ്റൈസ് ചെയ്യാനും കൂടുതൽ യാത്രക്കാരെ ആകർഷിക്കാനും താല്പര്യമുണ്ടെങ്കിൽ ഞങ്ങളുടെ <a href="/#owners">ബസ് ഓണേഴ്സ് പോർട്ടൽ</a> സന്ദർശിക്കുക. ആപ്പ് ഡൗൺലോഡ് ചെയ്യാനായി <a href="/">GetMyBus ഹോംപേജ്</a> സന്ദർശിക്കുക.</p>
     `
   },
   {
@@ -147,7 +147,7 @@ export const blogArticles: BlogArticle[] = [
       <p>കേരളത്തിലെ പ്രധാന പാതകളിലൂടെ യാത്ര ചെയ്യുന്ന ആളുകൾ ശരാശരി 30 മിനിറ്റിലധികം ബസിനുള്ളിൽ ചെലവഴിക്കുന്നു. ഈ സമയമത്രയും അവരുടെ മുന്നിലുള്ള സ്മാർട്ട് സ്ക്രീൻ ശ്രദ്ധിക്കാൻ സാധ്യത കൂടുതലാണ്. അടുത്ത സ്റ്റോപ്പ് അനൗൺസ്‌മെന്റുകൾക്കൊപ്പം പരസ്യങ്ങൾ കാണിക്കുന്നത് യാത്രക്കാരുടെ ശ്രദ്ധ ആകർഷിക്കാൻ സഹായിക്കും.</p>
  
       <h2>കുറഞ്ഞ ചിലവും കൃത്യമായ ട്രാക്കിംഗും</h2>
-      <p>വലിയ ചിലവുകൾ വരുന്ന പ്ലാസ്റ്റിക് ഫ്ലെക്സ് മാറ്റുന്നതിന് പകരം, വളരെ കുറഞ്ഞ ചിലവിൽ ഡിജിറ്റലായി നിങ്ങളുടെ പരസ്യം നൽകാം. 1,000 തവണ പരസ്യം കാണിക്കുന്നതിന് വെറും ₹35 മുതൽ മാത്രമാണ് ചാർജ് ഈടാക്കുന്നത്. പരസ്യം എത്ര തവണ കാണിച്ചു, ഏതൊക്കെ റൂട്ടിലാണ് കാണിച്ചത് തുടങ്ങിയ ലൈവ് റിപ്പോർട്ടുകൾ നിങ്ങൾക്ക് ഡാഷ്‌ബോർഡിൽ കാണാൻ കഴിയും. കൂടുതൽ വിവരങ്ങൾക്ക് <a href="/#advertisers">ബ്രാൻഡ് പാർട്ണർഷിപ്പ് പേജ്</a> സന്ദർശിക്കുക, അല്ലെങ്കിൽ സാങ്കേതിക വിവരങ്ങൾക്കായി <a href="/blog/kerala-private-bus-gps-tracking-digitisation">ലൈവ് ജി.പി.എസ് ട്രാക്കിംഗ് വിവരങ്ങൾ</a> വായിക്കുക.</p>
+      <p>വഴിയേ പോകുന്ന പ്ലാസ്റ്റിക് ഫ്ലെക്സ് മാറ്റുന്നതിന് പകരം, വളരെ കുറഞ്ഞ ചിലവിൽ ഡിജിറ്റലായി നിങ്ങളുടെ പരസ്യം നൽകാം. 1,000 തവണ പരസ്യം കാണിക്കുന്നതിന് വെറും ₹35 മുതൽ മാത്രമാണ് ചാർജ് ഈടാക്കുന്നത്. പരസ്യം എത്ര തവണ കാണിച്ചു, ഏതൊക്കെ റൂട്ടിലാണ് കാണിച്ചത് തുടങ്ങിയ ലൈവ് റിപ്പോർട്ടുകൾ നിങ്ങൾക്ക് ഡാഷ്‌ബോർഡിൽ കാണാൻ കഴിയും. കൂടുതൽ വിവരങ്ങൾക്ക് <a href="/#advertisers">ബ്രാൻഡ് പാർട്ണർഷിപ്പ് പേജ്</a> സന്ദർശിക്കുക, അല്ലെങ്കിൽ സാങ്കേതിക വിവരങ്ങൾക്കായി <a href="/blog/kerala-private-bus-gps-tracking-digitisation">ലൈവ് ജി.പി.എസ് ട്രാക്കിംഗ് വിവരങ്ങൾ</a> വായിക്കുക.</p>
     `
   },
   {
@@ -189,6 +189,169 @@ export const blogArticles: BlogArticle[] = [
  
       <h2>ഡിജിറ്റൽ ട്രാക്കിംഗ് വിവരങ്ങൾ</h2>
       <p>ഈ ടിക്കറ്റ് വിവരങ്ങൾ ഞങ്ങളുടെ തത്സമയ ജി.പി.എസ് വിവരങ്ങളുമായി ബന്ധിപ്പിച്ചിട്ടുള്ളതിനാൽ ഏത് റൂട്ടിലാണ് കൂടുതൽ യാത്രക്കാർ ഉള്ളത് എന്ന് മനസ്സിലാക്കാൻ സഹായിക്കും. ടിക്കറ്റ് കാർഡുകളെക്കുറിച്ച് അറിയാൻ <a href="/">GetMyBus ഹോംപേജ്</a> കാണുക, അല്ലെങ്കിൽ ബസ് ഉടമകളുടെ ലാഭവിഹിതത്തെക്കുറിച്ച് അറിയാൻ <a href="/blog/kerala-private-bus-owner-income-from-ads">ബസ് ഉടമകൾക്കുള്ള വരുമാന മാർഗ്ഗം</a> വായിച്ചു മനസ്സിലാക്കാം.</p>
+    `
+  },
+  {
+    slug: "priyadarshini-crisis-kerala-private-bus-revenue-solution",
+    headline: "The Priyadarshini Crisis: Why Kerala's Private Bus Sector Needs a New Revenue Model Now",
+    headlineMl: "പ്രിയദർശിനി പദ്ധതിയും പ്രൈവറ്റ് ബസ് പ്രതിസന്ധിയും: എന്തുകൊണ്ട് ഒരു പുതിയ വരുമാന മാർഗ്ഗം അത്യാവശ്യമാണ്?",
+    seoTitle: "The Priyadarshini Crisis: Why Kerala's Private Bus Sector Needs a New Revenue Model Now",
+    author: "Fleet Operations",
+    tag: "Fleet Operations",
+    tagMl: "പോളിസി & വരുമാനം",
+    date: "July 11, 2026",
+    dateMl: "ജൂലൈ 11, 2026",
+    readTime: "7 min read",
+    readTimeMl: "7 മിനിറ്റ് വായന",
+    color: "#EF4444",
+    keyword: "Priyadarshini Crisis Kerala private bus",
+    snippet: "A deep dive into the financial impact of the free travel scheme on Kerala's private bus sector, and CP John's suggestion for a non-ticket advertising revenue model.",
+    snippetMl: "കേരളത്തിലെ പ്രൈവറ്റ് ബസുകൾ നേരിടുന്ന വലിയൊരു സാമ്പത്തിക പ്രതിസന്ധിയും അതിനുള്ള പരിഹാര മാർഗ്ഗങ്ങളും. സർക്കാർ സബ്‌സിഡികൾക്ക് കാത്തുനിൽക്കാതെ സ്മാർട്ട് അഡ്വെർടൈസിംഗ് വഴി എങ്ങനെ വരുമാനം കണ്ടെത്താം.",
+    contentHtml: `
+      <p>On the morning of July 6, 2026, something unusual happened across Kasaragod district. Around 450 private passenger buses stayed in their depots. The roads, normally clogged with the distinctive honking procession of Kerala's highway services, were quiet. Students couldn't get to college. Workers missed shifts. Patients rescheduled hospital visits.</p>
+      
+      <p>This wasn't a mechanical failure or a fuel shortage. It was a one-day token strike — a warning signal from an industry that says it is running out of time.</p>
+      
+      <p>The cause: Kerala's Priyadarshini scheme, introduced by the UDF government under the Indira Guarantee initiative, which allows women, girls, and transgender persons to travel free of charge on KSRTC ordinary buses across the state. The scheme is running on 3,125 KSRTC ordinary buses statewide. According to the Transport Department, it has already moved an additional five lakh women onto KSRTC services. Every one of those five lakh women was, until recently, a fare-paying passenger on a private bus.</p>
+      
+      <h2>The Numbers Behind the Crisis</h2>
+      <p>The financial arithmetic of a Kerala private bus is brutally thin at the best of times. A typical stage carriage on a highway corridor carries around 300 passengers per day, collecting an average fare of ₹18 per passenger — roughly ₹1,62,000 in gross monthly revenue. Against that, the fixed costs are unforgiving: driver and conductor salaries averaging ₹47,000–₹54,000 combined, diesel for a 250-kilometre daily run at current prices, road tax, insurance, permit fees, maintenance, and — for the majority of operators who financed their vehicle — a monthly EMI of ₹25,000–₹40,000.</p>
+      
+      <p>The margin, in a good month on a busy route, is ₹10,000–₹30,000. In a bad month, it is zero or negative.</p>
+      
+      <p>The Priyadarshini scheme did not arrive in a vacuum. It landed on top of a diesel price increase — the Union government raised diesel prices by ₹8 per litre, meaning a bus consuming 100 litres per day is now paying ₹800 more daily than it was before. Combined with passenger losses from the scheme, the double blow has pushed operators to what their federation describes as the edge of collapse.</p>
+      
+      <p>Operators claim the free travel scheme has significantly reduced passenger numbers on private services, leading to daily losses of approximately ₹3,000 per bus. At ₹3,000 per day, a bus loses ₹90,000 per month. For most operators, that is not a manageable shortfall — it is insolvency in slow motion.</p>
+      
+      <p>The most stark signal: fifteen buses in Manjeshwar and Kanhangad taluks in Kasaragod have already submitted Form G, the formal application to temporarily suspend service because operations have become financially unviable. Form G is the last step before permanent closure.</p>
+      
+      <p>In Palakkad, private bus employees have alleged that the financial crisis has drastically reduced their wages, with drivers and conductors now receiving only ₹600 per day — down sharply from standard rates. Workers who have no stake in the vehicle's ownership are bearing the cost of a policy decision made without apparent assessment of its impact on the private sector.</p>
+      
+      <h2>The Government's Response — and Its Unintended Acknowledgement</h2>
+      <p>Transport Minister CP John's response to the crisis has been measured but revealing. He said the government would identify routes where KSRTC and private buses run simultaneously, with the problem most prominent on routes where both services overlap — suggesting better scheduling and route coordination as a fix.</p>
+      
+      <p>But the more significant statement came in a different press interaction. <strong>CP John said that private buses should look for new sources of income to overcome the severe crisis, and clarified that they can advertise like KSRTC does.</strong></p>
+      
+      <p>This statement — made during an active political crisis, to a sector threatening statewide strikes — is not a casual suggestion. It is a policy signal. The government is not going to subsidise the private bus industry's losses directly. It is pointing toward a structural income solution that requires no government budget, no tender, and no bureaucratic process.</p>
+      
+      <h2>Why \"Just Put Ads On Your Bus\" Isn't Simple</h2>
+      <p>Kerala's KSRTC has been running exterior advertisements on its fleet for years — vinyl wraps, painted panels, and branded liveries sold through agencies. This works for KSRTC because the corporation has a fleet of thousands of buses, a centralised contracts team, and the scale to attract national advertisers.</p>
+      
+      <p>A private bus operator running two routes in Kasaragod has none of that. They cannot negotiate CPM rates with a regional advertiser. They have no dashboard to show an advertiser how many passengers saw their creative. They have no mechanism to collect payment, issue receipts, or prove delivery.</p>
+      
+      <p>The minister's suggestion is structurally correct — advertising is the right answer — but the implementation gap between \"put ads on your bus\" and \"earn ₹3,500 per month from a managed ad network\" is where most operators would be lost without a platform to bridge it. This is precisely the problem GetMyBus is built to solve.</p>
+      
+      <h2>The Structural Solution: Managed In-Bus Advertising</h2>
+      <p>GetMyBus installs a smart TV display inside each enrolled private bus — mounted above the driver's cabin, visible to all seated passengers. The screen shows real-time transit information: current stop, next stop, estimated arrival time. This is what passengers look at. Because they look at it for transit information, they also see the advertising that rotates around it.</p>
+      
+      <p>Every month, on the 5th, the bus owner receives 50% of the advertising revenue their bus generated. For a 300-passenger-per-day route bus, this works out to:</p>
+      
+      <table class="w-full text-left text-[14px] border-collapse border border-white/[0.08] my-6">
+        <thead>
+          <tr class="bg-white/[0.02] border-b border-white/[0.08]">
+            <th class="px-4 py-2 font-semibold">Line Item</th>
+            <th class="px-4 py-2 font-semibold text-right">Monthly Payout</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-white/[0.04]">
+            <td class="px-4 py-2">Gross ad revenue generated</td>
+            <td class="px-4 py-2 text-right">₹6,000–₹7,000</td>
+          </tr>
+          <tr class="border-b border-white/[0.04]">
+            <td class="px-4 py-2">Owner's share (50%)</td>
+            <td class="px-4 py-2 text-right">₹3,000–₹3,500</td>
+          </tr>
+          <tr class="border-b border-white/[0.04]">
+            <td class="px-4 py-2">Data + hardware upkeep</td>
+            <td class="px-4 py-2 text-right">−₹500</td>
+          </tr>
+          <tr class="bg-white/[0.03]">
+            <td class="px-4 py-2 font-bold text-white">Owner net take-home</td>
+            <td class="px-4 py-2 text-right font-bold text-[#34D399]">₹2,500–₹3,000</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <p>This does not restore the ₹90,000 monthly loss that Priyadarshini has created on the worst-affected routes. What it does is create a permanent, passive, non-ticket income stream that partially offsets the structural revenue drop — and does so without requiring government action, route renegotiation, or industry protest.</p>
+      
+      <h2>The Operator's Real Calculation</h2>
+      <p>Consider a private bus operator on the Kollam–Thiruvananthapuram corridor. Before Priyadarshini, they were netting ₹15,000–₹20,000 per month after costs. The scheme has cut their effective passenger revenue by ₹3,000 per day — approximately ₹60,000–₹90,000 per month on routes with significant female ridership overlap with KSRTC.</p>
+      
+      <p>Their options, realistically, are: continue and absorb losses (unviable for most), file Form G and suspend service (which is what 15 operators in Kasaragod have done), wait for slow-moving government relief, or add a non-ticket revenue stream immediately. For an operator who is not yet at the Form G stage but is watching their margins compress, adding GetMyBus is the most actionable response available right now.</p>
+      
+      <h2>A Word on the Priyadarshini Scheme Itself</h2>
+      <p>GetMyBus takes no position on the Priyadarshini scheme as a social policy. Free travel for women is a genuine public good. Transport Minister CP John noted that the scheme has increased the annual income of women by around ₹2,000 by eliminating their travel costs — a real and meaningful benefit for women commuters, particularly lower-income daily travellers.</p>
+      
+      <p>The crisis is not that the policy is wrong. The crisis is that its implementation did not include a parallel mechanism to compensate or support the private bus operators whose revenue base it directly reduced. That gap — between a socially beneficial policy and its unintended economic casualties — is where GetMyBus operates. If you own or operate a private bus in Kerala, <a href="/#partner">register here</a> to join our founding pilot cohort.</p>
+    `,
+    contentHtmlMl: `
+      <p>2026 ജൂലൈ 6-ാം തീയതി രാവിലെ കാസർഗോഡ് ജില്ലയിൽ അസാധാരണമായ ഒരു കാര്യം സംഭവിച്ചു. അവിടുത്തെ 450 ഓളം സ്വകാര്യ ബസുകൾ സർവീസ് നടത്തിയില്ല. സാധാരണഗതിയിൽ ഹോണടി ശബ്ദങ്ങളാൽ സജീവമാകുന്ന കേരളത്തിലെ റോഡുകൾ അന്ന് തികച്ചും ശാന്തമായിരുന്നു. കോളേജ് വിദ്യാർത്ഥികളും ജോലിക്കാരും രോഗികളുമെല്ലാം വലിയ ബുദ്ധിമുട്ടിലായി.</p>
+      
+      <p>ഇതൊരു മെക്കാനിക്കൽ തകരാറോ ഇന്ധനക്ഷാമമോ ആയിരുന്നില്ല. മറിച്ച്, തങ്ങൾ നേരിടുന്ന കടുത്ത സാമ്പത്തിക പ്രതിസന്ധി സർക്കാരിന്റെ ശ്രദ്ധയിൽപ്പെടുത്താൻ ബസ് ഉടമകൾ നടത്തിയ സൂചന പണിമുടക്കായിരുന്നു അത്.</p>
+      
+      <p>പ്രശ്നത്തിന് കാരണം ലളിതമാണ്: യു.ഡി.എഫ് സർക്കാരിന്റെ ഇന്ദിരാ ഗ്യാരണ്ടിക്ക് കീഴിൽ അവതരിപ്പിച്ച പ്രിയദർശിനി പദ്ധതി. ഇതുവഴി സ്ത്രീകൾക്കും കുട്ടികൾക്കും ട്രാൻസ്‌ജെൻഡർ വ്യക്തികൾക്കും കെ.എസ്.ആർ.ടി.സി ഓർഡിനറി ബസുകളിൽ സൌജന്യമായി യാത്ര ചെയ്യാം. സംസ്ഥാനത്തുടനീളം 3,125 കെ.എസ്.ആർ.ടി.സി ബസുകളിലാണ് ഈ പദ്ധതി നടപ്പിലാക്കിയിട്ടുള്ളത്. ട്രാൻസ്‌പോർട്ട് ഡിപ്പാർട്ട്‌മെന്റിന്റെ കണക്കനുസരിച്ച് പ്രതിദിനം അഞ്ച് ലക്ഷത്തോളം സ്ത്രീകൾ ഇപ്പോൾ ഈ ബസുകളിൽ യാത്ര ചെയ്യുന്നുണ്ട്. ഈ അഞ്ച് ലക്ഷം സ്ത്രീകളിൽ ഭൂരിഭാഗവും ഇതിന് മുൻപ് പ്രൈവറ്റ് ബസുകളിൽ പണം നൽകി യാത്ര ചെയ്തിരുന്നവരായിരുന്നു എന്നുകൂടി മനസ്സിലാക്കുമ്പോഴാണ് ഈ പ്രതിസന്ധിയുടെ ആഴം വ്യക്തമാകുന്നത്.</p>
+      
+      <h2>പ്രതിസന്ധിക്ക് പിന്നിലെ കണക്കുകൾ</h2>
+      <p>കേരളത്തിലെ ഒരു സ്വകാര്യ ബസ് മികച്ച രീതിയിൽ ഓടിയാൽ പോലും ലഭിക്കുന്ന ലാഭവിഹിതം വളരെ കുറവാണ്. സാധാരണയായി ഒരു ദേശീയപാതയിൽ സർവീസ് നടത്തുന്ന ഒരു ബസിൽ പ്രതിദിനം 300 യാത്രക്കാരുണ്ടാകും. ശരാശരി ₹18 ടിക്കറ്റ് ചാർജ് വെച്ച് കണക്കാക്കിയാൽ പ്രതിമാസം ₹1,62,000 ഗ്രോസ് കളക്ഷൻ ലഭിക്കും. എന്നാൽ ഇതിന്റെ ചെലവുകൾ വളരെ വലുതാണ്: ഡ്രൈവർ, കണ്ടക്ടർ ശമ്പളം (ഏകദേശം ₹47,000–₹54,000), ഡീസൽ ചിലവ്, റോഡ് ടാക്സ്, ഇൻഷുറൻസ്, പെർമിറ്റ് ഫീസുകൾ, അറ്റകുറ്റപ്പണികൾ, കൂടാതെ ബസ് ലോൺ ഉണ്ടെങ്കിൽ അതിന്റെ ഇ.എം.ഐ (₹25,000–₹40,000).</p>
+      
+      <p>എല്ലാ ചിലവുകളും കഴിഞ്ഞ് ഒരു നല്ല മാസത്തിൽ ഉടമയ്ക്ക് ലഭിക്കുന്ന ലാഭം വെറും ₹10,000 മുതൽ ₹30,000 വരെയാണ്. മോശം മാസങ്ങളിൽ ഇത് നഷ്ടത്തിലുമാകും.</p>
+      
+      <p>ഇതിനുപുറമെയാണ് ഡീസൽ വില വർദ്ധനവ്. ഒരു ലിറ്റർ ഡീസലിന് ₹8 ആണ് വർദ്ധിച്ചത്. ഒരു ദിവസം 100 ലിറ്റർ ഡീസൽ അടിക്കുന്ന ഒരു ബസിന് പ്രതിദിനം ₹800 അഡീഷണൽ ചിലവ് വരുന്നു. ഇതിനോടൊപ്പം പ്രിയദർശിനി പദ്ധതി കാരണം യാത്രക്കാരുടെ എണ്ണം കുറഞ്ഞതുകൂടി ചേർന്നപ്പോൾ ബസ് വ്യവസായം കടുത്ത തകർച്ചയിലേക്ക് നീങ്ങി.</p>
+      
+      <p>ഈ പദ്ധതി വഴി ഓരോ ബസിനും പ്രതിദിനം ₹3,000 ഓളം നഷ്ടം വരുന്നുണ്ടെന്നാണ് ബസ് ഓണേഴ്സ് അസോസിയേഷൻ പറയുന്നത്. അതായത് പ്രതിമാസം ₹90,000 രൂപയുടെ നഷ്ടം. ഇതൊരു സാധാരണ ഉടമയ്ക്ക് താങ്ങാൻ കഴിയുന്നതിലും അപ്പുറമാണ്.</p>
+      
+      <p>ഇതിന്റെ ഏറ്റവും വ്യക്തമായ ഉദാഹരണമാണ് കാസർഗോഡ് ജില്ലയിലെ 15 ഓളം ബസുകൾ ഇതിനകം തന്നെ സർവീസ് താല്ക്കാലികമായി നിർത്താൻ ആർ.ടി.ഓയ്ക്ക് ഫോം ജി (Form G) സമർപ്പിച്ചിരിക്കുന്നത്. ജീവനക്കാരുടെ ശമ്പളം പോലും കൊടുക്കാൻ കഴിയാത്ത അവസ്ഥയാണ് നിലവിലുള്ളത്. പാലക്കാട് ജില്ലയിലെ ജീവനക്കാർ പറയുന്നത് തങ്ങളുടെ പ്രതിദിന ശമ്പളം ₹600 ആയി കുറഞ്ഞു എന്നാണ്.</p>
+      
+      <h2>സർക്കാരിന്റെ പ്രതികരണവും പരിഹാര നിർദ്ദേശവും</h2>
+      <p>ഈ പ്രതിസന്ധിയെക്കുറിച്ച് ട്രാൻസ്‌പോർട്ട് മന്ത്രി സി.പി. ജോൺ പ്രതികരിക്കുകയുണ്ടായി. കെ.എസ്.ആർ.ടി.സിയും സ്വകാര്യ ബസുകളും ഒരുമിച്ച് സർവീസ് നടത്തുന്ന റൂട്ടുകൾ കണ്ടെത്തി സമയക്രമീകരണങ്ങൾ മാറ്റാൻ സർക്കാർ ആലോചിക്കുന്നുണ്ട്. എന്നാൽ അതിലും ശ്രദ്ധേയമായ ഒരു പ്രസ്താവന അദ്ദേഹം നടത്തുകയുണ്ടായി: <strong>സ്വകാര്യ ബസുകൾ തങ്ങളുടെ പ്രതിസന്ധി മറികടക്കാൻ ടിക്കറ്റേതര വരുമാന മാർഗ്ഗങ്ങൾ കണ്ടെത്തണമെന്നും, കെ.എസ്.ആർ.ടി.സി ചെയ്യുന്നതുപോലെ പരസ്യങ്ങൾ നൽകാൻ അനുമതിയുണ്ടെന്നും</strong> അദ്ദേഹം വ്യക്തമാക്കി.</p>
+      
+      <p>മന്ത്രിയുടെ ഈ പ്രസ്താവന വളരെ നിർണായകമാണ്. സർക്കാർ നേരിട്ട് സാമ്പത്തിക സഹായങ്ങളോ സബ്‌സിഡിയോ നൽകില്ലെന്നും, പകരം ബസ് ഉടമകൾ സ്വന്തം നിലയ്ക്ക് വരുമാന മാർഗ്ഗങ്ങൾ കണ്ടെത്തണമെന്നുമാണ് അദ്ദേഹം പറയുന്നത്. പരസ്യങ്ങൾ നൽകുക എന്നത് മികച്ചൊരു വരുമാന മാർഗ്ഗമാണ്, എന്നാൽ ഒരു സാധാരണ ബസ് ഉടമയ്ക്ക് ഇത് സ്വയം ചെയ്യാൻ കഴിയില്ല.</p>
+      
+      <h2>പരസ്യങ്ങൾ നൽകുക അത്ര എളുപ്പമാണോ?</h2>
+      <p>കെ.എസ്.ആർ.ടി.സി തങ്ങളുടെ വലിയ ഫ്ലീറ്റിൽ ഏജൻസികൾ വഴി പെയിന്റിംഗുകളും ഫ്ലെക്സുകളും വെച്ച് പരസ്യങ്ങൾ ചെയ്യാറുണ്ട്. ഇത് കോർപ്പറേഷൻ തലത്തിൽ വലിയൊരു ടീം ഉള്ളതുകൊണ്ട് സാധിക്കുന്നതാണ്. എന്നാൽ ഒന്നോ രണ്ടോ ബസ് മാത്രമുള്ള ഒരു സാധാരണ ഉടമയ്ക്ക് വലിയ ബ്രാൻഡുകളിൽ നിന്ന് പരസ്യങ്ങൾ കണ്ടെത്താനോ അതിന്റെ റേറ്റ് നിശ്ചയിക്കാനോ കഴിയില്ല. ഈ വലിയ വിടവ് നികത്താനാണ് GetMyBus ശ്രമിക്കുന്നത്.</p>
+      
+      <h2>GetMyBus അവതരിപ്പിക്കുന്ന സ്മാർട്ട് പരസ്യ സംവിധാനം</h2>
+      <p>GetMyBus ഓരോ ബസിലും ഒരു സ്മാർട്ട് ഡിജിറ്റൽ സ്ക്രീൻ ഇൻസ്റ്റാൾ ചെയ്യുന്നു. ഇതിലൂടെ യാത്രക്കാർക്ക് ബസ് എവിടെയെത്തി, അടുത്ത സ്റ്റോപ്പ് ഏതാണ് തുടങ്ങിയ ലൈവ് വിവരങ്ങൾ കാണിക്കുന്നു. ഈ ലൈവ് വിവരങ്ങൾക്കിടയിലൂടെ ബ്രാൻഡുകളുടെ പരസ്യങ്ങളും കാണിക്കും. പരസ്യദാതാക്കളെ കണ്ടെത്തുന്നതും അവരുടെ പ്ലേലിസ്റ്റുകൾ നിയന്ത്രിക്കുന്നതുമെല്ലാം GetMyBus ആണ്. ഓരോ മാസവും നിങ്ങളുടെ സ്ക്രീനിൽ നിന്ന് ലഭിക്കുന്ന പരസ്യ വരുമാനത്തിന്റെ 50% ലാഭവിഹിതമായി ഉടമയ്ക്ക് നൽകും. ഒരു ബസിൽ നിന്ന് താഴെ പറയുന്ന രീതിയിൽ ലാഭം നേടാം:</p>
+      
+      <table class="w-full text-left text-[14px] border-collapse border border-white/[0.08] my-6">
+        <thead>
+          <tr class="bg-white/[0.02] border-b border-white/[0.08]">
+            <th class="px-4 py-2 font-semibold text-white">വരുമാന വിഹിതം (വസ്തുതകൾ)</th>
+            <th class="px-4 py-2 font-semibold text-right text-white">പ്രതിമാസം (ഏകദേശം)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-white/[0.04]">
+            <td class="px-4 py-2">ആകെ ലഭിക്കുന്ന പരസ്യ വരുമാനം</td>
+            <td class="px-4 py-2 text-right">₹6,000–₹7,000</td>
+          </tr>
+          <tr class="border-b border-white/[0.04]">
+            <td class="px-4 py-2">ബസ് ഉടമയുടെ പങ്ക് (50%)</td>
+            <td class="px-4 py-2 text-right">₹3,000–₹3,500</td>
+          </tr>
+          <tr class="border-b border-white/[0.04]">
+            <td class="px-4 py-2">ഡാറ്റ & സിസ്റ്റം മെയിന്റനൻസ് ചിലവ്</td>
+            <td class="px-4 py-2 text-right">-₹500</td>
+          </tr>
+          <tr class="bg-white/[0.03]">
+            <td class="px-4 py-2 font-bold text-white">ബസ് ഉടമയ്ക്ക് ലഭിക്കുന്ന അറ്റാദായം</td>
+            <td class="px-4 py-2 text-right font-bold text-[#34D399]">₹2,500–₹3,000</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <p>ഈ വരുമാനം പൂർണ്ണമായും പാസ്സീവ് വരുമാനമാണ്. യാത്രക്കാർ കൂടുന്നതിനോ കുറയുന്നതിനോ അനുസരിച്ചല്ല ഇത് ലഭിക്കുന്നത്. ബസ് റോഡിലിറങ്ങി സ്ക്രീൻ പ്രവർത്തിക്കുമ്പോൾ തന്നെ ഈ വരുമാനം ലഭിച്ചുതുടങ്ങും. പ്രതിസന്ധിയിലായ ബസ് ഉടമകൾക്ക് ഇതൊരു മികച്ച പിന്തുണയായിരിക്കും.</p>
+      
+      <h2>ബസ് ഉടമകൾക്കുള്ള അവസരം</h2>
+      <p>Consider a private bus operator on the Kollam–Thiruvananthapuram corridor. Before Priyadarshini, they were netting ₹15,000–₹20,000 per month after costs. The scheme has cut their effective passenger revenue by ₹3,000 per day — approximately ₹60,000–₹90,000 per month on routes with significant female ridership overlap with KSRTC.</p>
+      
+      <p>Their options, realistically, are: continue and absorb losses (unviable for most), file Form G and suspend service (which is what 15 operators in Kasaragod have done), wait for slow-moving government relief, or add a non-ticket revenue stream immediately. For an operator who is not yet at the Form G stage but is watching their margins compress, adding GetMyBus is the most actionable response available right now.</p>
+      
+      <h2>പ്രിയദർശിനി പദ്ധതിയെക്കുറിച്ച് ഒരു വാക്ക്</h2>
+      <p>GetMyBus takes no position on the Priyadarshini scheme as a social policy. Free travel for women is a genuine public good. Transport Minister CP John noted that the scheme has increased the annual income of women by around ₹2,000 by eliminating their travel costs — a real and meaningful benefit for women commuters, particularly lower-income daily travellers.</p>
+      
+      <p>The crisis is not that the policy is wrong. The crisis is that its implementation did not include a parallel mechanism to compensate or support the private bus operators whose revenue base it directly reduced. That gap — between a socially beneficial policy and its unintended economic casualties — is where GetMyBus operates. If you own or operate a private bus in Kerala, <a href="/#partner">register here</a> to join our founding pilot cohort.</p>
     `
   }
 ];
