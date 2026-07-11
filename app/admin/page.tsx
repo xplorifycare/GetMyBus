@@ -32,21 +32,11 @@ export default function AdminPortal() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"leads" | "calculator">("leads");
 
-  // Check session storage on mount
-  useEffect(() => {
-    const savedPassword = sessionStorage.getItem("gmb_admin_pass");
-    if (savedPassword) {
-      setPassword(savedPassword);
-      handleLogin(savedPassword);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleLogin = async (passToSubmit?: string) => {
+  const fetchInquiries = async (passToSubmit?: string, showLoader = false) => {
     const activePassword = passToSubmit || password;
     if (!activePassword) return;
 
-    setLoading(true);
+    if (showLoader) setLoading(true);
     setError("");
 
     try {
@@ -60,18 +50,50 @@ export default function AdminPortal() {
         setInquiries(data.inquiries || []);
         setIsAuthenticated(true);
         sessionStorage.setItem("gmb_admin_pass", activePassword);
-        if (!passToSubmit) playSuccessChime();
+        return true;
       } else {
         setError(data.error || "Incorrect admin password.");
         sessionStorage.removeItem("gmb_admin_pass");
+        return false;
       }
     } catch (err) {
       console.error(err);
       setError("Network error while logging in.");
+      return false;
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
+
+  const handleLogin = async (passToSubmit?: string) => {
+    const activePassword = passToSubmit || password;
+    const success = await fetchInquiries(activePassword, true);
+    if (success && !passToSubmit) {
+      playSuccessChime();
+    }
+  };
+
+  // Check session storage on mount
+  useEffect(() => {
+    const savedPassword = sessionStorage.getItem("gmb_admin_pass");
+    if (savedPassword) {
+      setPassword(savedPassword);
+      fetchInquiries(savedPassword, true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Real-time silent polling loop (every 10 seconds) when authenticated
+  useEffect(() => {
+    if (!isAuthenticated || !password) return;
+
+    const interval = setInterval(() => {
+      fetchInquiries(password, false);
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, password]);
 
   const handleLogout = () => {
     playClickSound();
