@@ -243,15 +243,21 @@ export default function Navbar({
             )}
             EN
           </button>
-          {/* ML: disabled — coming soon */}
-          <span
-            title="Malayalam version coming soon"
-            className={`px-2.5 py-1 rounded-full text-[11px] font-medium cursor-not-allowed select-none ${
-              isScrolled || theme === "light" ? "text-black/20" : "text-white/20"
+          {/* ML: active */}
+          <button
+            onClick={() => { setLang("ML"); playClickSound(); }}
+            onMouseEnter={() => playHoverSound(0.01)}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors duration-300 relative z-10 ${
+              lang === "ML" ? "text-white" : isScrolled || theme === "light" ? "text-black/75 hover:text-black/80" : "text-white/75 hover:text-white/85"
             }`}
           >
+            {lang === "ML" && (
+              <div
+                className="absolute inset-0 bg-[#0A84FF] rounded-full z-[-1] shadow-[0_2px_8px_rgba(10,132,255,0.3)]"
+              />
+            )}
             ML
-          </span>
+          </button>
         </div>
 
         <Link

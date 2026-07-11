@@ -33,7 +33,9 @@ export default function BlogPortal() {
   `;
 
   return (
-    <main className={`relative min-h-screen selection:bg-[#0A84FF] selection:text-white no-scrollbar transition-colors duration-500 ${isLight ? "bg-[#f4f5f7] text-[#121316] light-theme" : "bg-[#070708] text-white dark-theme"}`}>
+    <main className={`relative min-h-screen selection:bg-[#0A84FF] selection:text-white no-scrollbar transition-colors duration-500 ${
+      isLight ? "bg-[#f4f5f7] text-[#121316] light-theme" : "bg-[#070708] text-white dark-theme"
+    } ${lang === "ML" ? "malayalam-font" : ""}`}>
       <style dangerouslySetInnerHTML={{ __html: S_PORTAL }} />
       <div className="c-noise" aria-hidden />
 
@@ -49,15 +51,28 @@ export default function BlogPortal() {
         {/* Header Section */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-[11px] font-semibold text-[#0A84FF] tracking-[0.2em] uppercase mb-4 block">
-            Official Blog
+            {lang === "ML" ? "ഔദ്യോഗിക ബ്ലോഗ്" : "Official Blog"}
           </span>
           <h1 className={`text-[clamp(32px,5vw,52px)] font-normal tracking-tight leading-[1.08] mb-6 ${isLight ? "text-slate-900" : "text-white"}`}>
-            Transit Digitisation &amp;
-            <br />
-            <span className="text-silver-matte font-black">Operator Monetisation</span>
+            {lang === "ML" ? (
+              <>
+                ബസ് സർവീസുകൾ ഡിജിറ്റലാവുന്നു,
+                <br />
+                <span className="text-silver-matte font-black">ഉടമകൾക്ക് വരുമാനവും!</span>
+              </>
+            ) : (
+              <>
+                Transit Digitisation &amp;
+                <br />
+                <span className="text-silver-matte font-black">Operator Monetisation</span>
+              </>
+            )}
           </h1>
           <p className={`text-[15px] leading-relaxed font-light ${isLight ? "text-slate-500" : "text-white/45"}`}>
-            Read our engineering stories, bus operator monetisation guides, and local transit advertising reports directly from the GetMyBus team.
+            {lang === "ML" 
+              ? "GetMyBus അണിയറപ്രവർത്തകർ തയ്യാറാക്കുന്ന സാങ്കേതിക വിവരങ്ങളും, ബസ് പരസ്യ വരുമാന ഗൈഡുകളും, പുതിയ അപ്ഡേറ്റുകളും ഇവിടെ വായിക്കാം."
+              : "Read our engineering stories, bus operator monetisation guides, and local transit advertising reports directly from the GetMyBus team."
+            }
           </p>
         </div>
 
@@ -84,26 +99,28 @@ export default function BlogPortal() {
                     </span>
                   </div>
                   <span className={`text-[10px] uppercase font-semibold px-2.5 py-0.5 rounded-md tracking-wider ${isLight ? "bg-slate-100 text-slate-500" : "bg-white/[0.04] text-white/40"}`}>
-                    {article.tag}
+                    {lang === "ML" ? article.tagMl : article.tag}
                   </span>
                 </div>
 
                 {/* Headline */}
                 <h2 className={`text-[20px] sm:text-[22px] leading-tight font-medium mb-4 tracking-tight group-hover:text-[#0A84FF] transition-colors ${isLight ? "text-slate-900" : "text-white"}`}>
-                  {article.headline}
+                  {lang === "ML" ? article.headlineMl : article.headline}
                 </h2>
 
                 {/* Snippet */}
                 <p className={`text-[14px] leading-relaxed mb-8 font-light ${isLight ? "text-slate-600" : "text-white/45"}`}>
-                  {article.snippet}
+                  {lang === "ML" ? article.snippetMl : article.snippet}
                 </p>
               </div>
 
               {/* Footer Meta */}
               <div className="flex items-center justify-between pt-4 border-t border-white/[0.04] mt-auto">
-                <span className={`text-[11px] ${isLight ? "text-slate-900/40" : "text-white/30"}`}>{article.date}</span>
+                <span className={`text-[11px] ${isLight ? "text-slate-900/40" : "text-white/30"}`}>
+                  {lang === "ML" ? article.dateMl : article.date}
+                </span>
                 <span className="text-[12px] font-semibold text-[#0A84FF] hover:text-[#0070e3] flex items-center gap-1 transition-colors">
-                  <span>Read Article</span>
+                  <span>{lang === "ML" ? "വായിക്കുക" : "Read Article"}</span>
                   <svg className="w-3.5 h-3.5 transform transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="9 18 15 12 9 6" />
                   </svg>

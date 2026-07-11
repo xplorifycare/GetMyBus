@@ -66,7 +66,9 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
   `;
 
   return (
-    <main className={`relative min-h-screen selection:bg-[#0A84FF] selection:text-white no-scrollbar transition-colors duration-500 ${isLight ? "bg-[#f4f5f7] text-[#121316] light-theme" : "bg-[#070708] text-white dark-theme"}`}>
+    <main className={`relative min-h-screen selection:bg-[#0A84FF] selection:text-white no-scrollbar transition-colors duration-500 ${
+      isLight ? "bg-[#f4f5f7] text-[#121316] light-theme" : "bg-[#070708] text-white dark-theme"
+    } ${lang === "ML" ? "malayalam-font" : ""}`}>
       <style dangerouslySetInnerHTML={{ __html: S_READER }} />
       <div className="c-noise" aria-hidden />
 
@@ -87,7 +89,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
             onMouseEnter={() => playHoverSound(0.005)}
             className={`transition-colors hover:text-[#0A84FF] ${isLight ? "text-slate-500" : "text-white/40"}`}
           >
-            Home
+            {lang === "ML" ? "ഹോം" : "Home"}
           </Link>
           <span className={isLight ? "text-slate-300" : "text-white/20"}>/</span>
           <Link
@@ -96,11 +98,11 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
             onMouseEnter={() => playHoverSound(0.005)}
             className={`transition-colors hover:text-[#0A84FF] ${isLight ? "text-slate-500" : "text-white/40"}`}
           >
-            Blog
+            {lang === "ML" ? "ബ്ലോഗ്" : "Blog"}
           </Link>
           <span className={isLight ? "text-slate-300" : "text-white/20"}>/</span>
           <span className={`line-clamp-1 font-medium ${isLight ? "text-slate-800" : "text-white/85"}`}>
-            {article.headline}
+            {lang === "ML" ? article.headlineMl : article.headline}
           </span>
         </div>
 
@@ -111,10 +113,10 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
             <span className={`text-[10px] uppercase font-semibold px-2.5 py-0.5 rounded-md tracking-wider ${
               isLight ? "bg-slate-100 text-slate-500" : "bg-white/[0.04] text-white/40"
             }`}>
-              {article.tag}
+              {lang === "ML" ? article.tagMl : article.tag}
             </span>
             <span className={`text-[12px] ${isLight ? "text-slate-400" : "text-white/30"}`}>
-              {article.readTime}
+              {lang === "ML" ? article.readTimeMl : article.readTime}
             </span>
           </div>
 
@@ -122,7 +124,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
           <h1 className={`text-[clamp(28px,4.5vw,42px)] font-bold tracking-tight leading-[1.12] mb-6 ${
             isLight ? "text-slate-900" : "text-white"
           }`}>
-            {article.headline}
+            {lang === "ML" ? article.headlineMl : article.headline}
           </h1>
 
           {/* Author & Date info */}
@@ -135,7 +137,10 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
                 {article.author}
               </span>
               <span className={`text-[10px] ${isLight ? "text-slate-400" : "text-white/30"}`}>
-                Published on {article.date} · GetMyBus Insights
+                {lang === "ML" 
+                  ? `പ്രസിദ്ധീകരിച്ചത്: ${article.dateMl} · GetMyBus` 
+                  : `Published on ${article.date} · GetMyBus Insights`
+                }
               </span>
             </div>
           </div>
@@ -143,7 +148,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
 
         {/* Article Content */}
         <article className="article-body mb-20">
-          <div dangerouslySetInnerHTML={{ __html: article.contentHtml }} />
+          <div dangerouslySetInnerHTML={{ __html: lang === "ML" ? article.contentHtmlMl : article.contentHtml }} />
         </article>
 
         {/* Bottom CTA Block */}
@@ -153,10 +158,13 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
             : "bg-white/[0.015] border-white/[0.05] shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
         }`}>
           <h3 className={`text-[18px] font-medium mb-3 ${isLight ? "text-slate-900" : "text-white"}`}>
-            Ready to upgrade your transit experience?
+            {lang === "ML" ? "യാത്രാനുഭവം മെച്ചപ്പെടുത്താൻ തയാറാണോ?" : "Ready to upgrade your transit experience?"}
           </h3>
           <p className={`text-[13px] max-w-md mx-auto mb-6 ${isLight ? "text-slate-500" : "text-white/45"}`}>
-            Join our Kollam–Thiruvananthapuram corridor waitlist or register your private passenger bus for monetization today.
+            {lang === "ML" 
+              ? "കൊല്ലം-തിരുവനന്തപുരം റൂട്ടിലെ വെയിറ്റ്‌ലിസ്റ്റിൽ ചേരാൻ താഴെയുള്ള ബട്ടണിൽ അമർത്തുക. ബസ് ഉടമകൾക്ക് ഞങ്ങളുടെ പോർട്ടലിലൂടെ വരുമാനം വർദ്ധിപ്പിക്കാനും സാധിക്കും."
+              : "Join our Kollam–Thiruvananthapuram corridor waitlist or register your private passenger bus for monetization today."
+            }
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -164,7 +172,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
               onClick={() => playClickSound()}
               className="inline-flex items-center justify-center bg-gradient-to-r from-[#0A84FF] to-[#0070e3] text-white px-6 h-10 font-semibold text-[12px] rounded-lg transition-transform hover:scale-[1.02]"
             >
-              Join waitlist
+              {lang === "ML" ? "വെയിറ്റ്‌ലിസ്റ്റിൽ ചേരുക" : "Join waitlist"}
             </Link>
             <Link
               href="/"
@@ -175,7 +183,7 @@ export default function BlogReaderClient({ article }: { article: BlogArticle }) 
                   : "border-white/[0.1] text-white/70 hover:bg-white/[0.04]"
               }`}
             >
-              Back to Home
+              {lang === "ML" ? "ഹോമിലേക്ക് മടങ്ങുക" : "Back to Home"}
             </Link>
           </div>
         </div>

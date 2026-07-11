@@ -1,6 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.malayalam-font,
+.malayalam-font * {
+  font-family: 'Manjari', var(--font-inter), -apple-system, sans-serif !important;
+}
 
 :root {
   --background: #070708;
