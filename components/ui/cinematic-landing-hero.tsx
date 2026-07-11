@@ -558,7 +558,7 @@ export function CinematicHero({
                         <span className="text-[8px] font-bold">2 Mins Away</span>
                       </div>
 
-                      <div className="c-widget rounded-xl p-2.5 text-left shadow-2xl relative overflow-hidden bg-[#070913]/90">
+                      <div className="ci-widget c-widget rounded-xl p-2.5 text-left shadow-2xl relative overflow-hidden bg-[#070913]/90">
                         <h4 className="text-[9px] font-bold text-white leading-tight">KL-15-A-4020</h4>
                         <span className="text-[7px] text-white/40 font-medium uppercase">Fast Express</span>
                         <div className="flex justify-between items-center text-[8px] text-white/70 mt-1 mb-1">
@@ -1014,7 +1014,7 @@ export function CinematicHero({
                         </div>
 
                         {/* Floating Card 2: Bus Details Telemetry card */}
-                        <div className="c-widget rounded-2xl p-3.5 text-left shadow-2xl relative overflow-hidden backdrop-blur-md">
+                        <div className="ci-widget c-widget rounded-2xl p-3.5 text-left shadow-2xl relative overflow-hidden backdrop-blur-md">
                           <div className="flex justify-between items-start mb-2">
                             <div>
                               <h4 className="text-[11px] font-bold text-white leading-tight">KL-15-A-4020</h4>
