@@ -150,45 +150,60 @@ function Tip({ active, payload, label }) {
 }
 
 // ─── SLIDER with number input ─────────────────────────────────────────────────
-function Slider({ label, min, max, step, value, onChange, color=C.blue, hint }) {
+function Slider({ label, min, max, step, value, onChange, color=C.blue, hint, theme="dark" }) {
+  const isLight = theme === "light";
   return (
     <div style={{ marginBottom:13 }}>
-      <div style={{ display:"flex", justifyContext:"space-between", alignItems:"center", marginBottom:3, flexWrap:"nowrap" }}>
-        <span style={{ fontSize:11, color:"#94a3b8", fontWeight:500, lineHeight:1.3 }}>{label}</span>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:3 }}>
+        <span style={{ fontSize:11, color: isLight ? "#475569" : "#94a3b8", fontWeight:500, lineHeight:1.3 }}>{label}</span>
         <input
           type="number" min={min} max={max} step={step} value={value}
           onChange={e => { const v=Number(e.target.value); if(v>=min&&v<=max) onChange(v); }}
-          style={{ width:72, background:"#0f172a", border:`1px solid ${color}55`, borderRadius:5,
-            color, fontSize:11, fontWeight:700, textAlign:"right", padding:"2px 5px", outline:"none", marginLeft:"auto" }}
+          style={{ 
+            width:72, 
+            background: isLight ? "#ffffff" : "#0f172a", 
+            border:`1px solid ${isLight ? "rgba(0,0,0,0.15)" : color + "55"}`, 
+            borderRadius:5,
+            color, fontSize:11, fontWeight:700, textAlign:"right", padding:"2px 5px", outline:"none" 
+          }}
         />
       </div>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={e => onChange(Number(e.target.value))}
         style={{ width:"100%", accentColor:color, cursor:"pointer", height:3 }}
       />
-      {hint && <div style={{ fontSize:9, color:"#475569", marginTop:1 }}>{hint}</div>}
+      {hint && <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569", marginTop:1 }}>{hint}</div>}
     </div>
   );
 }
 
 // ─── KPI PILL ────────────────────────────────────────────────────────────────
-function KPI({ label, value, color=C.blue, glow }) {
+function KPI({ label, value, color=C.blue, glow, theme="dark" }) {
+  const isLight = theme === "light";
   return (
-    <div style={{ background:"#1e293b", border:`1px solid ${color}33`,
+    <div style={{ 
+      background: isLight ? "rgba(0,0,0,0.025)" : "#1e293b", 
+      border:`1px solid ${isLight ? "rgba(0,0,0,0.06)" : color + "33"}`,
       borderRadius:10, padding:"10px 14px", flex:"1 1 110px", minWidth:100,
-      boxShadow: glow ? `0 0 16px ${color}44` : "none" }}>
-      <div style={{ fontSize:9, color:"#475569", textTransform:"uppercase", letterSpacing:0.8, marginBottom:3 }}>{label}</div>
+      boxShadow: glow && !isLight ? `0 0 16px ${color}44` : "none" 
+    }}>
+      <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569", textTransform:"uppercase", letterSpacing:0.8, marginBottom:3 }}>{label}</div>
       <div style={{ fontSize:16, fontWeight:800, color }}>{value}</div>
     </div>
   );
 }
 
 // ─── CHART CARD ──────────────────────────────────────────────────────────────
-function ChartCard({ title, icon, children, height=220 }) {
+function ChartCard({ title, icon, children, height=220, theme="dark" }) {
+  const isLight = theme === "light";
   return (
-    <div style={{ background:"#1e293b", border:"1px solid #334155", borderRadius:12,
-      padding:"14px 16px", marginBottom:14 }}>
-      <div style={{ fontSize:12, fontWeight:700, color:"#94a3b8", marginBottom:10 }}>
+    <div style={{ 
+      background: isLight ? "rgba(0,0,0,0.015)" : "#1e293b", 
+      border:`1px solid ${isLight ? "rgba(0,0,0,0.06)" : "#334155"}`, 
+      borderRadius:12,
+      padding:"14px 16px", marginBottom:14 
+    }}>
+      <div style={{ fontSize:12, fontWeight:700, color: isLight ? "#475569" : "#94a3b8", marginBottom:10 }}>
         {icon} {title}
       </div>
       <div style={{ height }}>{children}</div>
@@ -197,7 +212,8 @@ function ChartCard({ title, icon, children, height=220 }) {
 }
 
 // ─── MAIN ────────────────────────────────────────────────────────────────────
-export default function Calculator() {
+export default function Calculator({ theme = "dark" }) {
+  const isLight = theme === "light";
   const [mounted, setMounted] = useState(false);
   const [v, setV] = useState(DEFAULT);
   const [activePreset, setActivePreset] = useState("base");
@@ -253,6 +269,7 @@ export default function Calculator() {
       const busHours = v.busRunningHours || 10;
       const adShare = v.adTimeShare || 40;
       
+      // Calculate weighted average ad duration and blended CPM:
       const videoPct = v.videoAdPct !== undefined ? v.videoAdPct : 60;
       const videoDur = v.videoAdDuration || 20;
       const imageDur = v.imageAdDuration || 7;
@@ -309,52 +326,78 @@ export default function Calculator() {
   const first = months[0] || {};
   const netCapexPerBus = Math.max(0, v.etmCost + v.tvCost + v.installationCost - v.ownerDeposit);
 
+  // milestone rows
   const milestoneTargets = [10,50,100,500,1000,5000,10000,50000];
+
+  // interval for X axis
   const xi = v.horizonMonths > 12 ? Math.floor(v.horizonMonths / 8) : 0;
 
   const chartTabs = ["overview","revenue","costs","profit","milestones"];
-  const chartTabLabel = { overview:"Overview", revenue:"Revenue Mix", costs:"Costs", profit:"Profitability", milestones:"Milestones" };
+  const chartTabLabel = { overview:"📈 Overview", revenue:"💰 Revenue", costs:"💸 Costs", profit:"🏆 Profit", milestones:"🚀 Milestones" };
 
-  const axTick = { fill:"#64748b", fontSize:9 };
-  const grid = <CartesianGrid strokeDasharray="3 3" stroke="#33415555" />;
+  // shared chart styles
+  const axTick = { fill: isLight ? "#64748b" : "#475569", fontSize:9 };
+  const grid = <CartesianGrid strokeDasharray="3 3" stroke={isLight ? "rgba(0,0,0,0.06)" : "#1e293b"} />;
 
   if (!mounted) {
     return (
-      <div style={{ display:"flex", justifyContent:"center", alignItems:"center", height:300 }}>
-        <div style={{ fontSize:14, fontWeight:700, color:"#94a3b8" }}>Loading Simulator...</div>
+      <div style={{ display:"flex", flexDirection:"column", background:"transparent",
+        color: isLight ? "#0f172a" : "#e2e8f0", fontFamily:"'Inter','Segoe UI',sans-serif", fontSize:13,
+        justifyContent:"center", alignItems:"center", height:300 }}>
+        <div style={{ fontSize:16, fontWeight:700, color: isLight ? "#64748b" : "#94a3b8" }}>Loading Scaling Model...</div>
       </div>
     );
   }
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", background:"transparent", color:"#e2e8f0", fontSize:13 }}>
-      {/* ── PRESETS ── */}
-      <div style={{ padding:"10px 0 16px 0", display:"flex", alignItems:"center", gap:12, flexWrap:"wrap" }}>
-        <span style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", color:"#64748b", letterSpacing:0.8 }}>Presets:</span>
+    <div style={{ display:"flex", flexDirection:"column", background:"transparent",
+      color: isLight ? "#0f172a" : "#e2e8f0", fontFamily:"'Inter','Segoe UI',sans-serif", fontSize:13 }}>
+
+      {/* ── HEADER ── */}
+      <div style={{ padding:"14px 0", borderBottom: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "#1e293b"}`,
+        display:"flex", alignItems:"center", gap:16, flexWrap:"wrap", marginBottom: 20 }}>
+        <div>
+          <div style={{ fontSize:20, fontWeight:900, background:`linear-gradient(90deg,${C.blue},${C.green})`,
+            WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>GetMyBus</div>
+          <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569", marginTop:1 }}>Business Scaling Calculator · Live Model</div>
+        </div>
+
+        {/* PRESET BUTTONS */}
         <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
           {Object.entries(PRESETS).map(([key, p]) => (
             <button key={key} onClick={() => applyPreset(key)} style={{
-              padding:"4px 10px", borderRadius:12, border:`1px solid ${p.color}55`,
-              background: activePreset===key ? p.color : `${p.color}12`,
+              padding:"5px 11px", borderRadius:20, border:`1px solid ${p.color}55`,
+              background: activePreset===key ? p.color : (isLight ? `${p.color}08` : `${p.color}15`),
               color: activePreset===key ? "#fff" : p.color,
-              fontSize:10, fontWeight:700, cursor:"pointer", transition:"all 0.15s",
+              fontSize:11, fontWeight:700, cursor:"pointer", transition:"all 0.15s",
               whiteSpace:"nowrap"
             }} title={p.desc}>{p.label}</button>
           ))}
         </div>
+
+        <div style={{ marginLeft:"auto", fontSize:10, color: isLight ? "#64748b" : "#334155" }}>
+          {activePreset && PRESETS[activePreset]?.desc}
+        </div>
       </div>
 
       {/* ── KPI STRIP ── */}
-      <div style={{ display:"flex", gap:8, padding:"12px 14px", flexWrap:"wrap", borderRadius:16,
-        background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", marginBottom:20 }}>
-        <KPI label="Buses at End" value={fmtN(last.buses||0)} color={C.blue} />
-        <KPI label="Monthly Revenue" value={fmt(last.totalRev||0)} color={C.green} glow />
-        <KPI label="Monthly Profit" value={fmt(last.profit||0)} color={(last.profit||0)>=0?C.green:C.red} glow={(last.profit||0)>0} />
-        <KPI label="Break-Even" value={breakEvenMonth?`Month ${breakEvenMonth}`:"—"} color={breakEvenMonth?C.green:C.amber} />
-        <KPI label="Cash Balance" value={fmt(last.cash||0)} color={(last.cash||0)>=0?C.cyan:C.red} />
-        <KPI label="Rev/Bus/Month" value={fmt(last.arpu||0)} color={C.indigo} />
-        <KPI label="Margin %" value={`${last.margin||0}%`} color={(last.margin||0)>=0?C.green:C.red} />
-        <KPI label="Owner Payout/mo" value={fmt(last.ownerPayout||0)} color={C.slate} />
+      <div style={{ 
+        display:"flex", gap:8, padding:"12px 14px", flexWrap:"wrap", 
+        borderRadius:16, 
+        background: isLight ? "rgba(0,0,0,0.015)" : "rgba(255,255,255,0.02)", 
+        border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.05)"}`, 
+        marginBottom:20 
+      }}>
+        <KPI label="Buses at End" value={fmtN(last.buses||0)} color={C.blue} theme={theme} />
+        <KPI label="Monthly Revenue" value={fmt(last.totalRev||0)} color={C.green} glow theme={theme} />
+        <KPI label="Monthly Profit" value={fmt(last.profit||0)} color={(last.profit||0)>=0?C.green:C.red} glow={(last.profit||0)>0} theme={theme} />
+        <KPI label="Break-Even" value={breakEvenMonth?`Month ${breakEvenMonth}`:"—"} color={breakEvenMonth?C.green:C.amber} theme={theme} />
+        <KPI label="Cash Balance" value={fmt(last.cash||0)} color={(last.cash||0)>=0?C.cyan:C.red} theme={theme} />
+        <KPI label="Cum. Revenue" value={fmt(last.cumRev||0)} color={C.purple} theme={theme} />
+        <KPI label="Net CAPEX/Bus" value={fmt(netCapexPerBus)} color={C.amber} theme={theme} />
+        <KPI label="Rev/Bus/Month" value={fmt(last.arpu||0)} color={C.indigo} theme={theme} />
+        <KPI label="Margin %" value={`${last.margin||0}%`} color={(last.margin||0)>=0?C.green:C.red} theme={theme} />
+        <KPI label="Owner Payout/mo" value={fmt(last.ownerPayout||0)} color={C.slate} theme={theme} />
       </div>
 
       {/* ── MAIN BODY ── */}
@@ -362,6 +405,7 @@ export default function Calculator() {
 
         {/* ── LEFT: INPUTS PANEL ── */}
         <div className="w-full lg:w-[280px]" style={{ flexShrink:0, display:"flex", flexDirection:"column" }}>
+
           {/* 1. GROWTH SECTION */}
           <div
             onClick={() => toggleSection("growth")}
@@ -375,12 +419,14 @@ export default function Calculator() {
               textTransform: "uppercase",
               letterSpacing: 1,
               marginBottom: openSections.growth ? 12 : 8,
+              marginTop: 4,
               cursor: "pointer",
               userSelect: "none",
               padding: "8px 10px",
-              background: "rgba(255,255,255,0.03)",
+              background: isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)",
               borderRadius: 8,
-              border: "1px solid rgba(255,255,255,0.05)",
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.05)"}`,
+              transition: "all 0.15s ease-in-out"
             }}
           >
             <span>📈 Growth</span>
@@ -390,22 +436,23 @@ export default function Calculator() {
           {openSections.growth && (
             <div style={{ padding: "0 4px 12px 4px" }}>
               <Slider label="Starting Buses" min={1} max={200} step={1}
-                value={v.initialBuses} onChange={set("initialBuses")} color={C.blue} />
+                value={v.initialBuses} onChange={set("initialBuses")} color={C.blue} theme={theme} />
               <Slider label="Seed Capital (₹)" min={0} max={20000000} step={50000}
-                value={v.seedCapital} onChange={set("seedCapital")} color={C.blue} />
-              <Slider label="Bus Growth Rate %" min={1} max={150} step={1}
-                value={v.busGrowthRate} onChange={set("busGrowthRate")} color={C.blue}
-                hint="% fleet increase per phase cycle" />
+                value={v.seedCapital} onChange={set("seedCapital")} fmt={fmt} color={C.blue} theme={theme} />
+              <Slider label="Bus Growth Rate % (per phase)" min={1} max={150} step={1}
+                value={v.busGrowthRate} onChange={set("busGrowthRate")} fmt={n=>`${n}%`} color={C.blue}
+                hint="% fleet increase per phase cycle" theme={theme} />
               <Slider label="Phase Length (months)" min={1} max={12} step={1}
-                value={v.monthsPerPhase} onChange={set("monthsPerPhase")} color={C.blue} />
-              <Slider label="City Expansion Month" min={1} max={60} step={1}
-                value={v.cityExpansionMonth} onChange={set("cityExpansionMonth")} color={C.cyan} />
+                value={v.monthsPerPhase} onChange={set("monthsPerPhase")} color={C.blue} theme={theme} />
+              <Slider label="City Expansion at Month" min={1} max={60} step={1}
+                value={v.cityExpansionMonth} onChange={set("cityExpansionMonth")} color={C.cyan}
+                hint="1.4× growth multiplier kicks in" theme={theme} />
               <Slider label="Projection (months)" min={6} max={72} step={6}
-                value={v.horizonMonths} onChange={set("horizonMonths")} color={C.blue} />
+                value={v.horizonMonths} onChange={set("horizonMonths")} color={C.blue} theme={theme} />
             </div>
           )}
 
-          <div style={{ height:1, background:"rgba(255,255,255,0.05)", margin:"6px 0 12px 0" }} />
+          <div style={{ height:1, background: isLight ? "rgba(0,0,0,0.06)" : "#1e293b", margin: openSections.growth ? "6px 0 12px 0" : "4px 0 8px 0" }} />
 
           {/* 2. HARDWARE SECTION */}
           <div
@@ -423,9 +470,10 @@ export default function Calculator() {
               cursor: "pointer",
               userSelect: "none",
               padding: "8px 10px",
-              background: "rgba(255,255,255,0.03)",
+              background: isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)",
               borderRadius: 8,
-              border: "1px solid rgba(255,255,255,0.05)",
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.05)"}`,
+              transition: "all 0.15s ease-in-out"
             }}
           >
             <span>🔧 Hardware CAPEX</span>
@@ -435,18 +483,28 @@ export default function Calculator() {
           {openSections.hardware && (
             <div style={{ padding: "0 4px 12px 4px" }}>
               <Slider label="Android ETM Cost (₹)" min={0} max={60000} step={500}
-                value={v.etmCost} onChange={set("etmCost")} color={C.amber} />
+                value={v.etmCost} onChange={set("etmCost")} fmt={fmt} color={C.amber} theme={theme} />
               <Slider label="TV / Display Cost (₹)" min={0} max={30000} step={500}
-                value={v.tvCost} onChange={set("tvCost")} color={C.amber} />
+                value={v.tvCost} onChange={set("tvCost")} fmt={fmt} color={C.amber} theme={theme} />
               <Slider label="Installation Cost (₹)" min={0} max={10000} step={250}
-                value={v.installationCost} onChange={set("installationCost")} color={C.amber} />
-              <Slider label="Owner Deposit (₹)" min={0} max={50000} step={500}
-                value={v.ownerDeposit} onChange={set("ownerDeposit")} color={C.green}
-                hint="Recovered from owner deposit" />
+                value={v.installationCost} onChange={set("installationCost")} fmt={fmt} color={C.amber} theme={theme} />
+              <Slider label="Owner Security Deposit (₹)" min={0} max={50000} step={500}
+                value={v.ownerDeposit} onChange={set("ownerDeposit")} fmt={fmt} color={C.green}
+                hint="Offsets your CAPEX — recovered from owner" theme={theme} />
+
+              <div style={{ 
+                background: isLight ? "rgba(0,0,0,0.02)" : "#0f172a", 
+                border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "transparent"}`,
+                borderRadius:8, padding:"8px 12px", marginBottom:12 
+              }}>
+                <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569" }}>Your net CAPEX per bus</div>
+                <div style={{ fontSize:16, fontWeight:800, color:C.amber }}>{fmt(netCapexPerBus)}</div>
+                {netCapexPerBus<=0 && <div style={{ fontSize:9, color:C.green }}>✓ Fully owner-funded!</div>}
+              </div>
             </div>
           )}
 
-          <div style={{ height:1, background:"rgba(255,255,255,0.05)", margin:"6px 0 12px 0" }} />
+          <div style={{ height:1, background: isLight ? "rgba(0,0,0,0.06)" : "#1e293b", margin: openSections.hardware ? "6px 0 12px 0" : "4px 0 8px 0" }} />
 
           {/* 3. MONTHLY OPEX SECTION */}
           <div
@@ -464,27 +522,28 @@ export default function Calculator() {
               cursor: "pointer",
               userSelect: "none",
               padding: "8px 10px",
-              background: "rgba(255,255,255,0.03)",
+              background: isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)",
               borderRadius: 8,
-              border: "1px solid rgba(255,255,255,0.05)",
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.05)"}`,
+              transition: "all 0.15s ease-in-out"
             }}
           >
-            <span>💸 Opex / Bus</span>
+            <span>💸 Monthly Opex / Bus</span>
             <span style={{ fontSize: 9 }}>{openSections.opex ? "▲" : "▼"}</span>
           </div>
 
           {openSections.opex && (
             <div style={{ padding: "0 4px 12px 4px" }}>
-              <Slider label="SIM / Data (₹)" min={0} max={2000} step={50}
-                value={v.simCostPerBus} onChange={set("simCostPerBus")} color={C.red} />
+              <Slider label="SIM / Data Plan (₹)" min={0} max={2000} step={50}
+                value={v.simCostPerBus} onChange={set("simCostPerBus")} fmt={fmt} color={C.red} theme={theme} />
               <Slider label="Maintenance (₹)" min={0} max={2000} step={50}
-                value={v.maintenancePerBus} onChange={set("maintenancePerBus")} color={C.red} />
-              <Slider label="Server Cost (₹)" min={0} max={500} step={10}
-                value={v.serverCostPerBus} onChange={set("serverCostPerBus")} color={C.red} />
+                value={v.maintenancePerBus} onChange={set("maintenancePerBus")} fmt={fmt} color={C.red} theme={theme} />
+              <Slider label="Marginal Server Cost (₹)" min={0} max={500} step={10}
+                value={v.serverCostPerBus} onChange={set("serverCostPerBus")} fmt={fmt} color={C.red} theme={theme} />
             </div>
           )}
 
-          <div style={{ height:1, background:"rgba(255,255,255,0.05)", margin:"6px 0 12px 0" }} />
+          <div style={{ height:1, background: isLight ? "rgba(0,0,0,0.06)" : "#1e293b", margin: openSections.opex ? "6px 0 12px 0" : "4px 0 8px 0" }} />
 
           {/* 4. FIXED OPEX SECTION */}
           <div
@@ -502,9 +561,10 @@ export default function Calculator() {
               cursor: "pointer",
               userSelect: "none",
               padding: "8px 10px",
-              background: "rgba(255,255,255,0.03)",
+              background: isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)",
               borderRadius: 8,
-              border: "1px solid rgba(255,255,255,0.05)",
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.05)"}`,
+              transition: "all 0.15s ease-in-out"
             }}
           >
             <span>🏢 Fixed Monthly Opex</span>
@@ -514,17 +574,17 @@ export default function Calculator() {
           {openSections.fixed && (
             <div style={{ padding: "0 4px 12px 4px" }}>
               <Slider label="Team Salaries (₹)" min={0} max={5000000} step={10000}
-                value={v.teamSalary} onChange={set("teamSalary")} color={C.pink} />
+                value={v.teamSalary} onChange={set("teamSalary")} fmt={fmt} color={C.pink} theme={theme} />
               <Slider label="Office + Misc (₹)" min={0} max={500000} step={5000}
-                value={v.officeOther} onChange={set("officeOther")} color={C.pink} />
+                value={v.officeOther} onChange={set("officeOther")} fmt={fmt} color={C.pink} theme={theme} />
               <Slider label="Marketing Budget (₹)" min={0} max={2000000} step={10000}
-                value={v.marketingBudget} onChange={set("marketingBudget")} color={C.pink} />
-              <Slider label="Base Infra (₹)" min={0} max={500000} step={5000}
-                value={v.baseInfra} onChange={set("baseInfra")} color={C.pink} />
+                value={v.marketingBudget} onChange={set("marketingBudget")} fmt={fmt} color={C.pink} theme={theme} />
+              <Slider label="Base Infrastructure (₹)" min={0} max={500000} step={5000}
+                value={v.baseInfra} onChange={set("baseInfra")} fmt={fmt} color={C.pink} theme={theme} />
             </div>
           )}
 
-          <div style={{ height:1, background:"rgba(255,255,255,0.05)", margin:"6px 0 12px 0" }} />
+          <div style={{ height:1, background: isLight ? "rgba(0,0,0,0.06)" : "#1e293b", margin: openSections.fixed ? "6px 0 12px 0" : "4px 0 8px 0" }} />
 
           {/* 5. REVENUE LEVERS SECTION */}
           <div
@@ -542,9 +602,10 @@ export default function Calculator() {
               cursor: "pointer",
               userSelect: "none",
               padding: "8px 10px",
-              background: "rgba(255,255,255,0.03)",
+              background: isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)",
               borderRadius: 8,
-              border: "1px solid rgba(255,255,255,0.05)",
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.05)"}`,
+              transition: "all 0.15s ease-in-out"
             }}
           >
             <span>💰 Revenue Levers</span>
@@ -553,22 +614,26 @@ export default function Calculator() {
 
           {openSections.revenue && (
             <div style={{ padding: "0 4px 12px 4px" }}>
-              <Slider label="Passengers / Bus / Day" min={0} max={2000} step={25}
-                value={v.avgPassengersPerBus} onChange={set("avgPassengersPerBus")} color={C.green} />
+              <Slider label="Avg Passengers / Bus / Day" min={0} max={2000} step={25}
+                value={v.avgPassengersPerBus} onChange={set("avgPassengersPerBus")} color={C.green} theme={theme} />
               <Slider label="Digital Ticket Adoption %" min={0} max={100} step={1}
-                value={v.digitalTicketPct} onChange={set("digitalTicketPct")} color={C.green} />
-              <Slider label="Commission / ticket (₹)" min={0} max={30} step={0.5}
-                value={v.ticketCommission} onChange={set("ticketCommission")} color={C.green} />
-              <Slider label="App Ad Rev (₹/DAU/day)" min={0} max={30} step={0.5}
-                value={v.appAdRPMD} onChange={set("appAdRPMD")} color={C.green} />
-              <Slider label="Event Sponsorship (₹)" min={0} max={5000} step={100}
-                value={v.eventFee !== undefined ? v.eventFee : 500} onChange={set("eventFee")} color={C.green} />
+                value={v.digitalTicketPct} onChange={set("digitalTicketPct")} fmt={n=>`${n}%`} color={C.green} theme={theme} />
+              <Slider label="Ticket Commission (₹ / ticket)" min={0} max={30} step={0.5}
+                value={v.ticketCommission} onChange={set("ticketCommission")} fmt={n=>`₹${n}`} color={C.green} theme={theme} />
+              <Slider label="App Ad Revenue (₹/DAU/day)" min={0} max={30} step={0.5}
+                value={v.appAdRPMD} onChange={set("appAdRPMD")} fmt={n=>`₹${n}`} color={C.green} theme={theme} />
+              
+              <Slider label="Event Sponsorship (₹ / bus)" min={0} max={5000} step={100}
+                value={v.eventFee !== undefined ? v.eventFee : 500} onChange={set("eventFee")} fmt={fmt} color={C.green}
+                hint="Sponsorship rate charged per event per bus" theme={theme} />
+              
               <Slider label="Event Activation Rate %" min={0} max={100} step={1}
-                value={v.eventActivationPct !== undefined ? v.eventActivationPct : 8} onChange={set("eventActivationPct")} color={C.green} />
+                value={v.eventActivationPct !== undefined ? v.eventActivationPct : 8} onChange={set("eventActivationPct")} fmt={n=>`${n}%`} color={C.green}
+                hint="% of buses hosting sponsored events/activations monthly" theme={theme} />
             </div>
           )}
 
-          <div style={{ height:1, background:"rgba(255,255,255,0.05)", margin:"6px 0 12px 0" }} />
+          <div style={{ height:1, background: isLight ? "rgba(0,0,0,0.06)" : "#1e293b", margin: openSections.revenue ? "6px 0 12px 0" : "4px 0 8px 0" }} />
 
           {/* 6. ADVERTISERS SECTION */}
           <div
@@ -586,9 +651,10 @@ export default function Calculator() {
               cursor: "pointer",
               userSelect: "none",
               padding: "8px 10px",
-              background: "rgba(255,255,255,0.03)",
+              background: isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)",
               borderRadius: 8,
-              border: "1px solid rgba(255,255,255,0.05)",
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.05)"}`,
+              transition: "all 0.15s ease-in-out"
             }}
           >
             <span>📢 Advertisers</span>
@@ -598,39 +664,183 @@ export default function Calculator() {
           {openSections.advertisers && (
             <div style={{ padding: "0 4px 12px 4px" }}>
               <Slider label="Advertisers Count" min={1} max={50} step={1}
-                value={v.advertiserCount || 8} onChange={set("advertiserCount")} color={C.purple} />
-              <Slider label="Running Hours / Day" min={4} max={18} step={0.5}
-                value={v.busRunningHours || 10} onChange={set("busRunningHours")} color={C.purple} />
+                value={v.advertiserCount || 8} onChange={set("advertiserCount")} color={C.purple} theme={theme} />
+              
+              <Slider label="Bus Running Hours / Day" min={4} max={18} step={0.5}
+                value={v.busRunningHours || 10} onChange={set("busRunningHours")} color={C.purple}
+                hint="Daily operational hours of the bus screens" theme={theme} />
+
               <Slider label="Video Ads Share %" min={0} max={100} step={5}
-                value={v.videoAdPct !== undefined ? v.videoAdPct : 60} onChange={set("videoAdPct")} color={C.purple} />
-              <Slider label="Video Ad Duration (s)" min={10} max={60} step={5}
-                value={v.videoAdDuration || 20} onChange={set("videoAdDuration")} color={C.purple} />
-              <Slider label="Image Ad Duration (s)" min={3} max={15} step={1}
-                value={v.imageAdDuration || 7} onChange={set("imageAdDuration")} color={C.purple} />
+                value={v.videoAdPct !== undefined ? v.videoAdPct : 60} onChange={set("videoAdPct")} fmt={n=>`${n}%`} color={C.purple}
+                hint={`Remaining ${100 - (v.videoAdPct !== undefined ? v.videoAdPct : 60)}% are static image ads`} theme={theme} />
+
+              <Slider label="Video Ad Duration (seconds)" min={10} max={60} step={5}
+                value={v.videoAdDuration || 20} onChange={set("videoAdDuration")} color={C.purple} theme={theme} />
+
+              <Slider label="Image Ad Duration (seconds)" min={3} max={15} step={1}
+                value={v.imageAdDuration || 7} onChange={set("imageAdDuration")} color={C.purple} theme={theme} />
+
               <Slider label="Ad Screen Share %" min={5} max={100} step={5}
-                value={v.adTimeShare || 40} onChange={set("adTimeShare")} color={C.purple} />
-              <Slider label="Plays / Brand / Bus" min={10} max={500} step={10}
-                value={v.adPlaysPerBrandPerDay || 60} onChange={set("adPlaysPerBrandPerDay")} color={C.purple} />
-              <Slider label="Video CPM (₹/1k)" min={0} max={500} step={5}
-                value={v.videoCpmRate !== undefined ? v.videoCpmRate : 150} onChange={set("videoCpmRate")} color={C.purple} />
-              <Slider label="Image CPM (₹/1k)" min={0} max={300} step={5}
-                value={v.imageCpmRate !== undefined ? v.imageCpmRate : 60} onChange={set("imageCpmRate")} color={C.purple} />
-              <Slider label="Owner Rev Share %" min={0} max={90} step={5}
-                value={v.ownerRevShare} onChange={set("ownerRevShare")} color={C.amber} />
+                value={v.adTimeShare || 40} onChange={set("adTimeShare")} fmt={n=>`${n}%`} color={C.purple}
+                hint="Proportion of screen loop allocated for ads vs transit info" theme={theme} />
+
+              {/* Dynamic Capacity Stats Panel */}
+              {(() => {
+                const vidPct = v.videoAdPct !== undefined ? v.videoAdPct : 60;
+                const vidDur = v.videoAdDuration || 20;
+                const imgDur = v.imageAdDuration || 7;
+                const weightedAvgDur = (vidPct / 100) * vidDur + ((100 - vidPct) / 100) * imgDur;
+                
+                const maxCap = Math.round(((v.busRunningHours || 10) * 3600 * ((v.adTimeShare || 40) / 100)) / (weightedAvgDur || 15));
+                const demanded = (v.advertiserCount || 8) * (v.adPlaysPerBrandPerDay || 60);
+                const actualPlays = Math.min(maxCap, demanded);
+                const calculatedFill = maxCap > 0 ? (actualPlays / maxCap) * 100 : 0;
+                const playsBrand = v.adPlaysPerBrandPerDay || 60;
+ 
+                // Timeline percentages:
+                const adShare = v.adTimeShare || 40;
+                const wVideo = adShare * (calculatedFill / 100) * (vidPct / 100);
+                const wImage = adShare * (calculatedFill / 100) * ((100 - vidPct) / 100);
+                const wUnfilled = adShare * ((100 - calculatedFill) / 100);
+                const wTransit = 100 - adShare;
+ 
+                const playsPerHour = playsBrand / (v.busRunningHours || 10);
+ 
+                const videoCpm = v.videoCpmRate !== undefined ? v.videoCpmRate : 150;
+                const imageCpm = v.imageCpmRate !== undefined ? v.imageCpmRate : 60;
+                const blendedCpm = (vidPct / 100) * videoCpm + ((100 - vidPct) / 100) * imageCpm;
+ 
+                const ownerRevShare = v.ownerRevShare !== undefined ? v.ownerRevShare : 50;
+                const grossRevBusMonth = (actualPlays * 30 * blendedCpm) / 1000;
+                const ownerCutBusMonth = grossRevBusMonth * (ownerRevShare / 100);
+                const yourCutBusMonth = grossRevBusMonth - ownerCutBusMonth;
+ 
+                return (
+                  <div>
+                    {/* Stats Card */}
+                    <div style={{ 
+                      background: isLight ? "rgba(0,0,0,0.02)" : "#0f172a", 
+                      border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "transparent"}`,
+                      borderRadius:8, padding:"10px 12px", marginBottom:10 
+                    }}>
+                      <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569", marginBottom:4, fontWeight:700, textTransform:"uppercase" }}>Network Ad Capacity</div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Avg Ad Duration:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.indigo }}>{weightedAvgDur.toFixed(1)}s</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Max Plays Capacity:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.purple }}>{maxCap} / day</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Demanded Plays:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.amber }}>{demanded} / day</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Calculated Fill Rate:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color: calculatedFill >= 100 ? C.red : C.green }}>
+                          {calculatedFill.toFixed(1)}% {calculatedFill >= 100 ? "(Capped)" : ""}
+                        </span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Plays per Brand:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.cyan }}>{playsBrand} / day</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Brand Play Frequency:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.pink }}>~{playsPerHour.toFixed(1)} times / hour</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Blended CPM Rate:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.purple }}>₹{blendedCpm.toFixed(1)} / 1k</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", borderTop: isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid #1e293b", marginTop:6, paddingTop:6, marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Gross Rev / Bus / Month:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color: isLight ? "#0f172a" : "#ffffff" }}>₹{Math.round(grossRevBusMonth).toLocaleString("en-IN")}</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Bus Owner Cut / Month:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.amber }}>₹{Math.round(ownerCutBusMonth).toLocaleString("en-IN")} ({ownerRevShare}%)</span>
+                      </div>
+                      <div style={{ display:"flex", justifyContent:"space-between" }}>
+                        <span style={{ fontSize:10, color: isLight ? "#475569" : "#94a3b8" }}>Your Net Cut / Bus / Month:</span>
+                        <span style={{ fontSize:10, fontWeight:700, color:C.green }}>₹{Math.round(yourCutBusMonth).toLocaleString("en-IN")} ({100 - ownerRevShare}%)</span>
+                      </div>
+                    </div>
+ 
+                    {/* Timeline loop visualizer */}
+                    <div style={{ 
+                      background: isLight ? "rgba(0,0,0,0.02)" : "#0f172a", 
+                      border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "transparent"}`,
+                      borderRadius:8, padding:"10px 12px", marginBottom:12 
+                    }}>
+                      <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569", marginBottom:6, fontWeight:700, textTransform:"uppercase" }}>Screen Loop Timeline (1 Hour)</div>
+                      
+                      {/* Timeline bar */}
+                      <div style={{ height:18, display:"flex", borderRadius:9, overflow:"hidden", border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "#1e293b"}`, marginBottom:8 }}>
+                        {wVideo > 0 && <div style={{ width:`${wVideo}%`, background:C.purple }} title={`Video Ads: ${wVideo.toFixed(1)}%`} />}
+                        {wImage > 0 && <div style={{ width:`${wImage}%`, background:C.blue }} title={`Image Ads: ${wImage.toFixed(1)}%`} />}
+                        {wUnfilled > 0 && <div style={{ width:`${wUnfilled}%`, background: isLight ? "rgba(0,0,0,0.15)" : "#334155" }} title={`Unfilled Slots: ${wUnfilled.toFixed(1)}%`} />}
+                        {wTransit > 0 && <div style={{ width:`${wTransit}%`, background:C.green }} title={`Transit Info: ${wTransit.toFixed(1)}%`} />}
+                      </div>
+ 
+                      {/* Legend */}
+                      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:4, fontSize:8 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:4 }}>
+                          <span style={{ width:6, height:6, borderRadius:2, background:C.purple }} />
+                          <span style={{ color: isLight ? "#475569" : "#94a3b8" }}>Video Ads ({wVideo.toFixed(0)}%)</span>
+                        </div>
+                        <div style={{ display:"flex", alignItems:"center", gap:4 }}>
+                          <span style={{ width:6, height:6, borderRadius:2, background:C.blue }} />
+                          <span style={{ color: isLight ? "#475569" : "#94a3b8" }}>Image Ads ({wImage.toFixed(0)}%)</span>
+                        </div>
+                        <div style={{ display:"flex", alignItems:"center", gap:4 }}>
+                          <span style={{ width:6, height:6, borderRadius:2, background: isLight ? "rgba(0,0,0,0.15)" : "#334155" }} />
+                          <span style={{ color: isLight ? "#475569" : "#94a3b8" }}>Unfilled ({wUnfilled.toFixed(0)}%)</span>
+                        </div>
+                        <div style={{ display:"flex", alignItems:"center", gap:4 }}>
+                          <span style={{ width:6, height:6, borderRadius:2, background:C.green }} />
+                          <span style={{ color: isLight ? "#475569" : "#94a3b8" }}>Transit Info ({wTransit.toFixed(0)}%)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+ 
+              <Slider label="Plays / Brand / Bus / Day" min={10} max={500} step={10}
+                value={v.adPlaysPerBrandPerDay || 60} onChange={set("adPlaysPerBrandPerDay")} color={C.purple}
+                hint="How many times each advertiser's ad runs daily per bus" theme={theme} />
+ 
+              <Slider label="Video CPM Rate (₹ / 1000 plays)" min={0} max={500} step={5}
+                value={v.videoCpmRate !== undefined ? v.videoCpmRate : 150} onChange={set("videoCpmRate")} fmt={n=>`₹${n}`} color={C.purple}
+                hint="CPM rate charged for video campaigns" theme={theme} />
+ 
+              <Slider label="Image CPM Rate (₹ / 1000 plays)" min={0} max={300} step={5}
+                value={v.imageCpmRate !== undefined ? v.imageCpmRate : 60} onChange={set("imageCpmRate")} fmt={n=>`₹${n}`} color={C.purple}
+                hint="CPM rate charged for static image campaigns" theme={theme} />
+ 
+              <Slider label="Owner Revenue Share %" min={0} max={90} step={5}
+                value={v.ownerRevShare} onChange={set("ownerRevShare")} fmt={n=>`${n}%`} color={C.amber}
+                hint={`You keep ${100-v.ownerRevShare}%`} theme={theme} />
             </div>
           )}
+ 
+          <div style={{ height:30 }} />
         </div>
-
+ 
         {/* ── RIGHT: CHARTS PANEL ── */}
-        <div style={{ flex:1, display:"flex", flexDirection:"column" }}>
+        <div style={{ flex:1 }}>
+ 
           {/* Chart tab bar */}
           <div style={{ display:"flex", gap:6, marginBottom:14, flexWrap:"wrap" }}>
             {chartTabs.map(t => (
               <button key={t} onClick={() => setChartTab(t)} style={{
-                padding:"5px 13px", borderRadius:8, border:"none", cursor:"pointer",
+                padding:"5px 13px", borderRadius:8, cursor:"pointer",
                 fontSize:11, fontWeight:700,
-                background: chartTab===t ? C.blue : "rgba(255,255,255,0.04)",
-                color: chartTab===t ? "#fff" : "#64748b",
+                background: chartTab===t ? C.blue : (isLight ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.04)"),
+                color: chartTab===t ? "#fff" : (isLight ? "#475569" : "#94a3b8"),
+                border: isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(255,255,255,0.05)",
                 transition:"all 0.15s"
               }}>{chartTabLabel[t]}</button>
             ))}
@@ -639,7 +849,7 @@ export default function Calculator() {
           {/* ── OVERVIEW ── */}
           {chartTab==="overview" && (<>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:14 }}>
-              <ChartCard title="Fleet Growth" icon="🚌" height={200}>
+              <ChartCard title="Fleet Growth" icon="🚌" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={months}>
                     <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
@@ -656,7 +866,7 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
 
-              <ChartCard title="Revenue vs Cost" icon="⚖️" height={200}>
+              <ChartCard title="Revenue vs Cost" icon="⚖️" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={months}>
                     {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
@@ -669,7 +879,7 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
 
-              <ChartCard title="Monthly Profit / Loss" icon="📊" height={200}>
+              <ChartCard title="Monthly Profit / Loss" icon="📊" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={months}>
                     {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
@@ -683,7 +893,7 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
 
-              <ChartCard title="Cash Balance" icon="🏦" height={200}>
+              <ChartCard title="Cash Balance" icon="🏦" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={months}>
                     <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
@@ -701,9 +911,12 @@ export default function Calculator() {
             </div>
 
             {/* Unit economics strip */}
-            <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:12,
-              padding:"14px 16px", marginTop:10 }}>
-              <div style={{ fontSize:11, fontWeight:700, color:"#94a3b8", marginBottom:10 }}>🧮 Unit Economics</div>
+            <div style={{ 
+              background: isLight ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.02)", 
+              border: isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(255,255,255,0.05)",
+              borderRadius: 12, padding:"14px 16px", marginTop:14 
+            }}>
+              <div style={{ fontSize:11, fontWeight:700, color: isLight ? "#475569" : "#94a3b8", marginBottom:10 }}>🧮 Unit Economics</div>
               <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
                 {[
                   {l:"Net CAPEX/Bus", v:fmt(netCapexPerBus), c:C.amber},
@@ -713,10 +926,14 @@ export default function Calculator() {
                   {l:"HW Payback", v:first.arpu>0?`~${Math.ceil(netCapexPerBus/first.arpu)}mo`:"∞", c:C.purple},
                   {l:"Owner ₹/Bus/Mo", v:fmt((last.ownerPayout||0)/Math.max(1,last.buses||1)), c:C.slate},
                   {l:"Break-Even", v:breakEvenMonth?`M${breakEvenMonth}`:"Not reached", c:breakEvenMonth?C.green:C.red},
-                  {l:"Total CAPEX", v:fmt(cumulativeCapex), c:C.amber},
+                  {l:"Total CAPEX Deployed", v:fmt(cumulativeCapex), c:C.amber},
                 ].map(({l,v:val,c})=>(
-                  <div key={l} style={{ background:"#0f172a", borderRadius:8, padding:"9px 12px", flex:"1 1 120px", minWidth:110 }}>
-                    <div style={{ fontSize:9, color:"#475569", marginBottom:3 }}>{l}</div>
+                  <div key={l} style={{ 
+                    background: isLight ? "#ffffff" : "#0f172a", 
+                    border: isLight ? "1px solid rgba(0,0,0,0.06)" : "none",
+                    borderRadius:8, padding:"9px 12px", flex:"1 1 120px", minWidth:110 
+                  }}>
+                    <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569", marginBottom:3 }}>{l}</div>
                     <div style={{ fontSize:14, fontWeight:800, color:c }}>{val}</div>
                   </div>
                 ))}
@@ -727,7 +944,7 @@ export default function Calculator() {
           {/* ── REVENUE ── */}
           {chartTab==="revenue" && (<>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:14 }}>
-              <ChartCard title="Revenue Streams Over Time" icon="💰" height={240}>
+              <ChartCard title="Revenue Streams Over Time" icon="💰" height={240} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={months}>
                     <defs>
@@ -749,7 +966,7 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
 
-              <ChartCard title={`Revenue Mix M${v.horizonMonths}`} icon="🥧" height={240}>
+              <ChartCard title={`Revenue Mix M${v.horizonMonths}`} icon="🥧" height={240} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={[
@@ -767,8 +984,8 @@ export default function Calculator() {
               </ChartCard>
             </div>
 
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:14, marginTop:10 }}>
-              <ChartCard title="Your Ad Cut vs Owner Payout" icon="🤝" height={200}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:14, marginTop:14 }}>
+              <ChartCard title="Your Ad Cut vs Owner Payout" icon="🤝" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={months}>
                     {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
@@ -780,7 +997,7 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
 
-              <ChartCard title="Cumulative Revenue" icon="📈" height={200}>
+              <ChartCard title="Cumulative Revenue" icon="📈" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={months}>
                     <defs><linearGradient id="crg" x1="0" y1="0" x2="0" y2="1">
@@ -799,7 +1016,7 @@ export default function Calculator() {
 
           {/* ── COSTS ── */}
           {chartTab==="costs" && (<>
-            <ChartCard title="Monthly Cost Breakdown" icon="💸" height={240}>
+            <ChartCard title="Monthly Cost Breakdown" icon="💸" height={240} theme={theme}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={months}>
                   {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
@@ -812,8 +1029,8 @@ export default function Calculator() {
               </ResponsiveContainer>
             </ChartCard>
 
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:14, marginTop:10 }}>
-              <ChartCard title="Hardware CAPEX Deployment" icon="🔧" height={200}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:14, marginTop:14 }}>
+              <ChartCard title="Hardware CAPEX Deployment" icon="🔧" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={months}>
                     {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
@@ -824,7 +1041,7 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
 
-              <ChartCard title="Cost Structure at Scale" icon="📊" height={200}>
+              <ChartCard title="Cost Structure at Scale" icon="📊" height={200} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={[
@@ -840,19 +1057,51 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
             </div>
+
+            {/* Cost breakdown table */}
+            <div style={{ 
+              background: isLight ? "rgba(0,0,0,0.01)" : "#1e293b", 
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "#334155"}`, 
+              borderRadius:12, padding:"14px 16px", marginTop:14 
+            }}>
+              <div style={{ fontSize:11, fontWeight:700, color: isLight ? "#475569" : "#94a3b8", marginBottom:10 }}>Cost Snapshot</div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(280px, 1fr))", gap:16 }}>
+                {[
+                  {title:`Month 1 (${v.initialBuses} buses)`, m:first},
+                  {title:`Month ${v.horizonMonths} (${fmtN(last.buses||0)} buses)`, m:last},
+                ].map(({title,m})=>(
+                  <div key={title}>
+                    <div style={{ fontSize:10, color: isLight ? "#64748b" : "#475569", marginBottom:6 }}>{title}</div>
+                    {[
+                      {l:"Hardware CAPEX",v:m.capex,c:C.red},
+                      {l:"Bus Variable Opex",v:m.busOpex,c:C.amber},
+                      {l:"Team + Fixed",v:m.fixedOpex,c:C.pink},
+                      {l:"Total",v:m.totalOpex,c: isLight ? "#0f172a" : "#e2e8f0"},
+                    ].map(({l,v:val,c})=>(
+                      <div key={l} style={{ display:"flex", justifyContent:"space-between",
+                        padding:"5px 0", borderBottom: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : "#0f172a"}` }}>
+                        <span style={{ fontSize:11, color: isLight ? "#64748b" : "#64748b" }}>{l}</span>
+                        <span style={{ fontSize:11, fontWeight:700, color:c }}>{fmt(val||0)}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
           </>)}
 
           {/* ── PROFIT ── */}
           {chartTab==="profit" && (<>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:14 }}>
-              <ChartCard title="Monthly Profit / Loss" icon="📊" height={220}>
+              <ChartCard title="Monthly Profit / Loss" icon="📊" height={220} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={months}>
                     {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
                     <YAxis tick={axTick} tickFormatter={fmt}/>
                     <Tooltip content={<Tip/>}/>
                     <ReferenceLine y={0} stroke="#475569" strokeWidth={2}/>
-                    {breakEvenMonth&&<ReferenceLine x={`M${breakEvenMonth}`} stroke={C.green} strokeDasharray="4 3"/>}
+                    {breakEvenMonth&&<ReferenceLine x={`M${breakEvenMonth}`} stroke={C.green} strokeDasharray="4 3"
+                      label={{value:`Break-even`,fill:C.green,fontSize:9,position:"top"}}/>}
                     <Bar dataKey="profit" name="Profit" radius={[2,2,0,0]}>
                       {months.map((m,i)=><Cell key={i} fill={m.profit>=0?C.green:C.red}/>)}
                     </Bar>
@@ -860,7 +1109,7 @@ export default function Calculator() {
                 </ResponsiveContainer>
               </ChartCard>
 
-              <ChartCard title="Gross Margin %" icon="%" height={220}>
+              <ChartCard title="Gross Margin %" icon="%" height={220} theme={theme}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={months}>
                     {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
@@ -871,31 +1120,115 @@ export default function Calculator() {
                   </LineChart>
                 </ResponsiveContainer>
               </ChartCard>
+
+              <ChartCard title="Cumulative Profit / Loss" icon="📈" height={200} theme={theme}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={months}>
+                    <defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={C.purple} stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor={C.purple} stopOpacity={0}/>
+                    </linearGradient></defs>
+                    {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
+                    <YAxis tick={axTick} tickFormatter={fmt}/>
+                    <Tooltip content={<Tip/>}/>
+                    <ReferenceLine y={0} stroke={C.red} strokeWidth={1.5}/>
+                    <Area type="monotone" dataKey="cumProfit" stroke={C.purple} fill="url(#cpg)" name="Cum. Profit" strokeWidth={2} dot={false}/>
+                  </AreaChart>
+                </ResponsiveContainer>
+              </ChartCard>
+
+              <ChartCard title="Cash Balance" icon="🏦" height={200} theme={theme}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={months}>
+                    <defs><linearGradient id="cbal" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={C.cyan} stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor={C.cyan} stopOpacity={0}/>
+                    </linearGradient></defs>
+                    {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
+                    <YAxis tick={axTick} tickFormatter={fmt}/>
+                    <Tooltip content={<Tip/>}/>
+                    <ReferenceLine y={0} stroke={C.red} strokeWidth={1.5}/>
+                    <Area type="monotone" dataKey="cash" stroke={C.cyan} fill="url(#cbal)" name="Cash" strokeWidth={2} dot={false}/>
+                  </AreaChart>
+                </ResponsiveContainer>
+              </ChartCard>
             </div>
           </>)}
 
           {/* ── MILESTONES ── */}
           {chartTab==="milestones" && (<>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(130px, 1fr))", gap:10, marginBottom:14 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(130px, 1fr))", gap:10, marginBottom:14 }}>
               {milestoneTargets.map(target => {
                 const hit = months.find(m => m.buses >= target);
                 return (
-                  <div key={target} style={{ background:"rgba(255,255,255,0.02)", border:`1px solid ${hit?C.green+"44":"rgba(255,255,255,0.05)"}`,
-                    borderRadius:10, padding:"12px 14px", opacity:hit?1:0.45 }}>
+                  <div key={target} style={{ 
+                    background: isLight ? "rgba(0,0,0,0.015)" : "#1e293b", 
+                    border: isLight ? "1px solid rgba(0,0,0,0.06)" : `1px solid ${hit?C.green+"44":"#334155"}`,
+                    borderRadius:10, padding:"12px 14px", opacity:hit?1:0.45 
+                  }}>
                     <div style={{ fontSize:18, marginBottom:4 }}>
-                      {target<50?"🌱":target<500?"🚌":"🏙️"}
+                      {target<=10?"🌱":target<=100?"🚌":target<=500?"🏙️":target<=1000?"🌆":target<=5000?"🌍":"💰"}
                     </div>
-                    <div style={{ fontSize:12, fontWeight:800 }}>{fmtN(target)} Buses</div>
-                    {hit ? (
+                    <div style={{ fontSize:12, fontWeight:800, color: isLight ? "#0f172a" : "#e2e8f0" }}>{fmtN(target)} Buses</div>
+                    {hit ? (<>
                       <div style={{ fontSize:10, color:C.green, marginTop:4 }}>Reached {hit.month}</div>
-                    ) : (
-                      <div style={{ fontSize:10, color:"#475569", marginTop:4 }}>Not reached</div>
+                      <div style={{ fontSize:10, color: isLight ? "#64748b" : "#94a3b8" }}>Rev: {fmt(hit.totalRev)}/mo</div>
+                      <div style={{ fontSize:10, color:hit.profit>=0?C.green:C.red }}>
+                        Profit: {fmt(hit.profit)}/mo
+                      </div>
+                      <div style={{ fontSize:10, color: isLight ? "#64748b" : "#64748b" }}>Cash: {fmt(hit.cash)}</div>
+                    </>) : (
+                      <div style={{ fontSize:10, color: isLight ? "#64748b" : "#475569", marginTop:4 }}>Not in {v.horizonMonths}mo</div>
                     )}
                   </div>
                 );
               })}
             </div>
+
+            <ChartCard title="Revenue Per Bus (ARPU) Trend" icon="📊" height={210} theme={theme}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={months}>
+                  {grid}<XAxis dataKey="month" tick={axTick} interval={xi}/>
+                  <YAxis tick={axTick} tickFormatter={fmt}/>
+                  <Tooltip content={<Tip/>}/>
+                  <Line type="monotone" dataKey="arpu" stroke={C.indigo} name="Rev/Bus" strokeWidth={2} dot={false}/>
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartCard>
+
+            {/* Path to ₹1B */}
+            <div style={{ 
+              background: isLight ? "rgba(0,0,0,0.01)" : "#1e293b", 
+              border: `1px solid ${isLight ? "rgba(0,0,0,0.06)" : C.purple + "33"}`, 
+              borderRadius:12, padding:"16px" 
+            }}>
+              <div style={{ fontSize:12, fontWeight:700, color:C.purple, marginBottom:12 }}>🌕 Path to ₹1 Billion ARR</div>
+              <div style={{ fontSize:11, color: isLight ? "#475569" : "#64748b", marginBottom:12 }}>
+                Annual revenue of ₹100Cr = ₹1B. With current model, you need:
+              </div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(200px, 1fr))", gap:10 }}>
+                {[
+                  {l:"Buses needed (at current ARPU)", v: last.arpu>0?fmtN(Math.ceil(1e9/12/last.arpu)):"∞", c:C.blue},
+                  {l:"Monthly Rev needed", v:fmt(1e9/12), c:C.green},
+                  {l:"Current monthly rev", v:fmt(last.totalRev||0), c:(last.totalRev||0)>=(1e9/12)?C.green:C.amber},
+                  {l:"Gap to ₹1B ARR", v:fmt(Math.max(0,(1e9/12)-(last.totalRev||0))), c:C.red},
+                  {l:"Months to ₹1B ARR", v:(() => {const h=months.find(m=>m.totalRev>=1e9/12); return h?h.month:"Beyond horizon";})(), c:C.purple},
+                  {l:"End of horizon revenue run-rate", v:fmt((last.totalRev||0)*12)+" /yr", c:C.cyan},
+                ].map(({l,v:val,c})=>(
+                  <div key={l} style={{ 
+                    background: isLight ? "#ffffff" : "#0f172a", 
+                    border: isLight ? "1px solid rgba(0,0,0,0.06)" : "none",
+                    borderRadius:8, padding:"10px 12px" 
+                  }}>
+                    <div style={{ fontSize:9, color: isLight ? "#64748b" : "#475569", marginBottom:3 }}>{l}</div>
+                    <div style={{ fontSize:14, fontWeight:800, color:c }}>{val}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </>)}
+
+          <div style={{ height:20 }} />
         </div>
       </div>
     </div>

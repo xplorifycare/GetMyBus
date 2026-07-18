@@ -420,7 +420,7 @@ export default function AdminPortal() {
                  TAB 2: BUSINESS CALCULATOR
                  ========================================== */
               <div className="p-6 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
-                <Calculator />
+                <Calculator theme={theme} />
               </div>
             )}
           </div>
