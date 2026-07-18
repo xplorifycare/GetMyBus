@@ -227,6 +227,12 @@ export default function Calculator({ theme = "dark" }) {
     advertisers: false
   });
 
+  const [isExportOpen, setIsExportOpen] = useState(false);
+  const [isImportOpen, setIsImportOpen] = useState(false);
+  const [importText, setImportText] = useState("");
+  const [importError, setImportError] = useState("");
+  const [copySuccess, setCopySuccess] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -326,6 +332,91 @@ export default function Calculator({ theme = "dark" }) {
   const first = months[0] || {};
   const netCapexPerBus = Math.max(0, v.etmCost + v.tvCost + v.installationCost - v.ownerDeposit);
 
+  const generateAIPrompt = () => {
+    const inputsText = Object.entries(v)
+      .map(([key, val]) => `  - ${key}: ${val}`)
+      .join("\n");
+
+    const promptText = `I am analyzing my startup, GetMyBus (a private transit digitisation & in-bus ad platform in Kerala). Here is my current simulation data:
+
+[INPUT CONFIGURATION]
+${inputsText}
+
+[COMPUTED PROJECTION OUTCOMES (at Scale / End of Horizon)]
+- Target Fleet Size: ${last.buses || 0} buses
+- Monthly Revenue: ₹${Math.round(last.totalRev || 0).toLocaleString("en-IN")}
+- Monthly Net Profit: ₹${Math.round(last.profit || 0).toLocaleString("en-IN")}
+- Net Profit Margin: ${last.margin || 0}%
+- Break-Even Timeline: ${breakEvenMonth ? `Month ${breakEvenMonth}` : "Not reached"}
+- Cash Balance: ₹${Math.round(last.cash || 0).toLocaleString("en-IN")}
+- ARPU (Rev/Bus/Mo): ₹${Math.round(last.arpu || 0).toLocaleString("en-IN")}
+- Total CAPEX Deployed: ₹${Math.round(cumulativeCapex || 0).toLocaleString("en-IN")}
+- Net Hardware CAPEX/Bus: ₹${Math.round(netCapexPerBus || 0).toLocaleString("en-IN")}
+- Average Owner Payout: ₹${Math.round(last.ownerPayout ? last.ownerPayout / Math.max(1, last.buses) : 0).toLocaleString("en-IN")}/mo/bus
+
+[REQUEST]
+Claude, please act as an expert CFO and growth strategist. Please analyze these metrics and unit economics:
+1. Identify any bottlenecks (e.g. low passenger digital ticketing, high ETM/TV cost, poor advertiser demand, high rev share).
+2. Recommend 3 concrete actions to improve monthly profit margins or accelerate the hardware CAPEX payback period.
+3. Suggest adjustments to my preset parameters (e.g. growth rate, CPM, owner rev share) to reach ₹1B ARR faster.
+
+---
+RAW CONFIG JSON (Do not remove: required for importing configuration back into the calculator):
+\`\`\`json
+${JSON.stringify(v, null, 2)}
+\`\`\`
+`;
+    return promptText;
+  };
+
+  const downloadConfig = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(v, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `getmybus_calculator_config_${activePreset || "custom"}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
+  const handleImport = (text) => {
+    try {
+      let cleaned = text.trim();
+      if (cleaned.includes("```json")) {
+        const parts = cleaned.split("```json");
+        const subparts = parts[1].split("```");
+        cleaned = subparts[0].trim();
+      } else if (cleaned.includes("```")) {
+        const parts = cleaned.split("```");
+        cleaned = parts[1].trim();
+      }
+
+      const parsed = JSON.parse(cleaned);
+      const keys = ["initialBuses", "seedCapital", "busGrowthRate", "horizonMonths"];
+      const hasKeys = keys.some(k => k in parsed);
+      
+      if (!hasKeys) {
+        setImportError("Invalid configuration: missing essential scaling parameters.");
+        return;
+      }
+      
+      const newV = { ...v };
+      Object.entries(parsed).forEach(([key, val]) => {
+        if (typeof val === "key" || typeof val === "number" || typeof val === "string") {
+          newV[key] = Number(val);
+        }
+      });
+      
+      setV(newV);
+      setActivePreset("");
+      setIsImportOpen(false);
+      setImportText("");
+      setImportError("");
+    } catch {
+      setImportError("Error parsing JSON. Please ensure it is a valid JSON object.");
+    }
+  };
+
   // milestone rows
   const milestoneTargets = [10,50,100,500,1000,5000,10000,50000];
 
@@ -375,8 +466,43 @@ export default function Calculator({ theme = "dark" }) {
           ))}
         </div>
 
-        <div style={{ marginLeft:"auto", fontSize:10, color: isLight ? "#64748b" : "#334155" }}>
-          {activePreset && PRESETS[activePreset]?.desc}
+        <div style={{ marginLeft:"auto", display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          {activePreset && (
+            <span style={{ fontSize:10, color: isLight ? "#64748b" : "#475569", marginRight: 8 }}>
+              {PRESETS[activePreset]?.desc}
+            </span>
+          )}
+          <button 
+            onClick={() => {
+              setCopySuccess(false);
+              setIsExportOpen(true);
+            }}
+            style={{
+              padding: "5px 11px", borderRadius: 8,
+              border: isLight ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.12)",
+              background: isLight ? "#ffffff" : "rgba(255,255,255,0.05)",
+              color: isLight ? "#475569" : "#e2e8f0",
+              fontSize: 11, fontWeight: 600, cursor: "pointer", transition: "all 0.15s"
+            }}
+          >
+            📤 Export for AI
+          </button>
+          <button 
+            onClick={() => {
+              setImportError("");
+              setImportText("");
+              setIsImportOpen(true);
+            }}
+            style={{
+              padding: "5px 11px", borderRadius: 8,
+              border: isLight ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.12)",
+              background: isLight ? "#ffffff" : "rgba(255,255,255,0.05)",
+              color: isLight ? "#475569" : "#e2e8f0",
+              fontSize: 11, fontWeight: 600, cursor: "pointer", transition: "all 0.15s"
+            }}
+          >
+            📥 Load Config
+          </button>
         </div>
       </div>
 
@@ -1231,6 +1357,213 @@ export default function Calculator({ theme = "dark" }) {
           <div style={{ height:20 }} />
         </div>
       </div>
+
+      {/* ── EXPORT MODAL ── */}
+      {isExportOpen && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
+          display: "flex", justifyContent: "center", alignItems: "center",
+          zIndex: 99999, padding: 16
+        }}>
+          <div style={{
+            background: isLight ? "#ffffff" : "#1e293b",
+            border: `1px solid ${isLight ? "rgba(0,0,0,0.08)" : "#334155"}`,
+            borderRadius: 16, width: "100%", maxWidth: 640,
+            padding: 24, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)",
+            color: isLight ? "#0f172a" : "#e2e8f0",
+            display: "flex", flexDirection: "column", gap: 16
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: C.purple }}>📤 Export Scaling Parameters & Outcomes</div>
+              <button 
+                onClick={() => setIsExportOpen(false)}
+                style={{
+                  background: "transparent", border: "none", color: isLight ? "#64748b" : "#94a3b8",
+                  fontSize: 18, cursor: "pointer", fontWeight: 700
+                }}
+              >✕</button>
+            </div>
+            
+            <div style={{ fontSize: 11, color: isLight ? "#475569" : "#94a3b8" }}>
+              Copy the text below and paste it directly into an AI assistant like **Claude** or **ChatGPT** to get expert CFO scaling recommendations. The block also contains the raw JSON payload so you can easily load any optimization changes back into the calculator later!
+            </div>
+
+            <textarea 
+              readOnly 
+              value={generateAIPrompt()}
+              style={{
+                width: "100%", height: 260, borderRadius: 8,
+                background: isLight ? "rgba(0,0,0,0.02)" : "#0f172a",
+                border: `1px solid ${isLight ? "rgba(0,0,0,0.08)" : "#334155"}`,
+                color: isLight ? "#334155" : "#cbd5e1",
+                fontFamily: "monospace", fontSize: 11, padding: 12,
+                resize: "none"
+              }}
+              onClick={(e) => e.target.select()}
+            />
+
+            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", flexWrap: "wrap" }}>
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(generateAIPrompt());
+                  setCopySuccess(true);
+                  setTimeout(() => setCopySuccess(false), 2000);
+                }}
+                style={{
+                  padding: "8px 16px", borderRadius: 8, border: "none",
+                  background: copySuccess ? C.green : C.purple, color: "#fff",
+                  fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.15s"
+                }}
+              >
+                {copySuccess ? "✔ Prompt Copied!" : "📋 Copy Prompt for AI"}
+              </button>
+
+              <button 
+                onClick={downloadConfig}
+                style={{
+                  padding: "8px 16px", borderRadius: 8,
+                  border: `1px solid ${isLight ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)"}`,
+                  background: isLight ? "#f1f5f9" : "rgba(255,255,255,0.05)",
+                  color: isLight ? "#0f172a" : "#fff",
+                  fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.15s"
+                }}
+              >
+                💾 Download Config JSON
+              </button>
+
+              <button 
+                onClick={() => setIsExportOpen(false)}
+                style={{
+                  padding: "8px 16px", borderRadius: 8,
+                  border: isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(255,255,255,0.05)",
+                  background: "transparent", color: isLight ? "#64748b" : "#94a3b8",
+                  fontSize: 12, fontWeight: 700, cursor: "pointer"
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── IMPORT / LOAD MODAL ── */}
+      {isImportOpen && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
+          display: "flex", justifyContent: "center", alignItems: "center",
+          zIndex: 99999, padding: 16
+        }}>
+          <div style={{
+            background: isLight ? "#ffffff" : "#1e293b",
+            border: `1px solid ${isLight ? "rgba(0,0,0,0.08)" : "#334155"}`,
+            borderRadius: 16, width: "100%", maxWidth: 540,
+            padding: 24, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)",
+            color: isLight ? "#0f172a" : "#e2e8f0",
+            display: "flex", flexDirection: "column", gap: 16
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: C.blue }}>📥 Load Configuration</div>
+              <button 
+                onClick={() => setIsImportOpen(false)}
+                style={{
+                  background: "transparent", border: "none", color: isLight ? "#64748b" : "#94a3b8",
+                  fontSize: 18, cursor: "pointer", fontWeight: 700
+                }}
+              >✕</button>
+            </div>
+
+            <div style={{ fontSize: 11, color: isLight ? "#475569" : "#94a3b8" }}>
+              Paste the configuration text (or the entire Claude output containing the JSON code block) below, or upload a previously exported configuration `.json` file.
+            </div>
+
+            {/* File uploader */}
+            <div style={{
+              border: `2px dashed ${isLight ? "rgba(0,0,0,0.1)" : "#475569"}`,
+              borderRadius: 10, padding: "16px 20px", display: "flex", flexDirection: "column",
+              alignItems: "center", gap: 8, background: isLight ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)",
+              position: "relative"
+            }}>
+              <span style={{ fontSize: 18 }}>📁</span>
+              <span style={{ fontSize: 11, fontWeight: 600 }}>Drag and drop or click to upload a config file</span>
+              <input 
+                type="file" 
+                accept=".json"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    handleImport(event.target.result);
+                  };
+                  reader.readAsText(file);
+                }}
+                style={{
+                  position: "absolute", top: 0, left: 0, right: 0, bottom: 0, opacity: 0, cursor: "pointer"
+                }}
+              />
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ flex: 1, height: 1, background: isLight ? "rgba(0,0,0,0.06)" : "#334155" }} />
+              <span style={{ fontSize: 9, color: isLight ? "#94a3b8" : "#475569", fontWeight: 700 }}>OR PASTE TEXT</span>
+              <div style={{ flex: 1, height: 1, background: isLight ? "rgba(0,0,0,0.06)" : "#334155" }} />
+            </div>
+
+            <textarea 
+              placeholder='Paste JSON here (e.g. { "initialBuses": 15, ... })'
+              value={importText}
+              onChange={(e) => {
+                setImportText(e.target.value);
+                setImportError("");
+              }}
+              style={{
+                width: "100%", height: 120, borderRadius: 8,
+                background: isLight ? "rgba(0,0,0,0.02)" : "#0f172a",
+                border: `1px solid ${isLight ? "rgba(0,0,0,0.08)" : "#334155"}`,
+                color: isLight ? "#334155" : "#cbd5e1",
+                fontFamily: "monospace", fontSize: 11, padding: 10,
+                resize: "none"
+              }}
+            />
+
+            {importError && (
+              <div style={{ fontSize: 11, color: C.red, fontWeight: 700 }}>
+                ⚠️ {importError}
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+              <button 
+                onClick={() => handleImport(importText)}
+                disabled={!importText.trim()}
+                style={{
+                  padding: "8px 18px", borderRadius: 8, border: "none",
+                  background: !importText.trim() ? "#cbd5e1" : C.blue,
+                  color: "#fff", fontSize: 12, fontWeight: 700,
+                  cursor: !importText.trim() ? "not-allowed" : "pointer"
+                }}
+              >
+                Apply Configuration
+              </button>
+
+              <button 
+                onClick={() => setIsImportOpen(false)}
+                style={{
+                  padding: "8px 18px", borderRadius: 8,
+                  border: isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(255,255,255,0.05)",
+                  background: "transparent", color: isLight ? "#64748b" : "#94a3b8",
+                  fontSize: 12, fontWeight: 700, cursor: "pointer"
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
