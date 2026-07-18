@@ -293,6 +293,9 @@ def main():
                 
                 if name == "simulate":
                     result = run_simulation(arguments)
+                    url_params = "&".join([f"{k}={v}" for k, v in arguments.items()])
+                    dashboard_url = f"https://www.getmybus.in/admin?{url_params}"
+                    response_text = f"--- SIMULATION RESULTS ---\n{json.dumps(result, indent=2)}\n\n🔗 View and adjust these parameters interactively on the live dashboard: {dashboard_url}"
                     response = {
                         "jsonrpc": "2.0",
                         "id": req_id,
@@ -300,7 +303,7 @@ def main():
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": json.dumps(result, indent=2)
+                                    "text": response_text
                                 }
                             ]
                         }
@@ -309,6 +312,12 @@ def main():
                     goal = arguments.get("goal")
                     constraints = arguments.get("constraints", {})
                     result = optimize_params(goal, constraints)
+                    
+                    best_config = result.get("best_config", {})
+                    best_params = {k: v for k, v in best_config.items() if k != "outcomes"}
+                    url_params = "&".join([f"{k}={v}" for k, v in best_params.items()])
+                    dashboard_url = f"https://www.getmybus.in/admin?{url_params}"
+                    response_text = f"--- OPTIMIZATION RESULTS ---\n{json.dumps(result, indent=2)}\n\n🔗 View and adjust these parameters interactively on the live dashboard: {dashboard_url}"
                     response = {
                         "jsonrpc": "2.0",
                         "id": req_id,
@@ -316,7 +325,7 @@ def main():
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": json.dumps(result, indent=2)
+                                    "text": response_text
                                 }
                             ]
                         }

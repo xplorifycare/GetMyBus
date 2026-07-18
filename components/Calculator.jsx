@@ -235,6 +235,23 @@ export default function Calculator({ theme = "dark" }) {
 
   useEffect(() => {
     setMounted(true);
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const newV = { ...DEFAULT };
+      let changed = false;
+      urlParams.forEach((val, key) => {
+        if (key in DEFAULT) {
+          newV[key] = Number(val);
+          changed = true;
+        }
+      });
+      if (changed) {
+        setV(newV);
+        setActivePreset("");
+      }
+    } catch {
+      // Ignore URL parsing errors during server-side render
+    }
   }, []);
 
   const set = (key) => (val) => setV(prev => ({ ...prev, [key]: val }));

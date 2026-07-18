@@ -358,6 +358,22 @@ export async function POST(req: NextRequest) {
     }
     
     if (result) {
+      let urlParams = "";
+      if (name === "simulate") {
+        urlParams = Object.entries(args || {})
+          .map(([k, v]) => `${k}=${v}`)
+          .join("&");
+      } else if (name === "optimize" && result.best_config) {
+        const bestConfig = result.best_config as Record<string, unknown>;
+        urlParams = Object.entries(bestConfig)
+          .filter(([k]) => k !== "outcomes")
+          .map(([k, v]) => `${k}=${v}`)
+          .join("&");
+      }
+      
+      const dashboardUrl = `https://www.getmybus.in/admin?${urlParams}`;
+      const responseText = `--- SIMULATION RESULTS ---\n${JSON.stringify(result, null, 2)}\n\n🔗 View and adjust these parameters interactively on the live dashboard: ${dashboardUrl}`;
+
       responsePayload = {
         jsonrpc: "2.0",
         id,
@@ -365,7 +381,7 @@ export async function POST(req: NextRequest) {
           content: [
             {
               type: "text",
-              text: JSON.stringify(result, null, 2)
+              text: responseText
             }
           ]
         }
