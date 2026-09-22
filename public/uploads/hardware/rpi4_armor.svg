@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="armorCase" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a2a32"/>
+      <stop offset="100%" stop-color="#121216"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="240" fill="#0d0d10" rx="14"/>
+  <rect x="0.5" y="0.5" width="319" height="239" fill="none" stroke="rgba(255,255,255,0.06)" rx="13.5"/>
+
+  <!-- Badge label -->
+  <rect x="16" y="16" width="145" height="20" rx="6" fill="rgba(191,90,242,0.12)" stroke="rgba(191,90,242,0.3)" stroke-width="1"/>
+  <text x="88" y="29" fill="#BF5AF2" font-family="sans-serif" font-size="9" font-weight="bold" text-anchor="middle" letter-spacing="0.5">RASPBERRY PI 4 (4GB ARMOR)</text>
+
+  <!-- Raspberry Pi in Armor Aluminum Case -->
+  <g transform="translate(60, 52)" filter="url(#shadow)">
+    <!-- Main Green PCB Peeking Out at Corner -->
+    <rect x="-4" y="6" width="208" height="138" rx="8" fill="#15803d" stroke="#166534" stroke-width="1"/>
+
+    <!-- Dual Aluminum Armor Case Upper Block -->
+    <rect x="0" y="10" width="200" height="130" rx="6" fill="url(#armorCase)" stroke="#3a3a46" stroke-width="1.2"/>
+
+    <!-- Heat Sink Fins Pattern -->
+    <g stroke="#3a3a46" stroke-width="1">
+      <line x1="25" y1="35" x2="95" y2="35"/>
+      <line x1="25" y1="45" x2="95" y2="45"/>
+      <line x1="25" y1="55" x2="95" y2="55"/>
+      <line x1="25" y1="65" x2="95" y2="65"/>
+    </g>
+
+    <!-- Dual Cooling Fans -->
+    <!-- Fan 1 -->
+    <circle cx="60" cy="95" r="24" fill="#18181f" stroke="#333" stroke-width="1.2"/>
+    <circle cx="60" cy="95" r="8" fill="#2a2a34"/>
+    <path d="M 60 75 Q 68 85 60 95 Q 52 85 60 75 Z" fill="#444"/>
+    <path d="M 80 95 Q 70 103 60 95 Q 70 87 80 95 Z" fill="#444"/>
+    <path d="M 60 115 Q 52 105 60 95 Q 68 105 60 115 Z" fill="#444"/>
+    <path d="M 40 95 Q 50 87 60 95 Q 50 103 40 95 Z" fill="#444"/>
+
+    <!-- Fan 2 -->
+    <circle cx="130" cy="95" r="24" fill="#18181f" stroke="#333" stroke-width="1.2"/>
+    <circle cx="130" cy="95" r="8" fill="#2a2a34"/>
+    <path d="M 130 75 Q 138 85 130 95 Q 122 85 130 75 Z" fill="#444"/>
+    <path d="M 150 95 Q 140 103 130 95 Q 140 87 150 95 Z" fill="#444"/>
+    <path d="M 130 115 Q 122 105 130 95 Q 138 105 130 115 Z" fill="#444"/>
+    <path d="M 110 95 Q 120 87 130 95 Q 120 103 110 95 Z" fill="#444"/>
+
+    <!-- 40-Pin GPIO Header Opening -->
+    <rect x="25" y="16" width="150" height="10" rx="1" fill="#08080a" stroke="#222"/>
+    <g fill="#eab308">
+      <circle cx="35" cy="21" r="1"/> <circle cx="45" cy="21" r="1"/> <circle cx="55" cy="21" r="1"/> <circle cx="65" cy="21" r="1"/>
+      <circle cx="75" cy="21" r="1"/> <circle cx="85" cy="21" r="1"/> <circle cx="95" cy="21" r="1"/> <circle cx="105" cy="21" r="1"/>
+      <circle cx="115" cy="21" r="1"/> <circle cx="125" cy="21" r="1"/> <circle cx="135" cy="21" r="1"/> <circle cx="145" cy="21" r="1"/>
+    </g>
+
+    <!-- USB 3.0 Ports (Blue) -->
+    <rect x="180" y="35" width="22" height="24" rx="2" fill="#c0c0c6" stroke="#999" stroke-width="0.8"/>
+    <rect x="184" y="40" width="14" height="6" fill="#0A84FF"/>
+    <rect x="184" y="50" width="14" height="6" fill="#0A84FF"/>
+
+    <!-- USB 2.0 Ports (Black) -->
+    <rect x="180" y="70" width="22" height="24" rx="2" fill="#c0c0c6" stroke="#999" stroke-width="0.8"/>
+    <rect x="184" y="75" width="14" height="6" fill="#222"/>
+    <rect x="184" y="85" width="14" height="6" fill="#222"/>
+
+    <!-- Gigabit Ethernet Port -->
+    <rect x="180" y="105" width="22" height="26" rx="2" fill="#d4d4d8" stroke="#999" stroke-width="0.8"/>
+    <circle cx="196" cy="110" r="1.5" fill="#30D158"/>
+
+    <!-- Raspberry Pi Logo Engraving -->
+    <text x="135" y="52" fill="#ec4899" font-family="sans-serif" font-size="10" font-weight="bold">Raspberry Pi 4</text>
+    <text x="135" y="62" fill="#94a3b8" font-family="sans-serif" font-size="7">4GB RAM • Broadcom BCM2711</text>
+  </g>
+</svg>

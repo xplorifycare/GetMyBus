@@ -21,6 +21,8 @@ export default function Navbar({
   setTheme: (t: "dark" | "light") => void; 
 }) {
   const pathname = usePathname();
+  const isSubPage = pathname ? pathname !== "/" : false;
+  const isPlansPage = pathname ? pathname.startsWith("/plans") : false;
   const isBlogPage = pathname ? pathname.startsWith("/blog") : false;
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -78,12 +80,13 @@ export default function Navbar({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: "Track Bus", href: isBlogPage ? "/#commuters" : "#commuters" },
-    { label: "Bus Owners", href: isBlogPage ? "/#owners" : "#owners" },
-    { label: "Advertise", href: isBlogPage ? "/#advertisers" : "#advertisers" },
-    { label: "Contact", href: isBlogPage ? "/#partner" : "#partner" },
-    { label: "Blog", href: "/blog" },
+  const navLinks: { label: string; href: string; active?: boolean }[] = [
+    { label: "Track Bus", href: isSubPage ? "/#commuters" : "#commuters" },
+    { label: "Bus Owners", href: isSubPage ? "/#owners" : "#owners" },
+    { label: "Plans", href: "/plans", active: isPlansPage },
+    { label: "Advertise", href: isSubPage ? "/#advertisers" : "#advertisers" },
+    { label: "Contact", href: isSubPage ? "/#partner" : "#partner" },
+    { label: "Blog", href: "/blog", active: isBlogPage },
   ];
 
   return (
@@ -135,11 +138,18 @@ export default function Navbar({
             href={link.href}
             onClick={() => playClickSound()}
             onMouseEnter={() => playHoverSound(0.01)}
-            className={`text-[13px] font-normal transition-colors duration-200 hover:text-[#0A84FF] ${
-              theme === "light" ? "text-black/80 hover:text-[#0A84FF]" : "text-white/80 hover:text-[#0A84FF]"
+            className={`text-[13px] transition-colors duration-200 hover:text-[#0A84FF] relative ${
+              link.active
+                ? "text-[#0A84FF] font-semibold"
+                : theme === "light"
+                  ? "text-black/80 font-normal hover:text-[#0A84FF]"
+                  : "text-white/80 font-normal hover:text-[#0A84FF]"
             }`}
           >
             {link.label}
+            {link.active && (
+              <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#0A84FF] rounded-full shadow-[0_0_8px_rgba(10,132,255,0.6)]" />
+            )}
           </Link>
         ))}
       </div>
@@ -325,13 +335,16 @@ export default function Navbar({
                   setMenuOpen(false);
                 }}
                 onMouseEnter={() => playHoverSound(0.01)}
-                className={`text-[15px] py-3.5 border-b transition-colors duration-200 font-medium tracking-wide ${
-                  theme === "light"
-                    ? "text-black/75 border-black/[0.05] hover:text-[#0A84FF]"
-                    : "text-white/70 border-white/[0.06] hover:text-[#0A84FF]"
+                className={`text-[15px] py-3.5 border-b transition-colors duration-200 font-medium tracking-wide flex items-center justify-between ${
+                  link.active
+                    ? "text-[#0A84FF] font-semibold border-[#0A84FF]/20"
+                    : theme === "light"
+                      ? "text-black/75 border-black/[0.05] hover:text-[#0A84FF]"
+                      : "text-white/70 border-white/[0.06] hover:text-[#0A84FF]"
                 }`}
               >
-                {link.label}
+                <span>{link.label}</span>
+                {link.active && <span className="w-1.5 h-1.5 rounded-full bg-[#0A84FF]" />}
               </Link>
             ))}
             {/* Mobile Language Toggle — Allows mobile view users to translate pages */}
@@ -373,7 +386,7 @@ export default function Navbar({
               </div>
             </div>
             <Link
-              href={isBlogPage ? "/#download" : "#download"}
+              href={isSubPage ? "/#download" : "#download"}
               onClick={() => {
                 playClickSound();
                 setMenuOpen(false);

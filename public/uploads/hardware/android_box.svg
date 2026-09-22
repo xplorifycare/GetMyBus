@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="boxGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#24242a"/>
+      <stop offset="100%" stop-color="#121216"/>
+    </linearGradient>
+    <linearGradient id="bevelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#383842"/>
+      <stop offset="100%" stop-color="#18181f"/>
+    </linearGradient>
+    <filter id="boxShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="blueGlow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="240" fill="#0d0d10" rx="14"/>
+  <rect x="0.5" y="0.5" width="319" height="239" fill="none" stroke="rgba(255,255,255,0.06)" rx="13.5"/>
+
+  <!-- Badge label -->
+  <rect x="16" y="16" width="125" height="20" rx="6" fill="rgba(10,132,255,0.12)" stroke="rgba(10,132,255,0.3)" stroke-width="1"/>
+  <text x="78" y="29" fill="#0A84FF" font-family="sans-serif" font-size="9" font-weight="bold" text-anchor="middle" letter-spacing="0.5">4G ANDROID TV BOX</text>
+
+  <!-- TV Box 3D Isometric View -->
+  <g transform="translate(45, 55)" filter="url(#boxShadow)">
+    <!-- Main Box Body Top Face -->
+    <path d="M 115 15 L 225 65 L 115 115 L 5 65 Z" fill="url(#boxGrad)" stroke="#3a3a46" stroke-width="1.2"/>
+    
+    <!-- Left Face with USB Ports -->
+    <path d="M 5 65 L 115 115 L 115 145 L 5 95 Z" fill="#15151a" stroke="#2a2a32" stroke-width="1.2"/>
+    
+    <!-- Right Front Face with Status Screen -->
+    <path d="M 115 115 L 225 65 L 225 95 L 115 145 Z" fill="#1b1b22" stroke="#2a2a32" stroke-width="1.2"/>
+
+    <!-- Top Logo Branding -->
+    <path d="M 95 60 L 135 78 L 135 72 L 95 54 Z" fill="rgba(10,132,255,0.4)"/>
+    <text x="115" y="66" fill="#888899" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" transform="rotate(22, 115, 66) skewX(-35)">Tanix W2</text>
+    <text x="115" y="78" fill="#555566" font-family="sans-serif" font-size="8" text-anchor="middle" transform="rotate(22, 115, 78) skewX(-35)">2GB / 16GB • AOSP</text>
+
+    <!-- USB Port 1 on Left Face -->
+    <g transform="translate(30, 85) skewY(24)">
+      <rect x="0" y="0" width="14" height="6" fill="#08080a" stroke="#444" stroke-width="0.8"/>
+      <rect x="2" y="2" width="10" height="2" fill="#0A84FF"/>
+    </g>
+
+    <!-- USB Port 2 on Left Face -->
+    <g transform="translate(65, 100) skewY(24)">
+      <rect x="0" y="0" width="14" height="6" fill="#08080a" stroke="#444" stroke-width="0.8"/>
+      <rect x="2" y="2" width="10" height="2" fill="#0A84FF"/>
+    </g>
+
+    <!-- MicroSD slot -->
+    <g transform="translate(85, 108) skewY(24)">
+      <rect x="0" y="0" width="8" height="2" fill="#08080a"/>
+    </g>
+
+    <!-- Front LED Digital Clock Screen on Right Face -->
+    <g transform="translate(150, 85) skewY(-24)">
+      <rect x="0" y="0" width="45" height="15" rx="2" fill="#080a10" stroke="#222" stroke-width="0.8"/>
+      <text x="22" y="11" fill="#0A84FF" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle" filter="url(#blueGlow)">10:42</text>
+      <!-- Small Wi-Fi Icon on Screen -->
+      <circle cx="38" cy="8" r="1.5" fill="#30D158"/>
+    </g>
+
+    <!-- Power Blue Accent Strip -->
+    <path d="M 115 115 L 225 65" stroke="#0A84FF" stroke-width="1.8" filter="url(#blueGlow)"/>
+  </g>
+
+  <!-- Connected short HDMI lead -->
+  <path d="M 230 115 Q 260 120 280 140" fill="none" stroke="#2a2a34" stroke-width="5" stroke-linecap="round"/>
+</svg>

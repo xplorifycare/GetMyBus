@@ -1,0 +1,20 @@
+{
+  "selectedPlanIds": [
+    "plan_alpha",
+    "plan_beta",
+    "plan_screen_refit",
+    "plan_delta",
+    "plan_delta_pro",
+    "plan_smart_sync",
+    "plan_saas",
+    "plan_etm_pos",
+    "plan_beta_plus",
+    "plan_beta_pro",
+    "plan_ais140",
+    "plan_gamma",
+    "plan_smart_turnkey",
+    "plan_combo_lite"
+  ],
+  "featuredPlanId": "plan_beta",
+  "updatedAt": "2026-09-22T16:47:03.957Z"
+}

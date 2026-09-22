@@ -39,3 +39,5 @@ app/calculator/
 .DS_Store
 *.pem
 tsconfig.tsbuildinfo
+__pycache__/
+*.py[cod]

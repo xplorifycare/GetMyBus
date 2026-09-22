@@ -1,11 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navbar, { Lang } from "@/components/Navbar";
+import AdminNavbar, { AdminTab } from "@/components/AdminNavbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { playClickSound, playSuccessChime } from "@/components/SoundEffects";
 import Calculator from "@/components/Calculator";
+import HardwareConfigurator from "@/components/HardwareConfigurator";
+import ExecutionPlaybook from "@/components/ExecutionPlaybook";
+import AdRevenueCalculator from "@/components/AdRevenueCalculator";
+import BusOwnerPlansFlow from "@/components/BusOwnerPlansFlow";
+import AdminLandingPlansManager from "@/components/AdminLandingPlansManager";
 
 interface Inquiry {
   id: string;
@@ -18,7 +23,6 @@ interface Inquiry {
 }
 
 export default function AdminPortal() {
-  const [lang, setLang] = useState<Lang>("EN");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const isLight = theme === "light";
 
@@ -30,7 +34,7 @@ export default function AdminPortal() {
 
   const [filterRole, setFilterRole] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"leads" | "calculator">("leads");
+  const [activeTab, setActiveTab] = useState<AdminTab>("leads");
 
   const fetchInquiries = async (passToSubmit?: string, showLoader = false) => {
     const activePassword = passToSubmit || password;
@@ -162,14 +166,22 @@ export default function AdminPortal() {
     }`}>
       <style dangerouslySetInnerHTML={{ __html: S_ADMIN }} />
 
-      <Navbar lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
+      <AdminNavbar
+        theme={theme}
+        setTheme={setTheme}
+        isAuthenticated={isAuthenticated}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        leadsCount={totalLeads}
+        onLogout={handleLogout}
+      />
 
       {/* Decorative Orbs */}
       <div className="absolute top-[10%] left-[5%] w-[50vw] h-[50vw] rounded-full overflow-hidden pointer-events-none z-0" aria-hidden>
         <div className="w-full h-full opacity-5 blur-[90px]" style={{ background: "radial-gradient(circle, #0A84FF 0%, transparent 70%)" }} />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto pt-32 pb-24 px-6">
+      <div className="relative z-10 w-full max-w-[1720px] mx-auto pt-28 pb-24 px-6 md:px-12">
         
         {!isAuthenticated ? (
           /* ==========================================
@@ -228,44 +240,6 @@ export default function AdminPortal() {
                   Manage GetMyBus transit operations, leads, and projections.
                 </p>
               </div>
-              <button
-                onClick={handleLogout}
-                className={`h-9 px-4 rounded-lg border text-[12px] font-medium transition-all ${
-                  isLight
-                    ? "border-slate-300 text-slate-700 hover:bg-slate-50"
-                    : "border-white/[0.1] text-white/70 hover:bg-white/[0.04]"
-                }`}
-              >
-                Logout Account
-              </button>
-            </div>
-
-            {/* Sub-navigation Tabs */}
-            <div className="flex gap-2 border-b border-white/[0.06] mb-8 pb-3">
-              <button
-                onClick={() => { playClickSound(); setActiveTab("leads"); }}
-                className={`px-4 py-2 rounded-lg text-[13px] font-medium transition-all ${
-                  activeTab === "leads"
-                    ? "bg-[#0A84FF] text-white shadow-sm"
-                    : isLight
-                      ? "text-slate-600 hover:bg-slate-200/50"
-                      : "text-white/60 hover:bg-white/[0.04]"
-                }`}
-              >
-                📥 Leads Inbox ({totalLeads})
-              </button>
-              <button
-                onClick={() => { playClickSound(); setActiveTab("calculator"); }}
-                className={`px-4 py-2 rounded-lg text-[13px] font-medium transition-all ${
-                  activeTab === "calculator"
-                    ? "bg-[#0A84FF] text-white shadow-sm"
-                    : isLight
-                      ? "text-slate-600 hover:bg-slate-200/50"
-                      : "text-white/60 hover:bg-white/[0.04]"
-                }`}
-              >
-                📈 Financial Simulator
-              </button>
             </div>
 
             {activeTab === "leads" ? (
@@ -405,7 +379,7 @@ export default function AdminPortal() {
                             </td>
 
                             {/* Message body */}
-                            <td className="py-4 pr-4 align-top leading-relaxed text-[13px] max-w-sm break-words select-text">
+                            <td className="py-4 pr-4 align-top leading-relaxed text-[13px] max-w-xl xl:max-w-3xl break-words select-text">
                               {inq.message}
                             </td>
                           </tr>
@@ -415,12 +389,47 @@ export default function AdminPortal() {
                   )}
                 </div>
               </div>
-            ) : (
+            ) : activeTab === "calculator" ? (
               /* ==========================================
                  TAB 2: BUSINESS CALCULATOR
                  ========================================== */
-              <div className="p-6 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
+              <div className="p-4 sm:p-6 lg:p-8 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
                 <Calculator theme={theme} />
+              </div>
+            ) : activeTab === "ad_engine" ? (
+              /* ==========================================
+                 TAB 3: AD REVENUE & COMMERCIAL PROFIT ENGINE
+                 ========================================== */
+              <div className="p-4 sm:p-6 lg:p-8 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
+                <AdRevenueCalculator theme={theme} />
+              </div>
+            ) : activeTab === "landing_plans" ? (
+              /* ==========================================
+                 TAB: LANDING PAGE PLANS CURATOR
+                 ========================================== */
+              <div className="p-4 sm:p-6 lg:p-8 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
+                <AdminLandingPlansManager theme={theme} />
+              </div>
+            ) : activeTab === "owner_plans" ? (
+              /* ==========================================
+                 TAB 4: BUS OWNER PLANS & DECISION ENGINE
+                 ========================================== */
+              <div className="p-4 sm:p-6 lg:p-8 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
+                <BusOwnerPlansFlow theme={theme} />
+              </div>
+            ) : activeTab === "hardware" ? (
+              /* ==========================================
+                 TAB 3: HARDWARE SPEC & PLANNER
+                 ========================================== */
+              <div className="p-4 sm:p-6 lg:p-8 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
+                <HardwareConfigurator theme={theme} />
+              </div>
+            ) : (
+              /* ==========================================
+                 TAB 4: DAY 1 EXECUTION PLAYBOOK
+                 ========================================== */
+              <div className="p-4 sm:p-6 lg:p-8 rounded-[24px] admin-card shadow-lg overflow-x-hidden">
+                <ExecutionPlaybook theme={theme} />
               </div>
             )}
           </div>

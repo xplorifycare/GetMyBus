@@ -8,9 +8,11 @@ import HeroWave from "@/components/ui/dynamic-wave-canvas-background";
 export default function PartnerSection({ 
   theme = "dark",
   defaultRole = "operator",
+  defaultMessage = "",
 }: { 
   theme?: "dark" | "light";
   defaultRole?: string;
+  defaultMessage?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -20,7 +22,7 @@ export default function PartnerSection({
     email: "",
     phone: "",
     role: defaultRole,
-    message: "",
+    message: defaultMessage || "",
   });
 
   useEffect(() => {
@@ -28,6 +30,30 @@ export default function PartnerSection({
       setFormState((prev) => ({ ...prev, role: defaultRole }));
     }
   }, [defaultRole]);
+
+  useEffect(() => {
+    if (defaultMessage) {
+      setFormState((prev) => ({ ...prev, message: defaultMessage }));
+    }
+  }, [defaultMessage]);
+
+  useEffect(() => {
+    const handleCustomPlanSelect = (e: Event) => {
+      const customEvent = e as CustomEvent<{ plan?: { title: string; code: string }; pricingMode?: string }>;
+      if (customEvent.detail?.plan) {
+        const p = customEvent.detail.plan;
+        const mode = customEvent.detail.pricingMode === "auto_deduct" ? "Auto-Deduct (₹0 Upfront)" : "One-Time Capex";
+        setFormState((prev) => ({
+          ...prev,
+          role: "operator",
+          message: `Hi GetMyBus team, I am interested in equipping my fleet with ${p.title} (${p.code}) under the ${mode} model. Please get in touch with deployment details!`,
+        }));
+      }
+    };
+
+    window.addEventListener("getmybus_select_plan", handleCustomPlanSelect);
+    return () => window.removeEventListener("getmybus_select_plan", handleCustomPlanSelect);
+  }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

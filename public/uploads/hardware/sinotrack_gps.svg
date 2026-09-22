@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="trackerBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#28282e"/>
+      <stop offset="100%" stop-color="#141416"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="240" fill="#0d0d10" rx="14"/>
+  <rect x="0.5" y="0.5" width="319" height="239" fill="none" stroke="rgba(255,255,255,0.06)" rx="13.5"/>
+
+  <!-- Badge label -->
+  <rect x="16" y="16" width="135" height="20" rx="6" fill="rgba(10,132,255,0.12)" stroke="rgba(10,132,255,0.3)" stroke-width="1"/>
+  <text x="83" y="29" fill="#0A84FF" font-family="sans-serif" font-size="9" font-weight="bold" text-anchor="middle" letter-spacing="0.5">SINOTRACK 4G VEHICLE GPS</text>
+
+  <!-- 4-Wire Automotive Wire Harness -->
+  <g transform="translate(45, 110)">
+    <!-- Red Wire (Battery +) -->
+    <path d="M 0 0 Q -25 -20 -40 -10" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Black Wire (Ground -) -->
+    <path d="M 0 8 Q -25 -10 -40 2" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Orange Wire (ACC Ignition) -->
+    <path d="M 0 16 Q -25 0 -40 14" fill="none" stroke="#f97316" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Yellow Wire (Relay Cutoff) -->
+    <path d="M 0 24 Q -25 10 -40 26" fill="none" stroke="#eab308" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Inline Fuse Box -->
+    <rect x="-35" y="-14" width="16" height="8" rx="2" fill="#111" stroke="#555" stroke-width="0.8"/>
+  </g>
+
+  <!-- Tracker Housing -->
+  <g transform="translate(85, 60)" filter="url(#shadow)">
+    <!-- Main Body -->
+    <rect x="0" y="0" width="150" height="90" rx="10" fill="url(#trackerBody)" stroke="#3a3a44" stroke-width="1.2"/>
+    
+    <!-- Rubber Waterproof Gasket Line -->
+    <rect x="5" y="5" width="140" height="80" rx="7" fill="none" stroke="#1e1e24" stroke-width="2"/>
+
+    <!-- Brand Name -->
+    <text x="25" y="32" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="900" letter-spacing="1">SinoTrack</text>
+    <text x="25" y="44" fill="#0A84FF" font-family="sans-serif" font-size="9" font-weight="bold" letter-spacing="0.5">MODEL: ST-901L (4G LTE)</text>
+    <text x="25" y="56" fill="#888899" font-family="sans-serif" font-size="7">9V-36V DC • Built-in Battery</text>
+
+    <!-- 3 Status LEDs -->
+    <g transform="translate(25, 66)">
+      <!-- Power LED -->
+      <circle cx="0" cy="0" r="3.5" fill="#ef4444"/>
+      <text x="7" y="3" fill="#888" font-size="6" font-family="sans-serif">PWR</text>
+      <!-- GSM 4G LED -->
+      <circle cx="35" cy="0" r="3.5" fill="#30D158"/>
+      <text x="42" y="3" fill="#888" font-size="6" font-family="sans-serif">GSM</text>
+      <!-- GPS Fix LED -->
+      <circle cx="70" cy="0" r="3.5" fill="#0A84FF"/>
+      <text x="77" y="3" fill="#888" font-size="6" font-family="sans-serif">GPS</text>
+    </g>
+
+    <!-- Barcode / IMEI sticker -->
+    <rect x="100" y="15" width="38" height="26" fill="#fff" rx="2"/>
+    <line x1="104" y1="18" x2="104" y2="35" stroke="#000" stroke-width="1.2"/>
+    <line x1="108" y1="18" x2="108" y2="35" stroke="#000" stroke-width="2"/>
+    <line x1="112" y1="18" x2="112" y2="35" stroke="#000" stroke-width="0.8"/>
+    <line x1="116" y1="18" x2="116" y2="35" stroke="#000" stroke-width="1.8"/>
+    <line x1="120" y1="18" x2="120" y2="35" stroke="#000" stroke-width="1"/>
+    <line x1="124" y1="18" x2="124" y2="35" stroke="#000" stroke-width="2"/>
+    <line x1="128" y1="18" x2="128" y2="35" stroke="#000" stroke-width="0.8"/>
+    <line x1="132" y1="18" x2="132" y2="35" stroke="#000" stroke-width="1.5"/>
+    <text x="119" y="39" fill="#000" font-family="monospace" font-size="4" text-anchor="middle">IMEI: 86431904</text>
+  </g>
+</svg>

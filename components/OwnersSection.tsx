@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
+import { playClickSound, playHoverSound } from "@/components/SoundEffects";
 
 export default function OwnersSection({
   theme = "dark",
@@ -186,12 +188,27 @@ export default function OwnersSection({
               </div>
 
               {/* CTA */}
-              <button
-                onClick={onRegisterClick}
-                className="w-full h-12 rounded-2xl bg-[#34D399] text-white font-medium text-[14px] tracking-tight hover:bg-[#2EBD87] active:scale-[0.98] transition-all duration-200 shadow-[0_4px_24px_rgba(52,211,153,0.25)]"
-              >
-                Register My Bus →
-              </button>
+              <div className="space-y-2.5">
+                <button
+                  onClick={onRegisterClick}
+                  className="w-full h-12 rounded-2xl bg-[#34D399] text-white font-medium text-[14px] tracking-tight hover:bg-[#2EBD87] active:scale-[0.98] transition-all duration-200 shadow-[0_4px_24px_rgba(52,211,153,0.25)]"
+                >
+                  Register My Bus →
+                </button>
+                <Link
+                  href="/plans"
+                  onClick={() => playClickSound()}
+                  onMouseEnter={() => playHoverSound(0.01)}
+                  className={`w-full h-11 rounded-2xl border flex items-center justify-center font-medium text-[13px] tracking-tight transition-all duration-200 ${
+                    isLight
+                      ? "border-slate-300 bg-white hover:bg-slate-50 text-slate-800 shadow-sm"
+                      : "border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white"
+                  }`}
+                >
+                  <span>Explore All Fleet Plans</span>
+                  <span className="ml-1.5 opacity-60">→</span>
+                </Link>
+              </div>
               <p className={`text-[11px] text-center mt-3 font-normal ${isLight ? "text-slate-400" : "text-white/25"}`}>
                 No lock-in · Exit anytime with 30-day notice
               </p>
